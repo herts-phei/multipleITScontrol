@@ -5,7 +5,7 @@
 #' @param df A data frame containing the initial time series data.
 #' @param time_var  A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.
 #' @param group_var A character or factor variable indicating treatment and control groups. Only 'treatment' and 'control' are valid elements.
-#' @param outcome_var A numeric variable indicating outcome variable.
+#' @param outcome_var A numeric variable indicating outcome or response variable.
 #' @param intervention_dates A vector of time points (matching `time_var`) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to 9 scalar values representing the intervention start times.
 #' @return A transformed data frame to be passed to the `transformed_df` argument in `fit_its_model()`.
 #' @examples transform_data(data, time_var = 'time_xxx', group_var = 'group', outcome_var = 'outcome', intervention_dates = c(31, 61))
@@ -24,6 +24,7 @@ transform_data <- function(df,
   diffs <- diff(df[[time_var]] |> unique())
   equal_intervals <- all(diffs == diffs[1])
 
+  num_interventions <- length(intervention_dates)
 
   if (isFALSE(equal_intervals)) stop("Time variable is not of equal intervals")
   if (is.na(num_interventions)) stop("No intervention dates supplied")
@@ -32,7 +33,6 @@ transform_data <- function(df,
 
   length <- nrow(df)/2 ## only control and treatment
 
-  num_interventions <- length(intervention_dates)
 
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")

@@ -4,7 +4,6 @@
 #'
 #' @param transformed_df Am unmodified data frame created from `transform_data()`.
 #' @param impact_model The hypothesized impact model from interventions. Available options are 'level', 'slope', or 'levelscope'.
-#' @param response_var  The response variable in your data frame.
 #' @param intervention_dates A vector of time points (matching `time_var`) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to 9 scalar values representing the intervention start times. This should be the same parameter passed to `intervention_dates` in `transform_data()`.
 #' @param method The estimation method for `gls()`, either "REML" (default) or "ML".
 #' @param p The order of the autoregressive component. Defaults to `NULL`.
@@ -12,7 +11,7 @@
 #' @param ... Additional arguments passed to `nlme::gls()`.
 #' @return A `gls` object representing the fitted model.
 #' @examples
-#' output_table <- fit_its_model(transformed_df = df, response_var = 'outcome')
+#' output_table <- fit_its_model(transformed_df = df, impact_model)
 #' @export
 #' @importFrom nlme gls corARMA
 #' @importFrom dplyr ungroup group_by arrange mutate case_match sym recode
@@ -20,7 +19,6 @@
 
 fit_its_model <- function(transformed_data,
                           impact_model,
-                          response_var,
                           intervention_dates,
                           method = "REML",
                           p = NULL,
@@ -44,7 +42,7 @@ fit_its_model <- function(transformed_data,
   gls_object <- nlme::gls(
     reformulate(
       termlabels = termlabels,
-      response = response_var
+      response = "outcome"
     ),
     data = transformed_data,
     method = method,
@@ -118,7 +116,7 @@ return(gls_object)
 
 }
 
-fit_its_model(moo, "slope",  "outcome", c(31, 61)) -> model
+fit_its_model(moo, "slope", c(31, 61)) -> model
 
 
 
