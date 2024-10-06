@@ -1,0 +1,12 @@
+Package: multipleITScontrol
+Type: Package
+Title: Interrupted Time Series with Controls and Multiple Interventions through a Generalised Least Squares framework
+Version: 0.1.0
+Authors@R: person("Victor", "Yu", email = "victoryu@sent.com", role = c("cre","aut"))
+Description: Functions related to performing interrupted-time series through a generalised least squares (GLS) framework. Allows for multiple interventions and controls.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

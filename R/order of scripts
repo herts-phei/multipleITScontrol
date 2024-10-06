@@ -1,0 +1,10 @@
+1) transform_data.R
+2) fit_its_model.R
+3) generate_predictions.R
+
+3.1) slope_difference.R
+3.2) slope_difference_aggregate.R
+
+4) its_plot.R
+5) summary.R
+6) formula.R
