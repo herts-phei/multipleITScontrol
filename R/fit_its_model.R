@@ -4,7 +4,7 @@
 #'
 #' @param transformed_df Am unmodified data frame created from `transform_data()`.
 #' @param impact_model The hypothesized impact model from interventions. Available options are 'level', 'slope', or 'levelscope'.
-#' @param intervention_dates A vector of time points (matching `time_var`) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to 9 scalar values representing the intervention start times. This should be the same parameter passed to `intervention_dates` in `transform_data()`.
+#' @param num_interventions The number of interventions in your transformed data. Should be the vector length of `intervention_dates` passed in `transform_data()`.
 #' @param method The estimation method for `gls()`, either "REML" (default) or "ML".
 #' @param p The order of the autoregressive component. Defaults to `NULL`.
 #' @param q The order of the moving average component. Defaults to `NULL`.
@@ -19,18 +19,14 @@
 
 fit_its_model <- function(transformed_data,
                           impact_model,
-                          intervention_dates,
+                          num_interventions,
                           method = "REML",
                           p = NULL,
                           q = NULL,
                           ...) {
 
-  num_interventions <- length(intervention_dates)
-
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")
-
-
 
   termlabels <- switch(impact_model,
                        "pre_intervention" = "x * time_index",
@@ -61,6 +57,8 @@ fit_its_model <- function(transformed_data,
     ...
   )
 
+
+#
 # name_map <- c(
 #   "(Intercept)" = "Control y-axis intercept",
 #   "x" = "Pilot y-axis intercept difference to control",
@@ -109,14 +107,14 @@ fit_its_model <- function(transformed_data,
 #
 # rownames(attr(gls_object$parAssign, "varBetaFact")) <- new_names_row_varBetaFact
 # colnames(attr(gls_object$parAssign, "varBetaFact")) <- new_names_col_varBetaFact
-
+#
 
 
 return(gls_object)
 
 }
 
-fit_its_model(moo, "slope", c(31, 61)) -> model
+fit_its_model(moo, "slope", num_interventions = 2) -> model
 
 
 
