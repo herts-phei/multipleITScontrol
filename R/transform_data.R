@@ -6,8 +6,8 @@
 #' @param time_var  A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.
 #' @param group_var A character or factor variable indicating treatment and control groups. Only 'treatment' and 'control' are valid elements.
 #' @param outcome_var A numeric variable indicating outcome.response variable.
-#' @param intervention_dates A vector of time points (matching type of \code{time_var`}) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to nine values representing the intervention start times.
-#' @return A transformed data frame to be passed to `transformed_df` in `fit_its_model()`.
+#' @param intervention_dates A vector of time points (matching type of \code{time_var}) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to nine values representing the intervention start times.
+#' @return A transformed data frame to be passed to \code{transformed_df} in \link{fit_its_model}.
 #' @examples transform_data(data, time_var = 'time_xxx', group_var = 'group', outcome_var = 'outcome', intervention_dates = c(31, 61))
 #' @export
 #'

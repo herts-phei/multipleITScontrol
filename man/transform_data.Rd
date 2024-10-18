@@ -13,12 +13,12 @@ transform_data(df, time_var, group_var, outcome_var, intervention_dates)
 
 \item{group_var}{A character or factor variable indicating treatment and control groups. Only 'treatment' and 'control' are valid elements.}
 
-\item{outcome_var}{A numeric variable indicating outcome or response variable.}
+\item{outcome_var}{A numeric variable indicating outcome.response variable.}
 
-\item{intervention_dates}{A vector of time points (matching `time_var`) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to 9 scalar values representing the intervention start times.}
+\item{intervention_dates}{A vector of time points (matching type of \code{time_var}) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to nine values representing the intervention start times.}
 }
 \value{
-A transformed data frame to be passed to `transformed_df` in `fit_its_model()`.
+A transformed data frame to be passed to \code{transformed_df} in \link{fit_its_model}.
 }
 \description{
 Transforms a data frame ready for input into \link{fit_its_model}.
