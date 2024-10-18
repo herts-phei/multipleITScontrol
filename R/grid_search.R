@@ -18,29 +18,29 @@
 #'
 #'
 
-grid_search <- function(data, impact_model, time_var, group_var, response_var, intervention_dates, method, max_p, max_q, ...) {
-
-autocorrelation_grid <- expand.grid(pval = 0:max_p, qval = 0:max_q)
-
-p <- NA
-
-for(i in 1:nrow(autocorrelation_grid)) {
-  p[i] <- try(summary(
-    fit_gls_model_advanced(outcome_of_interest,
-                           "REML",
-                           combined_df,
-                           c(
-                             "final_model_x * final_model_time_index",
-                             "final_model_x * final_model_post_first_intervention",
-                             "final_model_x * final_model_post_second_intervention"
-                           ),
-                           autocorrelation_grid$pval[i],
-                           autocorrelation_grid$qval[i])
-  )$AIC)
-}
-
-p <- ifelse(is.na(as.numeric(p)), NA, p)
-
-autocorrelation_grid |>
-  dplyr::mutate(AIC = p) |>
-  dplyr::arrange(AIC)
+# grid_search <- function(data, impact_model, time_var, group_var, response_var, intervention_dates, method, max_p, max_q, ...) {
+#
+# autocorrelation_grid <- expand.grid(pval = 0:max_p, qval = 0:max_q)
+#
+# p <- NA
+#
+# for(i in 1:nrow(autocorrelation_grid)) {
+#   p[i] <- try(summary(
+#     fit_gls_model_advanced(outcome_of_interest,
+#                            "REML",
+#                            combined_df,
+#                            c(
+#                              "final_model_x * final_model_time_index",
+#                              "final_model_x * final_model_post_first_intervention",
+#                              "final_model_x * final_model_post_second_intervention"
+#                            ),
+#                            autocorrelation_grid$pval[i],
+#                            autocorrelation_grid$qval[i])
+#   )$AIC)
+# }
+#
+# p <- ifelse(is.na(as.numeric(p)), NA, p)
+#
+# autocorrelation_grid |>
+#   dplyr::mutate(AIC = p) |>
+#   dplyr::arrange(AIC)

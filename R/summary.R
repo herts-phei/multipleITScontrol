@@ -56,8 +56,8 @@ summary_its <- function(model) {
     name_map <- c(
       name_map,
       setNames(
-        c(sprintf("Control intervention %d slope", i), sprintf("Pilot intervention %d slope", i)),
-        c(sprintf("slope_%d_intervention", i), sprintf("x:slope_%d_intervention", i))
+        c(sprintf("Control intervention %d slope", i), sprintf("Pilot intervention %d slope", i), sprintf("Control intervention %d level", i), sprintf("Pilot intervention %d level", i)),
+        c(sprintf("slope_%d_intervention", i), sprintf("x:slope_%d_intervention", i), sprintf("level_%d_intervention", i), sprintf("x:level_%d_intervention", i))
       )
     )
   }
@@ -188,6 +188,6 @@ summary_its <- function(model) {
 
 }
 
-# summary_its(model) -> summary_test
+summary_its(model) -> summary_test
 
-sjPlot::tab_model()
+sjPlot::tab_model(summary_test)

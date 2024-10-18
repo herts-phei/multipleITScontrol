@@ -8,3 +8,5 @@
 4) its_plot.R
 5) summary.R
 6) formula.R
+
+devtools::document()

@@ -16,7 +16,7 @@
 #' @param x_axis Optional argument passed to x in `labs()`.
 #' @param y_axis Optional argument passed to y in `labs()`.
 #' @return A ggplot object
-#' @examples transform_data(data, time_var = 'time_xxx', group_var = 'group', intervention_dates = c(31, 61))
+#' @examples transform_data(data, time_var = 'time', group_var = 'group', intervention_dates = c(31, 61))
 #' @export
 #'
 #' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number
@@ -51,26 +51,24 @@ its_plot <- function(data_with_predictions,
     }
   }
 
-  x_max_range <- nrow(data_with_predictions)/
-
   data_with_predictions |>
-  ggplot(aes(time_xxx, outcome)) +
-  geom_point(aes(color = group_xxx), shape = point_shape, size = point_size) + ## Actual data points
+  ggplot(aes(time, outcome)) +
+  geom_point(aes(color = category), shape = point_shape, size = point_size) + ## Actual data points
   purrr:::map(intervention_dates, ~ geom_vline(aes(xintercept = .x), linetype = linetype, size = 1)) +
     (if (isTRUE(project_pre_intervention_trend)) {
-      geom_line(aes(time_xxx, pre_intervention_predictions, color = group_xxx),
+      geom_line(aes(time, pre_intervention_predictions, color = category),
                 lty = 2,
                 size = 1)
     } else {
       list()  # Return an empty list if no vlines
     }) +
-  geom_line(aes(time_xxx, predictions, color = group_xxx), lty = 1, size = 1) + ## prediction
+  geom_line(aes(time, predictions, color = category), lty = 1, size = 1) + ## prediction
 
     (if (isTRUE(se)) {
   geom_ribbon(aes(
     ymin = predictions - (1.96 * se),
     ymax = predictions + (1.96 * se),
-    fill = group_xxx
+    fill = category
   ), alpha = 0.1) }
     else {
       list()
@@ -102,5 +100,6 @@ its_plot(data_with_predictions = moo_generate,
          colours = c("red", "blue"),
          se = TRUE,
          point_shape = 3,
-         point_size = 2)
+         point_size = 2) +
+  scale_x_continuous(breaks = seq(0, 100, 5))
 

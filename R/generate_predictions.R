@@ -84,12 +84,12 @@ generate_predictions <- function(transformed_data,
         level_pre_intervention == 1 ~ NA,
         TRUE ~ pre_intervention_predictions
       ),
-      predictions = AICcmodavg::predictSE.gls(model, transformed_data, se.fit = T)$fit,
-      se = AICcmodavg::predictSE.gls(model, transformed_data, se.fit = T)$se
+      predictions = AICcmodavg::predictSE.gls(model, df, se.fit = T)$fit,
+      se = AICcmodavg::predictSE.gls(model, df, se.fit = T)$se
     )
 
   return(df)
 
 }
 
-generate_predictions(moo, model) -> moo_generate
+generate_predictions(transformed_data = moo, model) -> moo_generate
