@@ -1,6 +1,6 @@
 #' @title transform_data
 #'
-#' @description Transforms a data frame ready for input into \link{fit_its_model}.
+#' @description Transforms a data frame ready for input into \link{fit_its_model}, creating relevant columns for slope and level effects of interventions.
 #'
 #' @param df A data frame containing the initial time series data.
 #' @param time_var  A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.
