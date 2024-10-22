@@ -9,7 +9,7 @@
 #' @param p The order of the autoregressive component. Defaults to `NULL`.
 #' @param q The order of the moving average component. Defaults to `NULL`.
 #' @param ... Additional arguments passed to `nlme::gls()`.
-#' @return A `gls` object representing the fitted model.
+#' @return A `gls` object of the fitted model.
 #' @examples
 #' fit_its_model(transformed_df = df, impact_model)
 #' @export
