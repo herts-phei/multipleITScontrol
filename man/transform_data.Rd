@@ -21,7 +21,7 @@ transform_data(df, time_var, group_var, outcome_var, intervention_dates)
 A transformed data frame to be passed to \code{transformed_df} in \link{fit_its_model}.
 }
 \description{
-Transforms a data frame ready for input into \link{fit_its_model}.
+Transforms a data frame ready for input into \link{fit_its_model}, creating relevant columns for slope and level effects of interventions.
 }
 \examples{
 transform_data(data, time_var = 'time_xxx', group_var = 'group', outcome_var = 'outcome', intervention_dates = c(31, 61))

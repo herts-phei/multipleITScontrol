@@ -30,7 +30,7 @@ fit_its_model(
 \item{transformed_df}{Am unmodified data frame created from `transform_data()`.}
 }
 \value{
-A `gls` object representing the fitted model.
+A `gls` object of the fitted model.
 }
 \description{
 Fits an interrupted time series model using the nlme package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)

@@ -34,40 +34,11 @@ generate_predictions <- function(transformed_data,
 
   length <- nrow(transformed_data)/2
 
-  # pre_intevention_version <- fit_its_model(
-  #   transformed_data = transformed_data |> filter(date_pre_intervention == 1),
-  #   impact_model = "pre_intervention",
-  #   response_var,
-  #   method = "REML",
-  #   correlation = (
-  #     if (is.null(p) && is.null(q)) {
-  #       NULL
-  #     } else {
-  #       nlme::corARMA(
-  #         p = p,
-  #         q = q,
-  #         form = ~ time_index | x
-  #       )
-  #     }
-  #   )
-  #   ,
-  #   ...
-  # )
-
   used_coefs <- model$coefficients
 
   df <- transformed_data |>
     arrange(x) |>
     ungroup()
-
-
-  # valid_names <- name_map[names(name_map) %in% names(df)]
-  # test <- df %>% rename(!!!setNames(names(valid_names), valid_names))
-  #
-  # internal_model <- model
-
-
-
 
   df <- df %>%
     mutate(
