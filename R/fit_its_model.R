@@ -1,6 +1,7 @@
 #' @title fit_its_model
 #'
-#' @description Fits an interrupted time series model using the nlme package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
+#' @description Fits an interrupted time series model using the \link{nlme} package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
+#'
 #'
 #' @param transformed_df Am unmodified data frame created from `transform_data()`.
 #' @param impact_model The hypothesized impact model from interventions. Available options are 'level', 'slope', or 'levelscope'.
@@ -11,7 +12,7 @@
 #' @param ... Additional arguments passed to `nlme::gls()`.
 #' @return A `gls` object of the fitted model.
 #' @examples
-#' fit_its_model(transformed_df = df, impact_model)
+#' fit_its_model(transformed_data = df, impact_model)
 #' @export
 #' @importFrom nlme gls corARMA
 #' @importFrom dplyr ungroup group_by arrange mutate case_match sym recode
@@ -61,4 +62,4 @@ return(gls_object)
 
 }
 
-fit_its_model(moo, "levelslope", num_interventions = 2) -> model
+# fit_its_model(moo, "levelslope", num_interventions = 2) -> model

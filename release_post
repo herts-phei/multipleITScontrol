@@ -1,0 +1,5 @@
+I'm happy to announce the release of my first R CRAN package, multipleITScontrol, allowing you to run interrupted time-series with multiple interventions with a control group through generalised learn squares estimation.
+
+This package adapts code which we (Hertfordshire County Council) wrote for an evaluation of a pilot programme which sought to improve uptake of the spring Covid-19 booster in immunosuppressed patients within Hertfordshire, done in collaboration with Hertfordshire and West Essex ICB.
+
+Read more about it at:

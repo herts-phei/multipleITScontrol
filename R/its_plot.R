@@ -94,12 +94,12 @@ its_plot <- function(data_with_predictions,
 
 }
 
-its_plot(data_with_predictions = moo_generate,
-         intervention_dates = c(31, 61),
-         project_pre_intervention_trend = TRUE,
-         colours = c("red", "blue"),
-         se = TRUE,
-         point_shape = 3,
-         point_size = 2) +
-  scale_x_continuous(breaks = seq(0, 100, 5))
+# its_plot(data_with_predictions = moo_generate,
+#          intervention_dates = c(31, 61),
+#          project_pre_intervention_trend = TRUE,
+#          colours = c("red", "blue"),
+#          se = TRUE,
+#          point_shape = 3,
+#          point_size = 2) +
+#   scale_x_continuous(breaks = seq(0, 100, 5))
 

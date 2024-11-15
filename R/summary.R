@@ -188,6 +188,6 @@ summary_its <- function(model) {
 
 }
 
-summary_its(model) -> summary_test
-
-sjPlot::tab_model(summary_test)
+# summary_its(model) -> summary_test
+#
+# sjPlot::tab_model(summary_test)

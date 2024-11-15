@@ -63,4 +63,4 @@ generate_predictions <- function(transformed_data,
 
 }
 
-generate_predictions(transformed_data = moo, model) -> moo_generate
+# generate_predictions(transformed_data = moo, model) -> moo_generate

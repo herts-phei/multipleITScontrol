@@ -4,7 +4,7 @@ Title: Interrupted Time Series with Controls and Multiple Interventions through 
 Version: 0.1.0
 Authors@R: person("Victor", "Yu", email = "victoryu@sent.com", role = c("cre","aut"))
 Description: Functions related to performing interrupted-time series through a generalised least squares (GLS) framework. Allows for multiple interventions and controls.
-License: GPL-3
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Suggests: 

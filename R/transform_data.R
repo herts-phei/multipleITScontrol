@@ -2,6 +2,8 @@
 #'
 #' @description Transforms a data frame ready for input into \link{fit_its_model}, creating relevant columns for slope and level effects of interventions.
 #'
+#' Requires a minimum of three time points in each intervention period and pre-intervention period.
+#'
 #' @param df A data frame containing the initial time series data.
 #' @param time_var  A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.
 #' @param group_var A character or factor variable indicating treatment and control groups. Only 'treatment' and 'control' are valid elements.
@@ -30,8 +32,15 @@ transform_data <- function(df,
   if (is.na(num_interventions)) stop("No intervention dates supplied")
   if (num_interventions > 9) stop("More than 9 intervention dates supplied")
   if (!is.numeric(df[[outcome_var]])) stop("Outcome variable is not numeric")
+  if (is.FALSE(length(df[[group_var]] == 'treatment') == length(df[[group_var]] == 'control'))) stop("Treatment and Control groups have differing number of time points")
 
   length <- nrow(df)/2 ## only control and treatment
+
+  period_checks <- c(1, intervention_dates, length)
+  differences <- diff(period_checks)
+
+  if (any(differences < 3)) "One or more intervention periods (including pre-intervention) have less than 3 time points"
+
 
 
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
@@ -79,8 +88,8 @@ transform_data <- function(df,
 
 }
 
-transform_data(data,
-               time_var = 'time_xxx',
-               group_var = 'group_xxx',
-               outcome_var = 'outcome',
-               intervention_dates = c(31, 61)) -> moo
+# transform_data(df = data,
+#                time_var = 'time_xxx',
+#                group_var = 'group_xxx',
+#                outcome_var = 'outcome',
+#                intervention_dates = c(31, 61)) -> moo
