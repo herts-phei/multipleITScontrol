@@ -71,4 +71,4 @@ p <- ggplot(data, aes(x = time, y = outcome, color = group)) +
     legend.position = "none"
   )
 
-hexSticker::sticker(p, package = "multipleITScontrol", p_fontface = "Aller_Rg", p_size=12, p_y = 1.45, s_x=1, s_y=.85, s_width=1.3, s_height=1, h_color = "lightsteelblue4", h_fill = "lightsteelblue3")
+hexSticker::sticker(p, package = "multipleITScontrol", p_family = "Audrey", p_size=14, p_y = 1.45, s_x=1, s_y=.85, s_width=1.3, s_height=1, h_color = "lightsteelblue4", h_fill = "lightsteelblue3")
