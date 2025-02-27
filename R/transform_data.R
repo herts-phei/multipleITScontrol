@@ -15,6 +15,7 @@
 #'
 #' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number
 #' @importFrom rlang sym !! :=
+#' @importFrom magrittr %>%
 
 
 transform_data <- function(df,

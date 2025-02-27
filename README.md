@@ -65,7 +65,7 @@ pak::pak("herts-phei/multipleITScontrol")
 #> 
 #> 
 #> ℹ No downloads are needed
-#> ✔ 1 pkg: kept 1 [3.5s]
+#> ✔ 1 pkg: kept 1 [3.4s]
 ```
 
 ## Pre-requisites
@@ -86,11 +86,12 @@ data:
 
 - Power calculations to ensure sufficient statistical power in the
   intervention of interest should be performed, but this is beyond the
-  scope of the package and should be performed externally
+  scope of the package and should be performed independently.
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to solve a common problem
+with two stage interrupted time series with a control:
 
 **Background**: Alpine Meadow School and Forest Tiger School have
 similar student demographics, including socioeconomic status, ethnicity,
@@ -98,7 +99,8 @@ and academic performance. Both schools are part of Clarkson County’s
 public school district.
 
 Alpine Meadow School wants to trial out two new interventions to improve
-their school’s reading comprehension score.
+their school’s reading comprehension score, and to compare post
+intervention results with the pre-intervention score.
 
 **Intervention 1: Implementing a New Reading Programme**
 
@@ -146,7 +148,9 @@ their school’s reading comprehension score.
 - **Data Collection:** Collect data on reading comprehension scores
   during the peer tutoring sessions administered weekly.
 
-The calendar plot below summarises the
+The calendar plot below summarises the timeline of the interventions:
+
+<img src="man/figures/README-calendar-1.png" width="100%" />
 
 ``` r
 library(multipleITScontrol)

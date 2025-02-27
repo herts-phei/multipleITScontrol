@@ -50,15 +50,15 @@ In order for the package functions to work properly, there are several requireme
 
 -   Defined impact model whether the interventions were expected to result in a sudden change (a “level” or “step” change, or both); currently, the package only supports the same impact model for each intervention.
 
--   Power calculations to ensure sufficient statistical power in the intervention of interest should be performed, but this is beyond the scope of the package and should be performed externally
+-   Power calculations to ensure sufficient statistical power in the intervention of interest should be performed, but this is beyond the scope of the package and should be performed independently.
 
-## Example
+## Usage
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control:
 
 **Background**: Alpine Meadow School and Forest Tiger School have similar student demographics, including socioeconomic status, ethnicity, and academic performance. Both schools are part of Clarkson County's public school district.
 
-Alpine Meadow School wants to trial out two new interventions to improve their school's reading comprehension score.
+Alpine Meadow School wants to trial out two new interventions to improve their school's reading comprehension score, and to compare post intervention results with the pre-intervention score.
 
 **Intervention 1: Implementing a New Reading Programme**
 
@@ -93,7 +93,39 @@ Alpine Meadow School wants to trial out two new interventions to improve their s
 -   **Duration:** 6 months (March 1, 2026 - August 31, 2026)
 -   **Data Collection:** Collect data on reading comprehension scores during the peer tutoring sessions administered weekly.
 
-The calendar plot below summarises the
+The calendar plot below summarises the timeline of the interventions:
+
+```{r calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.height=10, fig.retina=3}
+library(pheicharts)
+library(tidyverse)
+box::use(../../phei_functions/phei)
+
+tibble_data <- tibble::tibble(Date = seq(as.Date("2025-03-03"), as.Date("2026-08-30"), by = "day"),
+  Period = dplyr::case_when(
+    Date >= as.Date("2025-03-03") & Date <= as.Date("2025-08-31") ~ "Pre-intervention period",
+    Date >= as.Date("2025-09-01") & Date <= as.Date("2026-03-01") ~ "Intervention 1) Reading Program",
+    Date >= as.Date("2026-03-02") & Date <= as.Date("2026-08-30") ~ "Intervention 2) Peer Tutoring Sessions"
+  ))
+
+plot <- phei$phei_calendar(
+  tibble_data,
+  date_column = "Date",
+  "Period",
+  colours = phei_palettes$cool_colours,
+  ncol = 3
+) +
+  theme(strip.text = element_text(size = rel(0.5)),
+        axis.text = element_text(size = rel(0.5)),
+        plot.caption = element_text(size = rel(0.5)),
+        legend.text = element_text(size = rel(0.5)))
+  
+
+plot$layers[[2]]$aes_params$size <- 1.5
+
+plot
+
+
+```
 
 
 ```{r example}
