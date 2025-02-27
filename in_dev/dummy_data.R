@@ -37,7 +37,9 @@ tibble_data <- tibble_data %>%
 # Define intervention_dates
 intervention_dates <- c(as.Date("2025-09-01"), as.Date("2026-03-02"))
 
-# Print the tibble
-print(tibble_data)
 
-transform_data(tibble_data, "Date", "group_var", "score", c(as.Date("2025-09-05"), as.Date("2026-03-06")))
+transform_data(df = tibble_data,
+               time_var = "Date",
+               group_var = "group_var",
+               outcome_var =  "score",
+               intervention_dates = intervention_dates)

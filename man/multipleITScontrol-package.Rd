@@ -4,11 +4,11 @@
 \name{multipleITScontrol-package}
 \alias{multipleITScontrol}
 \alias{multipleITScontrol-package}
-\title{multipleITScontrol: Interrupted Time Series with Controls and Multiple Interventions through a Generalised Least Squares framework}
+\title{multipleITScontrol: Interrupted Time Series with a Control and Multiple Interventions through a Generalised Least Squares framework}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Functions related to performing interrupted-time series through a generalised least squares (GLS) framework. Allows for multiple interventions and controls.
+Functions related to performing interrupted-time series through a generalised least squares (GLS) framework on linear outcomes. Allows for multiple interventions and a control.
 }
 \author{
 \strong{Maintainer}: Victor Yu \email{victoryu@sent.com}

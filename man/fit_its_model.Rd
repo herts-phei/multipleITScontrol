@@ -36,5 +36,5 @@ A `gls` object of the fitted model.
 Fits an interrupted time series model using the \link{nlme} package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
 }
 \examples{
-fit_its_model(transformed_df = df, impact_model)
+fit_its_model(transformed_data = df, impact_model)
 }
