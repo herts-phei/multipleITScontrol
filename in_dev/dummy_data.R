@@ -7,15 +7,11 @@ date_range <- seq(as.Date("2025-03-03"), as.Date("2026-08-30"), by = "day")
 fridays <- date_range[weekdays(date_range) == "Friday"]
 
 # Create a tibble with the date range
-tibble_data <- tibble(Date = fridays)
-
-# Add time_var as a sequential time index
-tibble_data <- tibble_data %>%
-  mutate(time_var = row_number())
+tibble_data <- tibble(Date = rep(fridays, 2))
 
 # Add group_var with 'treatment' and 'control' groups
 tibble_data <- tibble_data %>%
-  mutate(group_var = if_else(row_number() %% 2 == 0, 'control', 'treatment'))
+  mutate(group_var = rep(c('treatment', 'control'), each = length(fridays)))
 
 # Add Period column using mutate and case_when
 tibble_data <- tibble_data %>%
@@ -34,10 +30,14 @@ tibble_data <- tibble_data %>%
     Period == "Intervention 2) Peer Tutoring Sessions" ~ rnorm(n(), mean = 95, sd = 5)
   ))
 
+# Ensure the outcome_var is adjusted for control group to reflect no intervention effect
+tibble_data <- tibble_data %>%
+  mutate(outcome_var = if_else(group_var == 'control', outcome_var - rnorm(n(), mean = 0, sd = 1), outcome_var))
+
 # Define intervention_dates
 intervention_dates <- c(as.Date("2025-09-01"), as.Date("2026-03-02"))
 
 # Print the tibble
 print(tibble_data)
 
-transform_data(tibble_data, "time_var", "group_var", "score", c(as.Date("2025-09-01"), as.Date("2026-03-02")))
+transform_data(tibble_data, "Date", "group_var", "score", c(as.Date("2025-09-05"), as.Date("2026-03-06")))

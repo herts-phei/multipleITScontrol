@@ -37,7 +37,10 @@ transform_data <- function(df,
 
   length <- nrow(df)/2 ## only control and treatment
 
-  period_checks <- c(1, intervention_dates, length)
+  date_vector <- df[["Date"]]
+  matching_indices <- match(intervention_dates, longer_vector)
+
+  period_checks <- c(1, matching_indices, length)
   differences <- diff(period_checks)
 
   if (any(differences < 3)) "One or more intervention periods (including pre-intervention) have less than 3 time points"
