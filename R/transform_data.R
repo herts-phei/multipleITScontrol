@@ -32,7 +32,7 @@ transform_data <- function(df,
   if (is.na(num_interventions)) stop("No intervention dates supplied")
   if (num_interventions > 9) stop("More than 9 intervention dates supplied")
   if (!is.numeric(df[[outcome_var]])) stop("Outcome variable is not numeric")
-  if (is.FALSE(length(df[[group_var]] == 'treatment') == length(df[[group_var]] == 'control'))) stop("Treatment and Control groups have differing number of time points")
+  if (isFALSE(length(df[[group_var]] == 'treatment') == length(df[[group_var]] == 'control'))) stop("Treatment and Control groups have differing number of time points")
 
   length <- nrow(df)/2 ## only control and treatment
 
