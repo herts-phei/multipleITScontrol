@@ -37,7 +37,7 @@ A lot of the code is derived and inspired from the rpub article [A pragmatic Int
 
 You can install the development version of multipleITScontrol from [GitHub](https://github.com/) with:
 
-```{r}
+```{r, include = FALSE}
 # install.packages("pak")
 pak::pak("herts-phei/multipleITScontrol")
 ```

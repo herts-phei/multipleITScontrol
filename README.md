@@ -62,19 +62,6 @@ You can install the development version of multipleITScontrol from
 ``` r
 # install.packages("pak")
 pak::pak("herts-phei/multipleITScontrol")
-#> 
-#> → Will update 1 package.
-#> → Will download 1 package with unknown size.
-#> + multipleITScontrol 0.1.0 → 0.1.0 [bld][cmp][dl] (GitHub: 285335f)
-#> 
-#> ℹ Getting 1 pkg with unknown size
-#> ✔ Got multipleITScontrol 0.1.0 (source) (296.49 kB)
-#> ℹ Packaging multipleITScontrol 0.1.0
-#> ✔ Packaged multipleITScontrol 0.1.0 (916ms)
-#> ℹ Building multipleITScontrol 0.1.0
-#> ✔ Built multipleITScontrol 0.1.0 (1.7s)
-#> ✔ Installed multipleITScontrol 0.1.0 (github::herts-phei/multipleITScontrol@285335f) (1.1s)
-#> ✔ 1 pkg: upd 1, dld 1 (NA B) [8.9s]
 ```
 
 ## Pre-requisites
