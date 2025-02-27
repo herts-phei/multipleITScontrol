@@ -152,4 +152,4 @@ The calendar plot below summarises the timeline of the interventions:
 library(multipleITScontrol)
 ```
 
-Further examples can be found in the vignette.
+Further examples can be found in the vignette here.
