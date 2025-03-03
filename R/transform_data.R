@@ -37,7 +37,7 @@ transform_data <- function(df,
 
   length <- nrow(df)/2 ## only control and treatment
 
-  date_vector <- df[["Date"]] |> sort()
+  date_vector <- df[["Date"]] |> sort() |> unique()
 
   matching_indices <- match(intervention_dates, date_vector)
 
