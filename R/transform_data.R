@@ -24,7 +24,9 @@ transform_data <- function(df,
                            outcome_var,
                            intervention_dates) {
 
-  diffs <- diff(df[[time_var]] |> unique())
+  internal_data <- df
+
+  diffs <- diff(internal_data[[time_var]] |> unique())
   equal_intervals <- all(diffs == diffs[1])
 
   num_interventions <- length(intervention_dates)
@@ -32,12 +34,15 @@ transform_data <- function(df,
   if (isFALSE(equal_intervals)) stop("Time variable is not of equal intervals")
   if (is.na(num_interventions)) stop("No intervention dates supplied")
   if (num_interventions > 9) stop("More than 9 intervention dates supplied")
-  if (!is.numeric(df[[outcome_var]])) stop("Outcome variable is not numeric")
-  if (isFALSE(length(df[[group_var]] == 'treatment') == length(df[[group_var]] == 'control'))) stop("Treatment and Control groups have differing number of time points")
+  if (!is.numeric(internal_data[[outcome_var]])) stop("Outcome variable is not numeric")
+  if (isFALSE(length(internal_data[[group_var]] == 'treatment') == length(internal_data[[group_var]] == 'control'))) stop("Treatment and Control groups have differing number of time points")
 
-  length <- nrow(df)/2 ## only control and treatment
 
-  date_vector <- df[["Date"]] |> sort() |> unique()
+  length <- nrow(internal_data)/2 ## only control and treatment
+
+  date_vector <- internal_data[[time_var]] |> sort() |> unique()
+
+  if (isFALSE(all(intervention_dates %in% date_vector))) stop("Defined intervention timepoints do not have matching timepoints in date/time variable")
 
   matching_indices <- match(intervention_dates, date_vector)
 
@@ -46,13 +51,11 @@ transform_data <- function(df,
 
   if (any(differences < 3)) "One or more intervention periods (including pre-intervention) have less than 3 time points"
 
-
-
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")
 
 
-  df <- df %>%
+  internal_data <- internal_data %>%
     dplyr::rename("category" := !!ensym(group_var),
                   "time" := !!ensym(time_var),
                   "outcome" := !!ensym(outcome_var)) |>
@@ -74,11 +77,11 @@ transform_data <- function(df,
     level_col_name <- level_intervention_cols[i]
     slope_col_name <- slope_intervention_cols[i]
 
-    to_index <- if (i == max(seq_along(intervention_dates))) length else (df[which(df[["time"]] == intervention_dates[i+1]), "time_index"] |> unique() |> pull() - 1)
+    to_index <- if (i == max(seq_along(intervention_dates))) length else (internal_data[which(internal_data[["time"]] == intervention_dates[i+1]), "time_index"] |> unique() |> pull() - 1)
 
-    init_index <- df[which(df[["time"]] == intervention_dates[i]), "time_index"] |> unique() |> pull()
+    init_index <- internal_data[which(internal_data[["time"]] == intervention_dates[i]), "time_index"] |> unique() |> pull()
 
-    df <- df %>%
+    internal_data <- internal_data %>%
       mutate(
         !!level_col_name := case_when(
           time_index %in% init_index:to_index ~ 1,
@@ -90,7 +93,7 @@ transform_data <- function(df,
 
   }
 
-  return(df)
+  return(internal_data)
 
 }
 

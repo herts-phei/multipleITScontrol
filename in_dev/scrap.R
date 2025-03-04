@@ -19,8 +19,8 @@ transform_data <- function(df = tibble_data
 
   length <- nrow(df)/2 ## only control and treatment
 
-  date_vector <- df[["Date"]]
-  matching_indices <- match(intervention_dates, longer_vector)
+  date_vector <- df[["Date"]] |> sort() |> unique()
+  matching_indices <- match(intervention_dates, date_vector)
 
   period_checks <- c(1, matching_indices, length)
   differences <- diff(period_checks)
