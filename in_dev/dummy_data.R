@@ -22,17 +22,14 @@ tibble_data <- tibble_data %>%
   ))
 
 # Add outcome_var with pre-intervention points hovering around 82, first intervention around 90, and second intervention even higher
-set.seed(42)
+
 tibble_data <- tibble_data %>%
   mutate(score = case_when(
-    Period == "Pre-intervention period" ~ rnorm(n(), mean = 82, sd = 2),
-    Period == "Intervention 1) Reading Program" ~ rnorm(n(), mean = 90, sd = 5),
-    Period == "Intervention 2) Peer Tutoring Sessions" ~ rnorm(n(), mean = 95, sd = 5)
+    Period == "Pre-intervention period" & group_var == "treatment" ~ rnorm(n(), mean = 82, sd = 2),
+    Period == "Intervention 1) Reading Program" & group_var == "treatment" ~ rnorm(n(), mean = 90, sd = 2),
+    Period == "Intervention 2) Peer Tutoring Sessions" & group_var == "treatment" ~ rnorm(n(), mean = 95, sd = 2),
+    group_var == "control" ~ rnorm(n(), mean = 82, sd = 2)
   ))
-
-# Ensure the outcome_var is adjusted for control group to reflect no intervention effect
-tibble_data <- tibble_data %>%
-  mutate(outcome_var = if_else(group_var == 'control', outcome_var - rnorm(n(), mean = 0, sd = 1), outcome_var))
 
 # Define intervention_dates
 intervention_dates <- c(as.Date("2025-09-01"), as.Date("2026-03-02"))
@@ -43,3 +40,11 @@ transform_data(df = tibble_data,
                group_var = "group_var",
                outcome_var =  "score",
                intervention_dates = intervention_dates)
+
+plot(tibble_data[["Date"]], tibble_data[["score"]], type = "l", main = "Numeric Value Over Time", xlab = "Date", ylab = "Value")
+
+plot(tibble_data[["Date"]][tibble_data[["group_var"]] == "treatment"], tibble_data[["score"]][tibble_data[["group_var"]] == "treatment"], type = "l", col = "blue",
+     main = "Numeric Value Over Time by Category", xlab = "Date", ylab = "Value")
+lines(tibble_data[["Date"]][tibble_data[["group_var"]] == "control"], tibble_data[["score"]][tibble_data[["group_var"]] == "control"], col = "red")
+abline(v = as.Date(c("2025-09-01", "2026-03-02")), col = "black", lty = 2)
+legend("topleft", legend = c("Treatment Group", "Control Group"), col = c("blue", "red"), lty = 1)
