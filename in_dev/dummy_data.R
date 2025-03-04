@@ -41,5 +41,5 @@ transform_data(df = tibble_data,
                time_var = "Date",
                group_var = "group_var",
                outcome_var =  "score",
-               intervention_dates = c(as.Date("2025-09-01"), as.Date("2026-03-02")))
+               intervention_dates = intervention_dates)
 
