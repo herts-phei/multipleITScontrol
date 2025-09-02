@@ -15,8 +15,6 @@
 #' fit_its_model(transformed_data = df, impact_model)
 #' @export
 #' @importFrom nlme gls corARMA
-#' @importFrom dplyr ungroup group_by arrange mutate case_match sym recode
-#' @importFrom rlang !! !!! :=
 
 fit_its_model <- function(transformed_data,
                           impact_model,

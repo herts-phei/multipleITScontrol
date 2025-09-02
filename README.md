@@ -10,7 +10,9 @@ status](https://www.r-pkg.org/badges/version/multipleITScontrol)](https://CRAN.R
 [![Codecov test
 coverage](https://codecov.io/gh/herts-phei/multipleITScontrol/graph/badge.svg)](https://app.codecov.io/gh/herts-phei/multipleITScontrol)
 [![R-CMD-check](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml)
-
+[![CRAN
+status](https://www.r-pkg.org/badges/version/multipleITScontrol)](https://CRAN.R-project.org/package=multipleITScontrol)
+[![R-CMD-check](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Overview
@@ -84,72 +86,4 @@ data:
   intervention of interest should be performed, but this is beyond the
   scope of the package and should be performed independently.
 
-## Usage
-
-This is a basic example which shows you how to solve a common problem
-with two stage interrupted time series with a control:
-
-**Background**: Alpine Meadow School and Forest Tiger School have
-similar student demographics, including socioeconomic status, ethnicity,
-and academic performance. Both schools are part of Clarkson County’s
-public school district.
-
-Alpine Meadow School wants to trial out two new interventions to improve
-their school’s reading comprehension score, and to compare post
-intervention results with the pre-intervention score.
-
-**Intervention 1: Implementing a New Reading Programme**
-
-- **Objective:** Improve reading comprehension and literacy rates among
-  students.
-- **Start Date:** September 1, 2025
-- **Duration:** 6 months
-- **Description:** The school introduces a new, evidence-based reading
-  program that includes daily reading sessions, interactive reading
-  activities, and regular assessments.
-- **Measurement:** Reading comprehension scores from standardized tests
-  administered weekly.
-
-**Intervention 2: Introducing Peer Tutoring Sessions**
-
-- **Objective:** Further enhance reading comprehension and literacy
-  rates.
-- **Start Date:** March 1, 2026 (immediately after the reading program
-  ends)
-- **Duration:** 6 months
-- **Description:** The school implements peer tutoring sessions where
-  older students tutor younger students in reading. These sessions are
-  held twice a week and focus on reading comprehension strategies and
-  practice.
-- **Measurement:** Reading comprehension scores from standardized tests
-  administered weekly.
-
-### Controlled Interrupted Time Series Design
-
-**Step 1: Baseline Period**
-
-- **Duration:** 6 months (March 1, 2025 - August 31, 2025)
-- **Data Collection:** Collect baseline data on reading comprehension
-  scores administered weekly.
-
-**Step 2: Intervention 1 Period**
-
-- **Duration:** 6 months (September 1, 2025 - February 28, 2026)
-- **Data Collection:** Continue collecting data on reading comprehension
-  scores during the reading program administered weekly.
-
-**Step 3: Intervention 2 Period**
-
-- **Duration:** 6 months (March 1, 2026 - August 31, 2026)
-- **Data Collection:** Collect data on reading comprehension scores
-  during the peer tutoring sessions administered weekly.
-
-The calendar plot below summarises the timeline of the interventions:
-
-<img src="man/figures/README-calendar-1.png" width="100%" />
-
-``` r
-library(multipleITScontrol)
-```
-
-Further examples can be found in the vignette here.
+Examples of how to use the package can be found in the vignette here.
