@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-# library(multipleITScontrol)
+library(multipleITScontrol)
 library(pheicharts)
 library(tidyverse)
 box::use(../../../phei_functions/phei)
@@ -93,6 +93,7 @@ plot
 
 ```
 
+# Step 1) Processing the Data
 
 ```{r example}
 library(multipleITScontrol)

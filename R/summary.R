@@ -39,6 +39,9 @@
 #' }
 #'
 #' @export
+#' @importFrom purrr map
+#' @importFrom nlme gls corARMA
+#' @importFrom rlang !! !!! :=
 
 summary_its <- function(model) {
 
