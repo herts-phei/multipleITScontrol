@@ -10,9 +10,6 @@ status](https://www.r-pkg.org/badges/version/multipleITScontrol)](https://CRAN.R
 [![Codecov test
 coverage](https://codecov.io/gh/herts-phei/multipleITScontrol/graph/badge.svg)](https://app.codecov.io/gh/herts-phei/multipleITScontrol)
 [![R-CMD-check](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/multipleITScontrol)](https://CRAN.R-project.org/package=multipleITScontrol)
-[![R-CMD-check](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Overview
