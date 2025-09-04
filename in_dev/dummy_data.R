@@ -42,4 +42,3 @@ transform_data(df = tibble_data,
                group_var = "group_var",
                outcome_var =  "score",
                intervention_dates = intervention_dates)
-
