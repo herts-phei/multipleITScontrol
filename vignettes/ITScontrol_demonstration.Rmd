@@ -18,7 +18,8 @@ knitr::opts_chunk$set(
 library(multipleITScontrol)
 library(pheicharts)
 library(tidyverse)
-box::use(../../../phei_functions/phei)
+
+
 ```
 
 ## Usage

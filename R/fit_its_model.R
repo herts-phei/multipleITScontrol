@@ -23,16 +23,15 @@ fit_its_model <- function(transformed_data,
                           p = NULL,
                           q = NULL,
                           ...) {
-
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")
 
   termlabels <- switch(impact_model,
-                       "pre_intervention" = "x * time_index",
-                       "level" = c("x * time_index", paste0("x * ", level_intervention_cols)),
-                       "slope" = c("x * time_index", paste0("x * ", slope_intervention_cols)),
-                       "levelslope" = c("x * time_index", paste0("x * ", level_intervention_cols), paste0("x * ", slope_intervention_cols))
-                       )
+    "pre_intervention" = "x * time_index",
+    "level" = c("x * time_index", paste0("x * ", level_intervention_cols)),
+    "slope" = c("x * time_index", paste0("x * ", slope_intervention_cols)),
+    "levelslope" = c("x * time_index", paste0("x * ", level_intervention_cols), paste0("x * ", slope_intervention_cols))
+  )
 
   gls_object <- nlme::gls(
     reformulate(
@@ -50,14 +49,11 @@ fit_its_model <- function(transformed_data,
           q = q,
           form = ~ time_index | x
         )
-      }
-    )
-    ,
+      }),
     ...
   )
 
-return(gls_object)
-
+  return(gls_object)
 }
 
 # fit_its_model(moo, "levelslope", num_interventions = 2) -> model
