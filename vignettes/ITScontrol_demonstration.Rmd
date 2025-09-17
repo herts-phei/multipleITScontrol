@@ -1,5 +1,5 @@
 ---
-title: "ITScontrol_demonstration"
+title: "Multiple ITS control introduction"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ITScontrol_demonstration}
@@ -9,7 +9,10 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = TRUE, 
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
   comment = "#>"
 )
 ```
@@ -19,16 +22,79 @@ library(multipleITScontrol)
 library(pheicharts)
 library(tidyverse)
 
+phei_calendar <- function(df,
+                          date_column = NULL,
+                          factor_column = NULL,
+                          colours = NULL,
+                          title = "Placeholder: Please supply title or 'element_blank()' to `title` argument",
+                          subtitle = "Placeholder: Please supply subtitle or 'element_blank()' to `subtitle` argument",
+                          caption = "PH.Intelligence@hertfordshire.gov.uk",
+                          ncol,
+                          ...) {
+  box::use(lubridate[month, mday])
+  box::use(magrittr[`%>%`])
+  box::use(forcats[fct_relevel])
+  box::use(ggplot2[aes, element_text, element_rect, element_blank])
+  box::use(stringi[stri_datetime_fields])
+  box::use(dplyr[mutate])
+  box::use(rlang[sym])
 
+  date_column <- rlang::sym(date_column)
+  factor_column <- rlang::sym(factor_column)
+
+  df <- df |> dplyr::mutate(
+    mon = lubridate::month(!!date_column, label = T, abbr = F),
+    wkdy = weekdays(!!date_column,
+                    abbreviate =
+                      T
+    ) |> forcats::fct_relevel("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"),
+    day = lubridate::mday(!!date_column),
+    week = stringi::stri_datetime_fields(!!date_column)$WeekOfMonth,
+    year = lubridate::year(!!date_column),
+    year_mon = zoo::as.yearmon(!!date_column, "%Y %m")
+  ) |>
+    dplyr::mutate(across(week, ~ dplyr::case_when(wkdy == "Sun" ~ week - 1,
+                                           .default = as.numeric(week)
+    )))
+  
+  df %>%
+    ggplot2::ggplot(., ggplot2::aes(wkdy, week)) +
+    # custom theme stuff below
+    # geom_tile and facet_wrap will do all the heavy lifting
+    ggplot2::geom_tile(
+      alpha = 0.8,
+      ggplot2::aes(fill = !!factor_column),
+      color = "black", ...
+    ) +
+    ggplot2::facet_wrap(~year_mon, scales = "free_x", ncol = ncol) +
+    ggplot2::geom_text(ggplot2::aes(label = day)) +
+    # put your y-axis down, flip it, and reverse it
+    ggplot2::scale_y_reverse(breaks = NULL) +
+    # manually fill scale colors to something you like...
+    ggplot2::scale_fill_manual(
+      values = colours,
+      na.value = "white",
+      na.translate = FALSE
+    ) +
+    ggpubr::theme_pubclean() +
+    ggplot2::theme(legend.position = "bottom") +
+    ggplot2::labs(
+      fill = "",
+      x = "",
+      y = "",
+      title = element_blank(),
+      caption = "PH.Intelligence@hertfordshire.gov.uk"
+    )
+}
 ```
 
 ## Usage
 
 This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control:
 
-**Background**: Alpine Meadow School and Forest Tiger School have similar student demographics, including socioeconomic status, ethnicity, and academic performance. Both schools are part of Clarkson County's public school district.
+**Background**: *Alpine Meadow School* and *Forest Tiger School* have similar student demographics, including socioeconomic status, ethnicity, and academic performance. Both schools are part of Clarkson County's public school district.
 
-Alpine Meadow School wants to trial out two new interventions to improve their school's reading comprehension score, and to compare post intervention results with the pre-intervention score.
+*Alpine Meadow School* wants to trial out two new interventions to improve their school's reading comprehension score, and to compare post intervention results with the pre-intervention score.
 
 **Intervention 1: Implementing a New Reading Programme**
 
@@ -41,31 +107,31 @@ Alpine Meadow School wants to trial out two new interventions to improve their s
 **Intervention 2: Introducing Peer Tutoring Sessions**
 
 -   **Objective:** Further enhance reading comprehension and literacy rates.
--   **Start Date:** March 1, 2026 (immediately after the reading program ends)
+-   **Start Date:** March 2, 2026 (immediately after the reading program ends)
 -   **Duration:** 6 months
 -   **Description:** The school implements peer tutoring sessions where older students tutor younger students in reading. These sessions are held twice a week and focus on reading comprehension strategies and practice.
--   **Measurement:** Reading comprehension scores from standardized tests administered weekly.
+-   **Measurement:** Reading comprehension scores from standardized tests administered and marked weekly on Friday.
 
-### Controlled Interrupted Time Series Design
+### Controlled Interrupted Time Series Design (2 stage)
 
 **Step 1: Baseline Period**
 
--   **Duration:** 6 months (March 1, 2025 - August 31, 2025)
+-   **Duration:** 6 months (March 3, 2025 - August 31, 2025)
 -   **Data Collection:** Collect baseline data on reading comprehension scores administered weekly.
 
 **Step 2: Intervention 1 Period**
 
--   **Duration:** 6 months (September 1, 2025 - February 28, 2026)
+-   **Duration:** 6 months (September 1, 2025 - March 1, 2026)
 -   **Data Collection:** Continue collecting data on reading comprehension scores during the reading program administered weekly.
 
 **Step 3: Intervention 2 Period**
 
--   **Duration:** 6 months (March 1, 2026 - August 31, 2026)
+-   **Duration:** 6 months (March 2, 2026 - August 31, 2026)
 -   **Data Collection:** Collect data on reading comprehension scores during the peer tutoring sessions administered weekly.
 
 The calendar plot below summarises the timeline of the interventions:
 
-```{r calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.height=10, fig.retina=3}
+```{r calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.align="center", fig.height=10, fig.width=7, fig.retina=3}
 
 tibble_data <- tibble::tibble(Date = seq(as.Date("2025-03-03"), as.Date("2026-08-30"), by = "day"),
   Period = dplyr::case_when(
@@ -74,7 +140,7 @@ tibble_data <- tibble::tibble(Date = seq(as.Date("2025-03-03"), as.Date("2026-08
     Date >= as.Date("2026-03-02") & Date <= as.Date("2026-08-30") ~ "Intervention 2) Peer Tutoring Sessions"
   ))
 
-plot <- phei$phei_calendar(
+plot <- phei_calendar(
   tibble_data,
   date_column = "Date",
   "Period",
@@ -87,18 +153,110 @@ plot <- phei$phei_calendar(
         legend.text = element_text(size = rel(0.5)))
   
 
-plot$layers[[2]]$aes_params$size <- 1.5
+plot$layers[[2]]$aes_params$size <- 3
 
 plot
 
 
 ```
 
-# Step 1) Processing the Data
+# Step 1) Loading data
 
-```{r example}
-library(multipleITScontrol)
+Sample data can be loaded from the package for this scenario through the bundled dataset `its_data_school`.
 
+<br></br>
 
+```{r step_1_load_data}
+DT::datatable(its_data_school, options = list(dom = 'tip'), rownames = FALSE)
+```
 
+<br></br>
+
+This sample dataset demonstrates the format your own data should be in.
+
+You can observe that in the `Date` column, that the dates are of equal distance between each element, and that there are two rows for each date, corresponding to either `control` or `treatment` in the `group_var` variable. `control` and `treatment` each have three periods, a `Pre-intervention period` detailing measurements of the outcome prior to any intervention, the first intervention detailed by `Intervention 1) Reading Programme`, and the second intervention, detailed by `Intervention 2) Peer Tutoring Sessions`.
+
+<br></br>
+
+# Step 2) Transforming the data
+
+The data frame should be passed to `multipleITScontrol::tranform_data()` with suitable arguments selected, specifying the names of the columns to the required variables and starting intervention time points.
+
+```{r, echo = TRUE, results='hide'}
+transformed_data <- 
+  multipleITScontrol::transform_data(df = its_data_school,
+                                     time_var = "Date",
+                                     group_var = "group_var",
+                                     outcome_var = "score",
+                                     intervention_dates = as.Date(c("2025-09-05", "2026-03-06")))
+```
+
+Returns the initial data frame with a few transformed variables needed for interrupted time series.
+
+```{r}
+transformed_data
+```
+
+# Step 3) Fitting ITS model
+
+The transformed data is then fit using `multipleITScontrol::fit_its_model()`. Required arguments are `transformed_data`, which is simply an unmodified object created from `multipleITScontrol::transform_data()` in the step above; a defined impact model, with current options either 'slope', `level, or 
+
+```{r, echo = TRUE, results='hide'}
+fitted_ITS_model <- 
+  multipleITScontrol::fit_its_model(transformed_data = transformed_data,
+                                    impact_model = "slope",
+                                    num_interventions = 2)
+
+fitted_ITS_model
+```
+
+Gives a conventional model output from `nlme::gls()`.
+
+```{r}
+fitted_ITS_model
+```
+
+# Step 4) Analysing ITS model
+
+However, the coefficients given do not make intuitive sense to a lay person. We can call the package's internal `multipleITScontrol::summary_its()` which modifies the summary output by renaming the coefficients, variable names, and other model-related terms to make them easier to interpret in the context of interrupted time series (ITS) analysis.
+
+```{r, echo = TRUE, results='hide'}
+my_summary_its_model <- multipleITScontrol::summary_its(fitted_ITS_model)
+
+my_summary_its_model
+```
+
+```{r}
+my_summary_its_model
+```
+
+```{r, echo = TRUE, results='hide'}
+summary(my_summary_its_model)
+```
+
+```{r}
+summary(my_summary_its_model)
+```
+
+# Step 5) Fitting Predictions
+
+We can fit predictions with the created model which project the pre-intervention period into the post-intervention period by using the model coefficients using `multipleITScontrol::generate_predictions()`.
+
+```{r, echo = TRUE, results='hide'}
+transformed_data_with_predictions <- generate_predictions(transformed_data, fitted_ITS_model)
+
+transformed_data_with_predictions
+```
+
+```{r}
+DT::datatable(transformed_data_with_predictions, options = list(dom = 'tip', scrollX = TRUE), rownames = FALSE)
+```
+
+Step 6) Plotting the results
+
+We can use the predicted values and map the segmented regression lines which compare whether an intervention had a statistically significant difference.
+
+```{r, echo = TRUE, results='hide', fig.align="center", fig.width=7, fig.height=7, fig.retina=3}
+its_plot(data_with_predictions = transformed_data_with_predictions, 
+         intervention_dates = as.Date(c("2025-09-05", "2026-03-06")))
 ```
