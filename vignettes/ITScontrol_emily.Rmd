@@ -1,0 +1,286 @@
+---
+title: "Multiple ITS control introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ITScontrol_demonstration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(multipleITScontrol)
+library(pheicharts)
+library(tidyverse)
+
+phei_calendar <- function(df,
+                          date_column = NULL,
+                          factor_column = NULL,
+                          colours = NULL,
+                          title = "Placeholder: Please supply title or 'element_blank()' to `title` argument",
+                          subtitle = "Placeholder: Please supply subtitle or 'element_blank()' to `subtitle` argument",
+                          caption = "PH.Intelligence@hertfordshire.gov.uk",
+                          ncol,
+                          ...) {
+  box::use(lubridate[month, mday])
+  box::use(magrittr[`%>%`])
+  box::use(forcats[fct_relevel])
+  box::use(ggplot2[aes, element_text, element_rect, element_blank])
+  box::use(stringi[stri_datetime_fields])
+  box::use(dplyr[mutate])
+  box::use(rlang[sym])
+
+  date_column <- rlang::sym(date_column)
+  factor_column <- rlang::sym(factor_column)
+
+  df <- df |> dplyr::mutate(
+    mon = lubridate::month(!!date_column, label = T, abbr = F),
+    wkdy = weekdays(!!date_column,
+                    abbreviate =
+                      T
+    ) |> forcats::fct_relevel("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"),
+    day = lubridate::mday(!!date_column),
+    week = stringi::stri_datetime_fields(!!date_column)$WeekOfMonth,
+    year = lubridate::year(!!date_column),
+    year_mon = zoo::as.yearmon(!!date_column, "%Y %m")
+  ) |>
+    dplyr::mutate(across(week, ~ dplyr::case_when(wkdy == "Sun" ~ week - 1,
+                                           .default = as.numeric(week)
+    )))
+  
+  df %>%
+    ggplot2::ggplot(., ggplot2::aes(wkdy, week)) +
+    # custom theme stuff below
+    # geom_tile and facet_wrap will do all the heavy lifting
+    ggplot2::geom_tile(
+      alpha = 0.8,
+      ggplot2::aes(fill = !!factor_column),
+      color = "black", ...
+    ) +
+    ggplot2::facet_wrap(~year_mon, scales = "free_x", ncol = ncol) +
+    ggplot2::geom_text(ggplot2::aes(label = day)) +
+    # put your y-axis down, flip it, and reverse it
+    ggplot2::scale_y_reverse(breaks = NULL) +
+    # manually fill scale colors to something you like...
+    ggplot2::scale_fill_manual(
+      values = colours,
+      na.value = "white",
+      na.translate = FALSE
+    ) +
+    ggpubr::theme_pubclean() +
+    ggplot2::theme(legend.position = "bottom") +
+    ggplot2::labs(
+      fill = "",
+      x = "",
+      y = "",
+      title = element_blank(),
+      caption = "PH.Intelligence@hertfordshire.gov.uk"
+    )
+}
+```
+
+## Usage
+
+This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control:
+
+**Background**: *Albridge Medical Practice* and *Hollybush Medical Practice* are two medical practices within the same PCN, with similar populations of people, and prevalence of disease.
+
+*Albridge Medical Practice* wants to try a new intervention to improve wellbeing in people diagnosed with depression in their practice.
+
+This example is for scenarios where there is a statistically significant slope change for both interventions, but no level change.
+
+**Intervention 1: Implementing a new Mental Health Support programme**
+
+-   **Objective:** Improve mental wellbeing in patients with low-to-mid level depression.
+-   **Start Date:** April 4, 2022
+-   **Duration:** 2 months
+-   **Description:** The practice introduced weekly Mindfulness Workshops, teaching meditation and breathing techniques to improve self-regulation.
+-   **Measurement:** Self-reported wellbeing scores measured at start and end of intervention.
+
+**Intervention 2: Introducing CBT session**
+
+-   **Objective:** Further increase self-reported wellbeing scores.
+-   **Start Date:** June 6, 2022 (immediately after the intervention 1 program ends)
+-   **Duration:** 6 months
+-   **Description:** The practice implements cognitive behavioural therapy (CBT) sessions, aimed at changing negative thought patterns and behaviours.
+-   **Measurement:** Self-reported wellbeing scores measured at start and end of intervention.
+
+### Controlled Interrupted Time Series Design (2 stage)
+
+**Step 1: Baseline Period**
+
+-   **Duration:** 3 months (Jan 1, 2022 - April 3, 2022)
+-   **Data Collection:** Collect self-reported wellbeing scores.
+
+**Step 2: Intervention 1 Period**
+
+-   **Duration:** 2 months (April 4, 2022 - June 5, 2022)
+-   **Data Collection:** Continue collecting self-reported wellbeing scores at end of workshops.
+
+**Step 3: Intervention 2 Period**
+
+-   **Duration:** 6 months (June 6, 2022 - Dec 31, 2022)
+-   **Data Collection:** Continue collecting self-reported wellbeing scores at end of CBT.
+
+The calendar plot below summarises the timeline of the interventions:
+
+```{r calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.align="center", fig.height=10, fig.width=7, fig.retina=3}
+
+# Create a date range vector for Fridays only
+date_range <- seq(as.Date("2022-01-01"), as.Date("2022-12-31"), by = "day")
+mondays <- date_range[weekdays(date_range) == "Monday"]
+
+# Create a tibble with the date range
+tibble_data <- tibble(Date = rep(mondays, 2))
+
+# Add group_var with 'treatment' and 'control' groups
+tibble_data <- tibble_data %>%
+  mutate(group_var = rep(c('treatment', 'control'), each = length(mondays)))
+
+# Add Period column using mutate and case_when
+set.seed(48)
+tibble_data <- tibble_data %>%
+  mutate(Period = case_when(
+    Date >= as.Date("2022-01-01") & Date <= as.Date("2022-04-03") ~ "Pre-intervention period",
+    Date >= as.Date("2022-04-04") & Date <= as.Date("2022-06-05") ~ "Intervention 1) Low-Intensity Interventions",
+    Date >= as.Date("2022-06-06") & Date <= as.Date("2022-12-31") ~ "Intervention 2) High-Intensity Interventions"
+  )) %>%
+  mutate(score = case_when(
+    Period == "Pre-intervention period" & group_var == "treatment" ~ 20 + 0.1 * as.numeric(Date - min(Date)), ### 20 being baseline scores start from, 0.1 for initial slope increase
+    Period == "Intervention 1) Low-Intensity Interventions" & group_var == "treatment" ~ 20 + 0.1 * as.numeric(Date - min(Date)) + 0.2 * as.numeric(Date - as.Date("2022-04-04")), ## 0.2 for slope increase but no level change
+    Period == "Intervention 2) High-Intensity Interventions" & group_var == "treatment" ~ 20 + 0.1 * as.numeric(Date - min(Date)) + 0.2 * as.numeric(Date - as.Date("2022-04-04")) + 0.3 * as.numeric(Date - as.Date("2022-06-05")), ### 0.3 for 2nd slop increase but no level change
+    group_var == "control" ~ 15 + 0.1 * as.numeric(Date - min(Date))
+  ))
+
+plot <- phei_calendar(
+  tibble_data,
+  date_column = "Date",
+  "Period",
+  colours = phei_palettes$cool_colours,
+  ncol = 3
+) +
+  theme(strip.text = element_text(size = rel(0.5)),
+        axis.text = element_text(size = rel(0.5)),
+        plot.caption = element_text(size = rel(0.5)),
+        legend.text = element_text(size = rel(0.5)))
+  
+
+plot$layers[[2]]$aes_params$size <- 3
+
+plot
+
+
+```
+
+# Step 1) Loading data
+
+Sample data can be loaded from the package for this scenario through the bundled dataset `its_data_medical_practice`.
+
+<br></br>
+
+```{r step_1_load_data}
+DT::datatable(tibble_data, options = list(dom = 'tip'), rownames = FALSE)
+```
+
+<br></br>
+
+This sample dataset demonstrates the format your own data should be in.
+
+You can observe that in the `Date` column, that the dates are of equal distance between each element, and that there are two rows for each date, corresponding to either `control` or `treatment` in the `group_var` variable. `control` and `treatment` each have three periods, a `Pre-intervention period` detailing measurements of the outcome prior to any intervention, the first intervention detailed by `Intervention 1) Implementing a new Mental Health Support programme`, and the second intervention, detailed by `Intervention 2) Introducing CBT session`.
+
+<br></br>
+
+# Step 2) Transforming the data
+
+The data frame should be passed to `multipleITScontrol::tranform_data()` with suitable arguments selected, specifying the names of the columns to the required variables and starting intervention time points.
+
+```{r, echo = TRUE, results='hide'}
+intervention_dates <- c(as.Date("2022-04-04"), as.Date("2022-06-06"))
+transformed_data <- 
+  multipleITScontrol::transform_data(df = tibble_data,
+               time_var = "Date",
+               group_var = "group_var",
+               outcome_var =  "score",
+               intervention_dates = intervention_dates)
+```
+
+Returns the initial data frame with a few transformed variables needed for interrupted time series.
+
+```{r}
+transformed_data
+```
+
+# Step 3) Fitting ITS model
+
+The transformed data is then fit using `multipleITScontrol::fit_its_model()`. Required arguments are `transformed_data`, which is simply an unmodified object created from `multipleITScontrol::transform_data()` in the step above; a defined impact model, with current options either 'slope', `level, or 
+
+```{r, echo = TRUE, results='hide'}
+fitted_ITS_model <-
+  multipleITScontrol::fit_its_model(transformed_data = transformed_data,
+                                    impact_model = "slope",
+                                    num_interventions = 2)
+
+fitted_ITS_model
+```
+
+Gives a conventional model output from `nlme::gls()`.
+
+```{r}
+fitted_ITS_model
+```
+
+# Step 4) Analysing ITS model
+
+However, the coefficients given do not make intuitive sense to a lay person. We can call the package's internal `multipleITScontrol::summary_its()` which modifies the summary output by renaming the coefficients, variable names, and other model-related terms to make them easier to interpret in the context of interrupted time series (ITS) analysis.
+
+```{r, echo = TRUE, results='hide'}
+my_summary_its_model <- multipleITScontrol::summary_its(fitted_ITS_model)
+
+my_summary_its_model
+```
+
+```{r}
+my_summary_its_model
+```
+
+```{r, echo = TRUE, results='hide'}
+summary(my_summary_its_model)
+```
+
+```{r}
+summary(my_summary_its_model)
+```
+
+# Step 5) Fitting Predictions
+
+We can fit predictions with the created model which project the pre-intervention period into the post-intervention period by using the model coefficients using `multipleITScontrol::generate_predictions()`.
+
+```{r, echo = TRUE, results='hide'}
+transformed_data_with_predictions <- generate_predictions(transformed_data, fitted_ITS_model)
+
+transformed_data_with_predictions
+```
+
+```{r}
+DT::datatable(transformed_data_with_predictions, options = list(dom = 'tip', scrollX = TRUE), rownames = FALSE)
+```
+
+Step 6) Plotting the results
+
+We can use the predicted values and map the segmented regression lines which compare whether an intervention had a statistically significant difference.
+
+```{r, echo = TRUE, fig.align="center", fig.width=7, fig.height=7, fig.retina=3}
+its_plot(data_with_predictions = transformed_data_with_predictions,
+         intervention_dates = intervention_dates)
+```
+
+In this example, the treatment variable is for *Albridge Medical Practice*, whilst the control is for *Hollybush Medical Practice*. The treatment slope shows there was a significant slope change immediately after the first intervention in April 2022, and in the second intervention in June 2022.
