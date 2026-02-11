@@ -10,25 +10,27 @@ status](https://www.r-pkg.org/badges/version/multipleITScontrol)](https://CRAN.R
 [![Codecov test
 coverage](https://codecov.io/gh/herts-phei/multipleITScontrol/graph/badge.svg)](https://app.codecov.io/gh/herts-phei/multipleITScontrol)
 [![R-CMD-check](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/herts-phei/multipleITScontrol/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 ## Overview
 
 The goal of multipleITScontrol is to provide functions to easily wrangle
-data collected for an intervention and to perform interrupted time
-series statistical analysis, involving tracking a long-term period
+data collected for an intervention and to perform **interrupted time
+series statistical analysis**, involving tracking a long-term period
 before and after a intervention at a defined point in time to assess the
 intervention’s effects, along with methods allowing for comparing the
-outcomes for the treated units with those of a control/comparison unit,
-and to allow for multiple successive interventions.
+outcomes for the treated units with those of a **control/comparison
+unit**, and to allow for **multiple successive interventions**.
 
 Interrupted-time series (ITS) is a quasi-experimental study design for
 evaluating the impact of an intervention or successive interventions
 that are implemented at defined moments in time. This is much more
 informative than an end-point analysis which only allows an
 understanding of differences between the final situations, rather than
-establishing how the different interventions influenced an outcome. In
-practice, ITS models are useful to establish an underlying trend over
+establishing how the different interventions influenced an outcome.
+
+In practice, ITS models are useful to establish an underlying trend over
 time and understand the effect of “interrupting” this trend with the
 interventions that are implemented. The trend that would have been
 expected to continue occurring without the intervention is called the
@@ -59,8 +61,7 @@ You can install the development version of multipleITScontrol from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("herts-phei/multipleITScontrol")
+devtools::install_github("herts-phei/multipleITScontrol")
 ```
 
 ## Pre-requisites

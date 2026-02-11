@@ -90,9 +90,9 @@ phei_calendar <- function(df,
 
 ## Usage
 
-This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control:
+This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control for a slope hypothesis:
 
-**Background**: *Alpine Meadow School* and *Forest Tiger School* have similar student demographics, including socioeconomic status, ethnicity, and academic performance. Both schools are part of Clarkson County's public school district.
+**Background**: *Alpine Meadow School* (AMS) and *Forest Tiger School* (FTS) have similar student demographics, including socioeconomic status, ethnicity, and academic performance. Both schools are part of Clarkson County's public school district.
 
 *Alpine Meadow School* wants to trial out two new interventions to improve their school's reading comprehension score, and to compare post intervention results with the pre-intervention score.
 
@@ -128,6 +128,8 @@ This is a basic example which shows you how to solve a common problem with two s
 
 -   **Duration:** 6 months (March 2, 2026 - August 31, 2026)
 -   **Data Collection:** Collect data on reading comprehension scores during the peer tutoring sessions administered weekly.
+
+The school hypothesizes there will be a **slope** effect for the interventions.
 
 The calendar plot below summarises the timeline of the interventions:
 
@@ -231,12 +233,35 @@ my_summary_its_model
 ```
 
 ```{r, echo = TRUE, results='hide'}
-summary(my_summary_its_model)
+sjPlot::tab_model(
+  my_summary_its_model,
+  dv.labels = "Cumulative Percentage Uptake",
+  show.se = TRUE,
+  collapse.se = TRUE,
+  linebreak = FALSE,
+  string.est = "Estimate (std. error)",
+  string.ci = "95% CI",
+  p.style = "numeric_stars"
+)
 ```
 
 ```{r}
-summary(my_summary_its_model)
+sjPlot::tab_model(
+  my_summary_its_model,
+  dv.labels = "Average School Result",
+  show.se = TRUE,
+  collapse.se = TRUE,
+  linebreak = FALSE,
+  string.est = "Estimate (std. error)",
+  string.ci = "95% CI",
+  p.style = "numeric_stars"
+)
 ```
+
+The predictor coefficients elucidate a few things:
+
+At the start of the pre-intervention period, the control y-axis intercept represents the predicted starting mark of Forest Tiger School, 81.9, which reflects the average mark in the whole pre-intervention period for FTS. 
+
 
 # Step 5) Fitting Predictions
 
@@ -257,6 +282,9 @@ Step 6) Plotting the results
 We can use the predicted values and map the segmented regression lines which compare whether an intervention had a statistically significant difference.
 
 ```{r, echo = TRUE, results='hide', fig.align="center", fig.width=7, fig.height=7, fig.retina=3}
-its_plot(data_with_predictions = transformed_data_with_predictions, 
+its_plot(data_with_predictions = transformed_data_with_predictions,
+         time_var = "time",
          intervention_dates = as.Date(c("2025-09-05", "2026-03-06")))
 ```
+
+Step 7) 

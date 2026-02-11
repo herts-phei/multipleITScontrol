@@ -3,6 +3,7 @@
 #' @description Generates a ggplot2 with the values used in the ITS model along with predicted values.
 #'
 #' @param data_with_predictions A data frame containing the initial time series data along with predicts created from `generate_predictions()`
+#' @param time_var  A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.
 #' @param intervention_dates A vector of time points (matching `time_var` type) when interventions start. These time points are mutually exclusive and should not overlap. Should match `intervention_dates` argument used in `fit_its_model()`.
 #' @param project_pre_intervention_trend Logical value whether to include a projection of the pre-intervention predicted values. Defaults to `TRUE`.
 #' @param colours Colours passed to the `values` argument in `scale_color_manual()` and `scale_fill_manual()`. If no colours are given, defaults to `c("#3969B5", "#46C3AE")`.
@@ -23,6 +24,7 @@
 #' @importFrom rlang sym !! :=
 
 its_plot <- function(data_with_predictions,
+                     time_var,
                      intervention_dates,
                      project_pre_intervention_trend = TRUE,
                      colours,
@@ -51,18 +53,18 @@ its_plot <- function(data_with_predictions,
   }
 
   data_with_predictions |>
-    ggplot(aes(time, outcome)) +
+    ggplot(aes(.data[[time_var]], outcome)) +
     geom_point(aes(color = category), shape = point_shape, size = point_size) + ## Actual data points
     purrr:::map(intervention_dates, ~ geom_vline(aes(xintercept = .x), linetype = linetype, size = 1)) +
     (if (isTRUE(project_pre_intervention_trend)) {
-      geom_line(aes(time, pre_intervention_predictions, color = category),
+      geom_line(aes(.data[[time_var]], pre_intervention_predictions, color = category),
         lty = 2,
         size = 1
       )
     } else {
       list() # Return an empty list if no vlines
     }) +
-    geom_line(aes(time, predictions, color = category), lty = 1, size = 1) + ## prediction
+    geom_line(aes(.data[[time_var]], predictions, color = category), lty = 1, size = 1) + ## prediction
 
     (if (isTRUE(se)) {
       geom_ribbon(aes(

@@ -44,7 +44,6 @@
 #' @importFrom rlang !! !!! :=
 
 summary_its <- function(model) {
-
   summary_gls <- summary(model)
 
   name_map <- c(
@@ -105,9 +104,9 @@ summary_its <- function(model) {
   replace_names <- function(var) {
     var_name <- as.character(var)
     if (var_name %in% names(name_map)) {
-      return(as.symbol(name_map[var_name]))  # Replace with the new name
+      return(as.symbol(name_map[var_name])) # Replace with the new name
     } else {
-      return(var)  # Keep the original name if not found in the vector
+      return(var) # Keep the original name if not found in the vector
     }
   }
 
@@ -141,7 +140,7 @@ summary_its <- function(model) {
     if (is.symbol(obj)) {
       obj_name <- as.character(obj)
       if (obj_name %in% names(name_map)) {
-        return(as.symbol(name_map[[obj_name]]))  # Replace with new name
+        return(as.symbol(name_map[[obj_name]])) # Replace with new name
       }
     }
 
@@ -185,10 +184,9 @@ summary_its <- function(model) {
     !!!name_map
   )
 
-  class(summary_gls) <- c("gls", "summary.itsgls")
+  class(summary_gls) <- c("gls")
 
   return(summary_gls)
-
 }
 
 # summary_its(model) -> summary_test
