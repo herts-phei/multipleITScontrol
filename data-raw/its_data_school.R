@@ -62,6 +62,8 @@ tibble_data[tibble_data$group_var == "treatment" & tibble_data$Period == "Interv
 tibble_data[tibble_data$group_var == "treatment" & tibble_data$Period == "Pre-intervention period", "score"] <- pre_intervention_values_treatment_2
 tibble_data[tibble_data$group_var == "control", "score"] <- pre_intervention_values_control
 
+tibble_data <- tibble_data |> mutate(across(score, round, 1))
+
 its_data_school <- tibble_data
 
 usethis::use_data(its_data_school, overwrite = TRUE)
