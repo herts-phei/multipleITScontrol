@@ -22,7 +22,8 @@
 #'
 #' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number
 #' @importFrom rlang sym !! :=
-
+#' @importFrom ggplot2 waiver ggplot aes geom_point geom_line scale_colour_manual scale_fill_manual theme labs
+#'
 its_plot <- function(data_with_predictions,
                      time_var,
                      intervention_dates,

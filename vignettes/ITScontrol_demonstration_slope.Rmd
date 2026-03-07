@@ -1,8 +1,8 @@
 ---
-title: "Multiple ITS control introduction"
+title: "Multiple ITS control introduction for slope change"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ITScontrol_demonstration}
+  %\VignetteIndexEntry{ITScontrol_demonstration_slope}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,8 +19,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(multipleITScontrol)
-library(pheicharts)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(stringi)
+library(rlang)
+library(purrr)
 
 phei_calendar <- function(df,
                           date_column = NULL,
@@ -31,13 +35,7 @@ phei_calendar <- function(df,
                           caption = "PH.Intelligence@hertfordshire.gov.uk",
                           ncol,
                           ...) {
-  box::use(lubridate[month, mday])
-  box::use(magrittr[`%>%`])
-  box::use(forcats[fct_relevel])
-  box::use(ggplot2[aes, element_text, element_rect, element_blank])
-  box::use(stringi[stri_datetime_fields])
-  box::use(dplyr[mutate])
-  box::use(rlang[sym])
+
 
   date_column <- rlang::sym(date_column)
   factor_column <- rlang::sym(factor_column)
@@ -146,7 +144,7 @@ plot <- phei_calendar(
   tibble_data,
   date_column = "Date",
   "Period",
-  colours = phei_palettes$cool_colours,
+  colours = c("#3b5163", "#80bb77", "#afd0f0"),
   ncol = 3
 ) +
   theme(strip.text = element_text(size = rel(0.5)),
@@ -182,7 +180,7 @@ You can observe that in the `Date` column, that the dates are of equal distance 
 
 # Step 2) Transforming the data
 
-The data frame should be passed to `multipleITScontrol::tranform_data()` with suitable arguments selected, specifying the names of the columns to the required variables and starting intervention time points.
+The data frame should be passed to **`multipleITScontrol::tranform_data()`** with suitable arguments selected, specifying the names of the columns to the required variables and starting intervention time points.
 
 ```{r, echo = TRUE, results='hide'}
 transformed_data <- 
@@ -201,7 +199,7 @@ transformed_data
 
 # Step 3) Fitting ITS model
 
-The transformed data is then fit using `multipleITScontrol::fit_its_model()`. Required arguments are `transformed_data`, which is simply an unmodified object created from `multipleITScontrol::transform_data()` in the step above; a defined impact model, with current options either 'slope', `level, or 
+The transformed data is then fit using `multipleITScontrol::fit_its_model()`. Required arguments are `transformed_data`, which is simply an unmodified object created from `multipleITScontrol::transform_data()` in the step above; a defined impact model, with current options being either '*slope*', \`*level*, or '*levelslope*', and the number of interventions.
 
 ```{r, echo = TRUE, results='hide'}
 fitted_ITS_model <- 
@@ -220,7 +218,7 @@ fitted_ITS_model
 
 # Step 4) Analysing ITS model
 
-However, the coefficients given do not make intuitive sense to a lay person. We can call the package's internal `multipleITScontrol::summary_its()` which modifies the summary output by renaming the coefficients, variable names, and other model-related terms to make them easier to interpret in the context of interrupted time series (ITS) analysis.
+However, the coefficients given do not make intuitive sense to a lay person. We can call the package's **`multipleITScontrol::summary_its()`** function which modifies the summary output by renaming the coefficients to make them easier to interpret in the context of interrupted time series (ITS) analysis.
 
 ```{r, echo = TRUE, results='hide'}
 my_summary_its_model <- multipleITScontrol::summary_its(fitted_ITS_model)
@@ -235,7 +233,7 @@ my_summary_its_model
 ```{r, echo = TRUE, results='hide'}
 sjPlot::tab_model(
   my_summary_its_model,
-  dv.labels = "Cumulative Percentage Uptake",
+  dv.labels = "Average School Result",
   show.se = TRUE,
   collapse.se = TRUE,
   linebreak = FALSE,
@@ -256,16 +254,79 @@ sjPlot::tab_model(
   string.ci = "95% CI",
   p.style = "numeric_stars"
 )
+
+a <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "A) Control y-axis intercept")]] |> round(2)
+c <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "C) Control pre-intervention slope")]] |> round(2)
+d <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "D) Pilot pre-intervention slope difference to control")]] |> round(2)
+e <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "E) Control intervention 1 slope")]] |> round(2)
+f <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "F) Pilot intervention 1 slope")]] |> round(2)
+i <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "I) Control intervention 2 slope")]] |> round(2)
+j <- coef(my_summary_its_model)[[which(names(coef(my_summary_its_model)) == "J) Pilot intervention 2 slope")]] |> round(2)
 ```
 
 The predictor coefficients elucidate a few things:
 
-At the start of the pre-intervention period, the control y-axis intercept represents the predicted starting mark of Forest Tiger School, 81.9, which reflects the average mark in the whole pre-intervention period for FTS. 
+## **Pre-intervention period:**
 
+At the start of the pre-intervention period, ***A)*** ***Control y-axis intercept*** represents the modelled starting mark of Forest Tiger School, `r a`.
+
+***C) Control pre-intervention slope*** describes the pre-intervention slope in the control group (`r c`).
+
+***D) Pilot pre-intervention slope difference to control*** describes the difference in the pre-intervention slope in the control group with the pilot group. This coefficient is additive to C) ***Control pre-intervention slope***. I.e. `r c` (C) + `r d` (D) = `r c+d` is the pre-intervention slope per x-axis unit in the pilot data.
+
+## **First intervention**:
+
+***E) Control intervention 1 slope*** describes the slope change that occurs at the intervention break point in the control group at the start of the first intervention, compared to it's pre-intervention period (`r e`).
+
+***F) Pilot intervention 1 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the control group for the first intervention compared to the pilot (`r f`).
+
+These slope changes are pertinent to the slope gradients given in the pre-intervention period. Thus, we add the coefficients ***E)*** ***Control intervention 1 slope** to **C)*** ***Control pre-intervention slope***: `r e` + `r c` = `r e+c` is the average increase for each x-axis unit during the first intervention for the control data.
+
+To ascertain the slope for the pilot data, we add to the pre-intervention slope of the pilot data, the coefficients ***E)*** ***Control intervention 1 slope*** and ***F)*** ***Pilot intervention 1 slope***. ***E*** (`r e`) + ***F*** (`r f`) + ***(C)*** `r c` + ***D*** `r d` (D) = `r e+f+c+d` is the average increase for each x-axis unit during the first intervention for the pilot data.
+
+To ascertain statistical significance with the first intervention slope, we call the function's `multipleITScontrol::slope_difference()`.
+
+```{r, echo = TRUE, results='hide'}
+slope_difference(model = my_summary_its_model, intervention = 1)
+```
+
+```{r, echo = FALSE}
+slope_difference(model = my_summary_its_model, intervention = 1)
+
+```
+
+This brings up the key coefficients and values needed to compare the slopes of the pilot and control during the first intervention.
+
+We identify that the slope difference between the treatment (Alpine Meadow School) and the control (Forest Tiger School) for the first intervention (Reading Programme) has a slope difference of 0.31 (95% CI: 0.29 - 0.32) per x-axis unit, with a p-value below 0.05, indicating statistical significance.
+
+<!-- Whilst the value of the slope difference is close to the coefficient ***F*** (Pilot intervention 2) in our regression coefficients table, we must still calculate this with the above calculations which `slope_difference()` provides, as the similarity is only due to the slopes of the control and pilot being zero for the pre-intervention period and the control having close to a zero slope for the first intervention. -->
+
+## **Second intervention:**
+
+***I) Control intervention 2 slope*** describes the slope change that occurs at the intervention break point in the control group at the start of the second intervention (`r i`).
+
+Thus, the modelled slope change in the second intervention is ***C) Control pre-intervention slope*** (`r c`) + **E) Control intervention 1 slope** (`r e`) + ***I) Control intervention 2 slope*** (`r i`) = `r c+e+i` is the average cumulative uptake increase for each x-axis unit during the second intervention for the control data.
+
+***J) Pilot intervention 2 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the control group for the second intervention. (`r j`).
+
+These slope changes are pertinent to the slope gradients given in the pre-intervention and first intervention period. Thus, we add the coefficients ***C*** (`r c`) + ***D*** (`r d`) + ***E*** (`r e`) + ***F*** (`r f`) + ***I*** (`r i`) + ***J*** (`r j`) = `r c+d+e+f+i+j` is the average cumulative increase for each x-axis unit during the second intervention for the pilot data.
+
+To ascertin statistical significance with the second intervention slope, we call the function's `multipleITScontrol::slope_difference()` again, but change the intervention parameter.
+
+```{r, echo = TRUE, results= 'hide'}
+slope_difference(model = my_summary_its_model, intervention = 2)
+```
+
+```{r, echo = FALSE}
+slope_difference(model = my_summary_its_model, intervention = 2)
+
+```
+
+We identify that the slope difference between the treatment (Alpine Meadow School) and the control (Forest Tiger School) for the first intervention (Reading Programme) has a slope difference of 0.23 (95% CI: 0.22 - 0.25) per x-axis unit, with a p-value below 0.05, indicating statistical significance. The effect has been attenuated compared to the first intervention, and this is evident from the plot in step 6.
 
 # Step 5) Fitting Predictions
 
-We can fit predictions with the created model which project the pre-intervention period into the post-intervention period by using the model coefficients using `multipleITScontrol::generate_predictions()`.
+We can fit predictions with the created model which project the pre-intervention period into the post-intervention period by using the model coefficients using **`multipleITScontrol::generate_predictions()`**.
 
 ```{r, echo = TRUE, results='hide'}
 transformed_data_with_predictions <- generate_predictions(transformed_data, fitted_ITS_model)
@@ -277,14 +338,12 @@ transformed_data_with_predictions
 DT::datatable(transformed_data_with_predictions, options = list(dom = 'tip', scrollX = TRUE), rownames = FALSE)
 ```
 
-Step 6) Plotting the results
+# Step 6) Plotting the results
 
 We can use the predicted values and map the segmented regression lines which compare whether an intervention had a statistically significant difference.
 
-```{r, echo = TRUE, results='hide', fig.align="center", fig.width=7, fig.height=7, fig.retina=3}
+```{r, echo = TRUE, results='hide', fig.align="center", fig.width=7, fig.height=6, fig.retina=3}
 its_plot(data_with_predictions = transformed_data_with_predictions,
          time_var = "time",
          intervention_dates = as.Date(c("2025-09-05", "2026-03-06")))
 ```
-
-Step 7) 

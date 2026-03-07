@@ -1,2 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-importFrom("stats", "reformulate", "setNames", "terms", "time")
+importFrom("stats", "reformulate", "setNames", "terms", "time", "AIC", "coef", "pt", "qt", "vcov")

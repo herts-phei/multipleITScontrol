@@ -6,7 +6,8 @@
 \usage{
 its_plot(
   data_with_predictions,
-  intervention_dates = c(31, 61),
+  time_var,
+  intervention_dates,
   project_pre_intervention_trend = TRUE,
   colours,
   se = TRUE,
@@ -23,7 +24,9 @@ its_plot(
 \arguments{
 \item{data_with_predictions}{A data frame containing the initial time series data along with predicts created from `generate_predictions()`}
 
-\item{intervention_dates}{A vector of time points (matching `time_var`) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to 9 scalar values representing the intervention start times. Should match `intervention_dates` argument used in `fit_its_model()`.}
+\item{time_var}{A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.}
+
+\item{intervention_dates}{A vector of time points (matching `time_var` type) when interventions start. These time points are mutually exclusive and should not overlap. Should match `intervention_dates` argument used in `fit_its_model()`.}
 
 \item{project_pre_intervention_trend}{Logical value whether to include a projection of the pre-intervention predicted values. Defaults to `TRUE`.}
 
@@ -54,5 +57,5 @@ A ggplot object
 Generates a ggplot2 with the values used in the ITS model along with predicted values.
 }
 \examples{
-transform_data(data, time_var = 'time', group_var = 'group', intervention_dates = c(31, 61))
+transform_data(data, time_var = "time", group_var = "group", intervention_dates = c(31, 61))
 }

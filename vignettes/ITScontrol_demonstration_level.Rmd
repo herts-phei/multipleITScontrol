@@ -1,8 +1,8 @@
 ---
-title: "Multiple ITS control introduction"
+title: "Multiple ITS control introduction for step/level change"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ITScontrol_demonstration}
+  %\VignetteIndexEntry{ITScontrol_demonstration_level}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,8 +19,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(multipleITScontrol)
-library(pheicharts)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(stringi)
+library(rlang)
+library(purrr)
 
 phei_calendar <- function(df,
                           date_column = NULL,
@@ -165,7 +169,7 @@ plot <- phei_calendar(
   tibble_data,
   date_column = "Date",
   "Period",
-  colours = phei_palettes$cool_colours,
+  colours = c("#3b5163", "#80bb77", "#afd0f0"),
   ncol = 3
 ) +
   theme(strip.text = element_text(size = rel(0.5)),
@@ -279,7 +283,8 @@ Step 6) Plotting the results
 We can use the predicted values and map the segmented regression lines which compare whether an intervention had a statistically significant difference.
 
 ```{r, echo = TRUE, fig.align="center", fig.width=7, fig.height=7, fig.retina=3}
-its_plot(data_with_predictions = transformed_data_with_predictions,
+its_plot(data_with_predictions = transformed_data_with_predictions, 
+         time_var = "time",
          intervention_dates = intervention_dates)
 ```
 

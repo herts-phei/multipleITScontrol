@@ -35,7 +35,6 @@
 #' @importFrom purrr map
 #' @importFrom nlme gls corARMA
 #' @importFrom rlang !! !!! :=
-#' @importFrom dplyr recode
 
 summary_its <- function(model) {
   summary_gls <- summary(model)

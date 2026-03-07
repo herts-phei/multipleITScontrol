@@ -11,7 +11,12 @@
 Functions related to performing interrupted-time series through a generalised least squares (GLS) framework on linear outcomes. Allows for multiple interventions and a control.
 }
 \author{
-\strong{Maintainer}: Victor Yu \email{victoryu@sent.com}
+\strong{Maintainer}: Victor Yu \email{victor.yu@hertfordshire.gov.uk}
+
+Other contributors:
+\itemize{
+  \item Emily Dickson [contributor]
+}
 
 }
 \keyword{internal}

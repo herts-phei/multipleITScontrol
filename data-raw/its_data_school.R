@@ -5,7 +5,7 @@ date_range <- seq(as.Date("2025-03-03"), as.Date("2026-08-30"), by = "day")
 fridays <- date_range[weekdays(date_range) == "Friday"]
 
 # Create a tibble with the date range
-tibble_data <- tibble(Date = rep(fridays, 2))
+tibble_data <- tibble::tibble(Date = rep(fridays, 2))
 
 # Add group_var with 'treatment' and 'control' groups
 tibble_data <- tibble_data %>%
@@ -37,8 +37,8 @@ noise <- runif(26, min = -0.3, max = 0.3)
 pre_intervention_values_treatment <- base + noise
 
 
-# Create a linear sequence from 88 to 96
-base <- seq(88, 96, length.out = 26)
+# Create a linear sequence from 90 to 96
+base <- seq(90, 96, length.out = 26)
 # Add small random noise to each value
 noise <- runif(26, min = -0.3, max = 0.3)
 # Combine and sort to maintain gradual increase

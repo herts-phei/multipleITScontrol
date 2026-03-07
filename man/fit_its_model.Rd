@@ -9,25 +9,31 @@ fit_its_model(
   impact_model,
   num_interventions,
   method = "REML",
+  grid_search = TRUE,
   p = NULL,
   q = NULL,
+  return_grid_search = FALSE,
   ...
 )
 }
 \arguments{
-\item{impact_model}{The hypothesized impact model from interventions. Available options are 'level', 'slope', or 'levelscope'.}
+\item{transformed_data}{Am unmodified data frame created from `transform_data()`.}
+
+\item{impact_model}{The hypothesized impact model from interventions. Available options are 'level', 'slope', or 'levelslope'.}
 
 \item{num_interventions}{The number of interventions in your transformed data. Should be the vector length of `intervention_dates` passed in `transform_data()`.}
 
-\item{method}{The estimation method for `gls()`, either "REML" (default) or "ML".}
+\item{method}{The estimation method for `nlme::gls()`, either "REML" (default) or "ML".}
 
-\item{p}{The order of the autoregressive component. Defaults to `NULL`.}
+\item{grid_search}{logical for whether to perform a grid search for determining lag parameters (p = AR, q = MA). By default, a grid up to values of 5 for each parameter is searched.}
 
-\item{q}{The order of the moving average component. Defaults to `NULL`.}
+\item{p}{The order of the autoregressive component. Defaults to `NULL`. If `grid_search is enabled`, this argument is ignored.}
+
+\item{q}{The order of the moving average component. Defaults to `NULL`. If `grid_search is enabled`, this argument is ignored.}
+
+\item{return_grid_search}{Logical flag returns the result of the grid search instead of the model. 'FALSE' by default.}
 
 \item{...}{Additional arguments passed to `nlme::gls()`.}
-
-\item{transformed_df}{Am unmodified data frame created from `transform_data()`.}
 }
 \value{
 A `gls` object of the fitted model.
@@ -36,5 +42,5 @@ A `gls` object of the fitted model.
 Fits an interrupted time series model using the \link{nlme} package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
 }
 \examples{
-fit_its_model(transformed_data = df, impact_model)
+fit_its_model(transformed_data = df, impact_model = "slope", num_interventions = 2)
 }

@@ -3,10 +3,10 @@
 #' @description Fits an interrupted time series model using the \link{nlme} package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
 #'
 #'
-#' @param transformed_df Am unmodified data frame created from `transform_data()`.
+#' @param transformed_data Am unmodified data frame created from `transform_data()`.
 #' @param impact_model The hypothesized impact model from interventions. Available options are 'level', 'slope', or 'levelslope'.
 #' @param num_interventions The number of interventions in your transformed data. Should be the vector length of `intervention_dates` passed in `transform_data()`.
-#' @param method The estimation method for `gls()`, either "REML" (default) or "ML".
+#' @param method The estimation method for `nlme::gls()`, either "REML" (default) or "ML".
 #' @param grid_search logical for whether to perform a grid search for determining lag parameters (p = AR, q = MA). By default, a grid up to values of 5 for each parameter is searched.
 #' @param p The order of the autoregressive component. Defaults to `NULL`. If `grid_search is enabled`, this argument is ignored.
 #' @param q The order of the moving average component. Defaults to `NULL`. If `grid_search is enabled`, this argument is ignored.
@@ -14,9 +14,11 @@
 #' @param ... Additional arguments passed to `nlme::gls()`.
 #' @return A `gls` object of the fitted model.
 #' @examples
-#' fit_its_model(transformed_data = df, impact_model)
+#' fit_its_model(transformed_data = df, impact_model = "slope", num_interventions = 2)
 #' @export
 #' @importFrom nlme gls corARMA
+#' @importFrom dplyr arrange mutate filter across
+#'
 
 fit_its_model <- function(transformed_data,
                           impact_model,
@@ -69,10 +71,10 @@ fit_its_model <- function(transformed_data,
     p <- ifelse(is.na(as.numeric(p)), NA, p)
 
     autocorrelation_grid <- autocorrelation_grid |>
-      mutate(AIC = p) |>
-      filter(!is.na(AIC)) |>
-      mutate(across(AIC, as.numeric)) |>
-      arrange(-AIC)
+      dplyr::mutate(AIC = p) |>
+      dplyr::filter(!is.na(AIC)) |>
+      dplyr::mutate(dplyr::across(AIC, as.numeric)) |>
+      dplyr::arrange(-AIC)
   }
 
   gls_object <- nlme::gls(

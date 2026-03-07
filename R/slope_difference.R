@@ -14,12 +14,12 @@
 #' @importFrom magrittr %>%
 #' @importFrom scales pvalue_format
 #' @importFrom tibble tribble
+#' @importFrom stats coef vcov qt pt
 
 slope_difference <- function(model, intervention, return = TRUE) {
   if (!intervention %in% c(1L, 2L, 3L)) {
     stop("Error: 'intervention' must be one of the integers 1, 2, or 3.", call. = FALSE)
   }
-
 
   ## Notes
   ## Calculates difference in coefficient for specific intervention, for slope
@@ -31,10 +31,18 @@ slope_difference <- function(model, intervention, return = TRUE) {
   ## Computes the 95% confidence interval
 
 
-  model <- my_summary_its_model
+  model <- model
 
   ## extract coefficients ##
   coef_estimate <- coef(model)
+
+  if (intervention == 3 & isFALSE(any(grepl("intervention 3", names(coef_estimate))))) {
+    stop("Error: No third intervention in model", call. = FALSE)
+  }
+
+  if (intervention == 2 & isFALSE(any(grepl("intervention 2", names(coef_estimate))))) {
+    stop("Error: No second intervention in model", call. = FALSE)
+  }
 
   cov_matrix <- vcov(model)
 
@@ -56,6 +64,27 @@ slope_difference <- function(model, intervention, return = TRUE) {
     names(coef(model))
   )]
 
+  int_e <- names(coef(model))[grep(
+    "Control intervention 1 slope",
+    names(coef(model))
+  )]
+
+  int_f <- names(coef(model))[grep(
+    "Control pre-intervention slope",
+    names(coef(model))
+  )]
+
+
+  int_g <- names(coef(model))[grep(
+    "Control intervention 3 slope",
+    names(coef(model))
+  )]
+
+  int_h <- names(coef(model))[grep(
+    "Pilot intervention 3 slope",
+    names(coef(model))
+  )]
+
   ## slope 1 intervention
 
   ## difference in slope ##
@@ -66,6 +95,10 @@ slope_difference <- function(model, intervention, return = TRUE) {
     combined_se <- sqrt(cov_matrix[int_a, int_a] +
       cov_matrix[int_b, int_b] +
       2 * cov_matrix[int_a, int_b])
+
+    slope_control <- coef_estimate[int_e] + coef_estimate[int_f]
+
+    slope_treatment <- coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_a] + coef_estimate[int_b]
   } else if (intervention == 2) {
     # difference in slope for second intervention is ----
 
@@ -73,20 +106,39 @@ slope_difference <- function(model, intervention, return = TRUE) {
     # Pilot intervention 1 slope +
     # Pilot intervention 2 slope) - Control intervention 2 slope
 
-    difference_slope <- (coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_c]) - coef_estimate[int_d]
+    difference_slope <- (coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_c])
 
     combined_se <- sqrt(
       cov_matrix[int_a, int_a] +
         cov_matrix[int_b, int_b] +
         cov_matrix[int_c, int_c] +
-        cov_matrix[int_d, int_d] +
         (2 * cov_matrix[int_a, int_b]) +
-        (2 * cov_matrix[int_a, int_c]) -
-        (2 * cov_matrix[int_a, int_d]) +
-        (2 * cov_matrix[int_b, int_c]) -
-        (2 * cov_matrix[int_b, int_d]) -
-        (2 * cov_matrix[int_c, int_d])
+        (2 * cov_matrix[int_a, int_c]) +
+        (2 * cov_matrix[int_b, int_c])
     )
+
+    slope_control <- coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_d]
+
+    slope_treatment <- (coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_d] + coef_estimate[int_c])
+  } else if (intervention == 3) {
+    difference_slope <- (coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_c] + coef_estimate[int_h])
+
+    combined_se <- sqrt(
+      cov_matrix[int_a, int_a] +
+        cov_matrix[int_b, int_b] +
+        cov_matrix[int_c, int_c] +
+        cov_matrix[int_h, int_h] +
+        (2 * cov_matrix[int_a, int_b]) +
+        (2 * cov_matrix[int_a, int_c]) +
+        (2 * cov_matrix[int_a, int_h]) +
+        (2 * cov_matrix[int_b, int_c]) +
+        (2 * cov_matrix[int_b, int_h]) +
+        (2 * cov_matrix[int_c, int_h])
+    )
+
+    slope_control <- coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_d] + coef_estimate[int_g]
+
+    slope_treatment <- (coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_d] + coef_estimate[int_c] + coef_estimate[int_g] + coef_estimate[int_h])
   }
 
   df <- model[["dims"]][["N"]] - model[["dims"]][["p"]]
@@ -111,13 +163,24 @@ slope_difference <- function(model, intervention, return = TRUE) {
   lower_bound_formatted <- as.character(round(lower_bound, 2))
   upper_bound_formatted <- as.character(round(upper_bound, 2))
 
+  slope_treatment_formatted <- as.character(round(slope_treatment, 2))
+  slope_control_formatted <- as.character(round(slope_control, 2))
+
 
   if (isTRUE(return)) {
-    cat("Combined Estimate:", difference_slope_formatted, "\n", "95% CI:", lower_bound_formatted, "to", upper_bound_formatted, "\n", "p-value:", p_value_formatted, "\n", "\n")
+    cat(
+      "## INTERVENTION ", intervention, "##", "\n\n",
+      "Slope for treatment per x-axis unit:", slope_treatment_formatted, "\n",
+      "Slope for control per x-axis unit:", slope_control_formatted, "\n",
+      "Slope difference:", difference_slope_formatted, "\n", "95% CI:", lower_bound_formatted, "to", upper_bound_formatted, "\n", "p-value:", p_value_formatted, "\n", "\n"
+    )
   }
 
   inner_table <- tibble::tribble(
-    ~Variable, ~Value, ~Value_Formatted,
+    ~Variable, ~Value_Raw, ~Value_Formatted,
+    "Intervention", intervention, as.character(intervention),
+    "Slope for treatment", slope_treatment, slope_treatment_formatted,
+    "Slope for control", slope_control, slope_control_formatted,
     "Slope difference", difference_slope, difference_slope_formatted,
     "Lower 95% CI", lower_bound, lower_bound_formatted,
     "Upper 95% CI", upper_bound, upper_bound_formatted,
@@ -134,5 +197,5 @@ slope_difference <- function(model, intervention, return = TRUE) {
   # difference_slope * 14
   # (difference_slope * 14 + (crit_value * combined_se * 14)) |> round(2)
 }
-
-slope_difference(model = fitted_ITS_model, intervention = 2)
+#
+# slope_difference(model = my_summary_its_model, intervention = 2) |> View()
