@@ -21,7 +21,8 @@ series statistical analysis**, involving tracking a long-term period
 before and after a intervention at a defined point in time to assess the
 intervention’s effects, along with methods allowing for comparing the
 outcomes for the treated units with those of a **control/comparison
-unit**, and to allow for **multiple successive interventions**.
+unit**, and to allow for **multiple successive interventions**, up to
+three.
 
 Interrupted-time series (ITS) is a quasi-experimental study design for
 evaluating the impact of an intervention or successive interventions
@@ -84,4 +85,11 @@ data:
   intervention of interest should be performed, but this is beyond the
   scope of the package and should be performed independently.
 
-Examples of how to use the package can be found in the vignette here.
+A deeper dive into the package can be found on the pkgdown created
+website here:
+<https://herts-phei.github.io/multipleITScontrol/index.html>
+
+Examples of how to use the package for slope interventions can be found
+in the vignette here: [Multiple ITS control introduction for slope
+change
+vignette](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope.html)
