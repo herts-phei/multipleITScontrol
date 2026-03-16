@@ -15,7 +15,7 @@
 #' @importFrom scales pvalue_format
 #' @importFrom tibble tribble
 #' @importFrom stats coef vcov qt pt
-#' @importFrom stringr stringr::str_sub
+#' @importFrom stringr str_sub
 
 slope_difference <- function(model, intervention, return = TRUE) {
   if (!intervention %in% c(1L, 2L, 3L)) {

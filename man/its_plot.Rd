@@ -5,6 +5,7 @@
 \title{its_plot}
 \usage{
 its_plot(
+  model,
   data_with_predictions,
   time_var,
   intervention_dates,

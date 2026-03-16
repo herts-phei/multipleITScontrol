@@ -53,8 +53,8 @@ its_plot <- function(model,
   intervention_info <- list()
 
   for (interventions in seq_length(length(intervention_dates) + 1)) {
-    if (any(stringr::str_detect(names(coef(model)), "slope"))){
-    intervention_info[[paste("slope_", interventions)]] <- slope_difference(model = model, intervention = interventions, return = FALSE)
+    if (any(stringr::str_detect(names(coef(model)), "slope"))) {
+      intervention_info[[paste("slope_", interventions)]] <- slope_difference(model = model, intervention = interventions, return = FALSE)
     }
   }
 
@@ -107,20 +107,3 @@ its_plot <- function(model,
 
   return(plot)
 }
-
-model <- my_summary_its_model
-data_with_predictions <- transformed_data_with_predictions
-time_var
-intervention_dates
-project_pre_intervention_trend = TRUE
-colours
-se = TRUE
-point_shape = 3
-point_size = 1
-linetype = 1
-caption = waiver()
-title = waiver()
-subtitle = waiver()
-x_axis = waiver()
-y_axis = waiver(
-

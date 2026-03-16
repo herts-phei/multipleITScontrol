@@ -10,6 +10,13 @@
 
 Functions related to performing interrupted-time series through a generalised least squares (GLS) framework on linear outcomes. Allows for multiple interventions and a control.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://herts-phei.github.io/multipleITScontrol/}
+}
+
+}
 \author{
 \strong{Maintainer}: Victor Yu \email{victor.yu@hertfordshire.gov.uk}
 
