@@ -52,7 +52,7 @@ its_plot <- function(model,
 
   intervention_info <- list()
 
-  for (interventions in seq_len(length(intervention_dates) + 1)) {
+  for (interventions in seq_len(length(intervention_dates))) {
     if (any(stringr::str_detect(names(coef(model)), "slope"))) {
       intervention_info[[paste("slope_", interventions)]] <- slope_difference(model = model, intervention = interventions, return = FALSE)
     }
@@ -102,7 +102,7 @@ its_plot <- function(model,
       x = x_axis
     )
 
-  plot <- plot + geom_
+  # plot <- plot + geom_
 
 
   return(plot)
