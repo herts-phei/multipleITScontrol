@@ -64,7 +64,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The goal of multipleITScontrol is to provide functions to easily wrangle data collected for an intervention and to perform <strong>interrupted time series statistical analysis</strong>, involving tracking a long-term period before and after a intervention at a defined point in time to assess the intervention’s effects, along with methods allowing for comparing the outcomes for the treated units with those of a <strong>control/comparison unit</strong>, and to allow for <strong>multiple successive interventions</strong>.</p>
+<p>The goal of multipleITScontrol is to provide functions to easily wrangle data collected for an intervention and to perform <strong>interrupted time series statistical analysis</strong>, involving tracking a long-term period before and after a intervention at a defined point in time to assess the intervention’s effects, along with methods allowing for comparing the outcomes for the treated units with those of a <strong>control/comparison unit</strong>, and to allow for <strong>multiple successive interventions</strong>, up to three.</p>
 <p>Interrupted-time series (ITS) is a quasi-experimental study design for evaluating the impact of an intervention or successive interventions that are implemented at defined moments in time. This is much more informative than an end-point analysis which only allows an understanding of differences between the final situations, rather than establishing how the different interventions influenced an outcome.</p>
 <p>In practice, ITS models are useful to establish an underlying trend over time and understand the effect of “interrupting” this trend with the interventions that are implemented. The trend that would have been expected to continue occurring without the intervention is called the “counterfactual” scenario, and the impact of introducing the intervention is typically determined by comparing whether there was a difference in this counterfactual trend, and the trend that arose after the intervention.</p>
 <p>In a more complex situation however, a second counterfactual scenario can be considered by introducing a “control” group that is not subject to the intervention. A controlled ITS study helps in understanding the effect of interventions when the underlying trend is expected to change in a time-varied manner that has not been, or cannot be, accounted for. For example, a possible scenario could be that the underlying trend will change due to seasonality.</p>
@@ -87,7 +87,8 @@
 <li><p>Defined impact model whether the interventions were expected to result in a sudden change (a “level” or “step” change, or both); currently, the package only supports the same impact model for each intervention.</p></li>
 <li><p>Power calculations to ensure sufficient statistical power in the intervention of interest should be performed, but this is beyond the scope of the package and should be performed independently.</p></li>
 </ul>
-<p>Examples of how to use the package can be found in the vignette here.</p>
+<p>A deeper dive into the package can be found on the pkgdown created website here: <a href="https://herts-phei.github.io/multipleITScontrol/index.html" class="uri">https://herts-phei.github.io/multipleITScontrol/index.html</a></p>
+<p>Examples of how to use the package for slope interventions can be found in the vignette here: <a href="https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope.html">Multiple ITS control introduction for slope change vignette</a></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
