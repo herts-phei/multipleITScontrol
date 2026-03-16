@@ -15,6 +15,7 @@
 #' @importFrom scales pvalue_format
 #' @importFrom tibble tribble
 #' @importFrom stats coef vcov qt pt
+#' @importFrom stringr stringr::str_sub
 
 slope_difference <- function(model, intervention, return = TRUE) {
   if (!intervention %in% c(1L, 2L, 3L)) {
@@ -99,6 +100,18 @@ slope_difference <- function(model, intervention, return = TRUE) {
     slope_control <- coef_estimate[int_e] + coef_estimate[int_f]
 
     slope_treatment <- coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_a] + coef_estimate[int_b]
+
+    slope_control_coefficients <- paste0(
+      stringr::str_sub(names(coef_estimate[int_e]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_f]), 1, 1)
+    )
+
+    slope_treatment_coefficients <- paste0(
+      stringr::str_sub(names(coef_estimate[int_e]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_f]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_a]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_b]), 1, 1)
+    )
   } else if (intervention == 2) {
     # difference in slope for second intervention is ----
 
@@ -120,6 +133,22 @@ slope_difference <- function(model, intervention, return = TRUE) {
     slope_control <- coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_d]
 
     slope_treatment <- (coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_d] + coef_estimate[int_c])
+
+
+    slope_control_coefficients <- paste0(
+      stringr::str_sub(names(coef_estimate[int_e]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_f]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_d]), 1, 1)
+    )
+
+    slope_treatment_coefficients <- paste0(
+      stringr::str_sub(names(coef_estimate[int_e]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_f]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_a]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_b]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_d]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_c]), 1, 1)
+    )
   } else if (intervention == 3) {
     difference_slope <- (coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_c] + coef_estimate[int_h])
 
@@ -139,6 +168,25 @@ slope_difference <- function(model, intervention, return = TRUE) {
     slope_control <- coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_d] + coef_estimate[int_g]
 
     slope_treatment <- (coef_estimate[int_e] + coef_estimate[int_f] + coef_estimate[int_a] + coef_estimate[int_b] + coef_estimate[int_d] + coef_estimate[int_c] + coef_estimate[int_g] + coef_estimate[int_h])
+
+
+    slope_control_coefficients <- paste0(
+      stringr::str_sub(names(coef_estimate[int_e]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_f]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_d]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_g]), 1, 1)
+    )
+
+    slope_treatment_coefficients <- paste0(
+      stringr::str_sub(names(coef_estimate[int_e]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_f]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_a]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_b]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_d]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_c]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_g]), 1, 1), "+",
+      stringr::str_sub(names(coef_estimate[int_h]), 1, 1)
+    )
   }
 
   df <- model[["dims"]][["N"]] - model[["dims"]][["p"]]
@@ -172,7 +220,10 @@ slope_difference <- function(model, intervention, return = TRUE) {
       "## INTERVENTION ", intervention, "##", "\n\n",
       "Slope for treatment per x-axis unit:", slope_treatment_formatted, "\n",
       "Slope for control per x-axis unit:", slope_control_formatted, "\n",
-      "Slope difference:", difference_slope_formatted, "\n", "95% CI:", lower_bound_formatted, "to", upper_bound_formatted, "\n", "p-value:", p_value_formatted, "\n", "\n"
+      "Slope difference:", difference_slope_formatted, "\n", "95% CI:", lower_bound_formatted, "to", upper_bound_formatted, "\n", "p-value:", p_value_formatted, "\n",
+      "Slope control coefficients:", slope_control_coefficients, "\n",
+      "Slope treatment coefficients:", slope_treatment_coefficients,
+      "\n", "\n"
     )
   }
 
@@ -184,7 +235,9 @@ slope_difference <- function(model, intervention, return = TRUE) {
     "Slope difference", difference_slope, difference_slope_formatted,
     "Lower 95% CI", lower_bound, lower_bound_formatted,
     "Upper 95% CI", upper_bound, upper_bound_formatted,
-    "p.value", p_value, p_value_formatted
+    "p.value", p_value, p_value_formatted,
+    "Slope treatment coefficients", NA, slope_treatment_coefficients,
+    "Slope control coefficients", NA, slope_control_coefficients
   )
 
   return(inner_table)
@@ -198,4 +251,4 @@ slope_difference <- function(model, intervention, return = TRUE) {
   # (difference_slope * 14 + (crit_value * combined_se * 14)) |> round(2)
 }
 #
-# slope_difference(model = my_summary_its_model, intervention = 2) |> View()
+# slope_difference(model = my_summary_its_model, intervention = 1) |> View()

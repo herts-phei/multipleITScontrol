@@ -56,6 +56,3 @@ A ggplot object
 \description{
 Generates a ggplot2 with the values used in the ITS model along with predicted values.
 }
-\examples{
-transform_data(data, time_var = "time", group_var = "group", intervention_dates = c(31, 61))
-}

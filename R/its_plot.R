@@ -17,14 +17,14 @@
 #' @param x_axis Optional argument passed to x in `labs()`.
 #' @param y_axis Optional argument passed to y in `labs()`.
 #' @return A ggplot object
-#' @examples transform_data(data, time_var = "time", group_var = "group", intervention_dates = c(31, 61))
 #' @export
 #'
 #' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number
 #' @importFrom rlang sym !! :=
-#' @importFrom ggplot2 waiver ggplot aes geom_point geom_line scale_colour_manual scale_fill_manual theme labs
+#' @importFrom ggplot2 waiver ggplot aes geom_point geom_line scale_colour_manual scale_fill_manual theme labs geom_ribbon
 #'
-its_plot <- function(data_with_predictions,
+its_plot <- function(model,
+                     data_with_predictions,
                      time_var,
                      intervention_dates,
                      project_pre_intervention_trend = TRUE,
@@ -38,9 +38,6 @@ its_plot <- function(data_with_predictions,
                      subtitle = waiver(),
                      x_axis = waiver(),
                      y_axis = waiver()) {
-  library(grid)
-
-
   if (missing(colours)) {
     colours <- c("#3969B5", "#46C3AE")
   }
@@ -53,10 +50,19 @@ its_plot <- function(data_with_predictions,
     }
   }
 
-  data_with_predictions |>
+  intervention_info <- list()
+
+  for (interventions in seq_length(length(intervention_dates) + 1)) {
+    if (any(stringr::str_detect(names(coef(model)), "slope"))){
+    intervention_info[[paste("slope_", interventions)]] <- slope_difference(model = model, intervention = interventions, return = FALSE)
+    }
+  }
+
+
+  plot <- data_with_predictions |>
     ggplot(aes(.data[[time_var]], outcome)) +
     geom_point(aes(color = category), shape = point_shape, size = point_size) + ## Actual data points
-    purrr:::map(intervention_dates, ~ geom_vline(aes(xintercept = .x), linetype = linetype, size = 1)) +
+    purrr::map(intervention_dates, ~ geom_vline(aes(xintercept = .x), linetype = linetype, size = 1)) +
     (if (isTRUE(project_pre_intervention_trend)) {
       geom_line(aes(.data[[time_var]], pre_intervention_predictions, color = category),
         lty = 2,
@@ -82,10 +88,10 @@ its_plot <- function(data_with_predictions,
         x = .x,
         y = unit(0.95, "npc"),
         just = c("left"),
-        gp = gpar(fontsize = 16, fontface = "bold")
+        gp = grid::gpar(fontsize = 16, fontface = "bold")
       ))) +
     # purrr:::imap(intervention_dates, ~ annotate("text", label = paste("Start of intervention", .y), x = .x, y = unit(0.95, "npc"), size = 4, hjust = 0, fontface = "bold")) +
-    scale_color_manual(values = colours, name = NULL) +
+    scale_colour_manual(values = colours, name = NULL) +
     scale_fill_manual(values = colours, name = NULL) +
     theme(legend.position = "bottom") +
     labs(
@@ -95,13 +101,26 @@ its_plot <- function(data_with_predictions,
       y = y_axis,
       x = x_axis
     )
+
+  plot <- plot + geom_
+
+
+  return(plot)
 }
 
-# its_plot(data_with_predictions = moo_generate,
-#          intervention_dates = c(31, 61),
-#          project_pre_intervention_trend = TRUE,
-#          colours = c("red", "blue"),
-#          se = TRUE,
-#          point_shape = 3,
-#          point_size = 2) +
-#   scale_x_continuous(breaks = seq(0, 100, 5))
+model <- my_summary_its_model
+data_with_predictions <- transformed_data_with_predictions
+time_var
+intervention_dates
+project_pre_intervention_trend = TRUE
+colours
+se = TRUE
+point_shape = 3
+point_size = 1
+linetype = 1
+caption = waiver()
+title = waiver()
+subtitle = waiver()
+x_axis = waiver()
+y_axis = waiver(
+

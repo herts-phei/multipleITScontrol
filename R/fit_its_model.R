@@ -1,6 +1,6 @@
 #' @title fit_its_model
 #'
-#' @description Fits an interrupted time series model using the \link{nlme} package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
+#' @description Fits an interrupted time series model using the \CRANpkg{nlme} package, defaulting to an autocorrelation-moving average correlation structure of order (p, q)
 #'
 #'
 #' @param transformed_data Am unmodified data frame created from `transform_data()`.
@@ -13,12 +13,10 @@
 #' @param return_grid_search Logical flag returns the result of the grid search instead of the model. 'FALSE' by default.
 #' @param ... Additional arguments passed to `nlme::gls()`.
 #' @return A `gls` object of the fitted model.
-#' @examples
-#' fit_its_model(transformed_data = df, impact_model = "slope", num_interventions = 2)
 #' @export
 #' @importFrom nlme gls corARMA
 #' @importFrom dplyr arrange mutate filter across
-#'
+#' @importFrom stats reformulate
 
 fit_its_model <- function(transformed_data,
                           impact_model,

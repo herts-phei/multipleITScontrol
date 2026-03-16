@@ -10,10 +10,9 @@
 #' @param outcome_var A numeric variable indicating outcome.response variable.
 #' @param intervention_dates A vector of time points (matching type of \code{time_var}) when interventions start. These time points are mutually exclusive and should not overlap. The argument accepts up to three values representing the intervention start times.
 #' @return A transformed data frame to be passed to \code{transformed_df} in \link{fit_its_model}.
-#' @examples transform_data(data, time_var = "time_xxx", group_var = "group", outcome_var = "outcome", intervention_dates = c(31, 61))
 #' @export
 #'
-#' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number
+#' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number ensym pull
 #' @importFrom rlang sym !! :=
 #' @importFrom magrittr %>%
 #'

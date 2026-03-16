@@ -10,11 +10,29 @@ LazyData: true
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    ggpubr,
+    DT,
+    forcats,
+    lubridate,
+    sjPlot,
+    stringi,
+    zoo
 Config/testthat/edition: 3
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Depends: 
     R (>= 3.5)
 Imports: 
-    magrittr
+    magrittr,
+    dplyr,
+    tibble,
+    rlang,
+    purrr,
+    nlme,
+    AICcmodavg,
+    ggplot2,
+    scales,
+    grid,
+    stats
+URL: https://herts-phei.github.io/multipleITScontrol/

@@ -35,13 +35,7 @@ phei_calendar <- function(df,
                           caption = "PH.Intelligence@hertfordshire.gov.uk",
                           ncol,
                           ...) {
-  box::use(lubridate[month, mday])
-  box::use(magrittr[`%>%`])
-  box::use(forcats[fct_relevel])
-  box::use(ggplot2[aes, element_text, element_rect, element_blank])
-  box::use(stringi[stri_datetime_fields])
-  box::use(dplyr[mutate])
-  box::use(rlang[sym])
+
 
   date_column <- rlang::sym(date_column)
   factor_column <- rlang::sym(factor_column)
