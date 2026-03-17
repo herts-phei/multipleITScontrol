@@ -6,7 +6,6 @@
 #' @param intervention which intervention to test significance in difference. Integer value of 1, 2, or 3.
 #' @param return Logical for returning pretty output in console. TRUE by default
 #' @return A transformed data frame to be passed to \code{transformed_df} in \link{fit_its_model}.
-#' @examples slope_difference(fitted_ITS_model, intervention = 1)
 #' @export
 #'
 #' @importFrom dplyr ungroup group_by arrange mutate case_when case_match across row_number tibble
