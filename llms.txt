@@ -40,8 +40,9 @@ Lopez Bernal, Cummins, and Gasparrini (2016, 2018).
 
 A lot of the code is derived and inspired from the rpub article [A
 pragmatic Introduction to Interrupted Time
-Series](https://rpubs.com/chrissyhroberts/1006858) by Chrissy Roberts,
-many thanks goes to him.
+Series](https://rpubs.com/chrissyhroberts/1006858) by [Chrissy
+Roberts](https://www.lshtm.ac.uk/aboutus/people/roberts.chrissy-h), many
+thanks goes to him.
 
 ## Installation
 
