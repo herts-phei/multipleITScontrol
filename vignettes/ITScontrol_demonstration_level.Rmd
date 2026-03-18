@@ -156,10 +156,10 @@ tibble_data <- tibble_data %>%
   )) %>%
   mutate(
     score = case_when(
-      Period == "Pre-intervention period" & group_var == "treatment" ~ rnorm(n(), mean = 20, sd = 2),
+      Period == "Pre-intervention period" & group_var == "treatment" ~ rnorm(n(), mean = 20, sd = 1),
       Period == "Intervention 1) Smart-Lock Upgrade" & group_var == "treatment" ~ rnorm(n(), mean = 30, sd = 2),
-      Period == "Intervention 2) Predictive Maintenance Algorithm" & group_var == "treatment" ~ rnorm(n(), mean = 35, sd = 2),
-      group_var == "control" ~ rnorm(n(), mean = 20, sd = 2))
+      Period == "Intervention 2) Predictive Maintenance Algorithm" & group_var == "treatment" ~ rnorm(n(), mean = 35, sd = 1),
+      group_var == "control" ~ rnorm(n(), mean = 20, sd = 1))
     )
 
 tibble_data_calendar <- tibble_data |> 
@@ -211,7 +211,7 @@ You can observe that in the `Date` column, that the dates are of equal distance 
 The data frame should be passed to `multipleITScontrol::tranform_data()` with suitable arguments selected, specifying the names of the columns to the required variables and starting intervention time points.
 
 ```{r, echo = TRUE, results='hide'}
-intervention_dates <- c(as.Date("2022-04-04"), as.Date("2022-06-06"))
+intervention_dates <- c(as.Date("2023-04-03"), as.Date("2023-06-05"))
 transformed_data <- 
   multipleITScontrol::transform_data(df = tibble_data,
                time_var = "Date",
