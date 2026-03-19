@@ -339,8 +339,8 @@ coefficients ***C*** (0) + ***D*** (-0.01) + ***E*** (0) + ***F***
 cumulative increase for each x-axis unit during the second intervention
 for the pilot data.
 
-To ascertin statistical significance with the second intervention slope,
-we call the function’s
+To ascertain statistical significance with the second intervention
+slope, we call the function’s
 [`multipleITScontrol::slope_difference()`](https://herts-phei.github.io/multipleITScontrol/reference/slope_difference.md)
 again, but change the intervention parameter.
 
