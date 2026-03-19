@@ -1,8 +1,8 @@
 ---
-title: "Multiple ITS control introduction for step/level change"
+title: "Multiple ITS control introduction for slope 2 (second example)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ITScontrol_demonstration_level}
+  %\VignetteIndexEntry{ITScontrol_demonstration_slope_2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -88,7 +88,7 @@ phei_calendar <- function(df,
 
 ## Usage
 
-This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control:
+This is a basic example which shows you how to solve a common problem with two stage interrupted time series with a control for a slope hypothesis:
 
 **Background**: *Albridge Medical Practice* and *Hollybush Medical Practice* are two medical practices within the same PCN, with similar populations of people, and prevalence of disease.
 
@@ -159,8 +159,14 @@ tibble_data <- tibble_data %>%
     group_var == "control" ~ 15 + 0.1 * as.numeric(Date - min(Date))
   ))
 
+tibble_data_calendar <- tibble_data |> 
+    group_by(group_var) |>
+    arrange(group_var, Date) |> 
+    tidyr::complete(Date = seq(min(Date), max(Date), by = "day")) |> 
+    tidyr::fill(Period, .direction = "down")
+
 plot <- phei_calendar(
-  tibble_data,
+  tibble_data_calendar,
   date_column = "Date",
   "Period",
   colours = c("#3b5163", "#80bb77", "#afd0f0"),
@@ -219,7 +225,7 @@ transformed_data
 
 # Step 3) Fitting ITS model
 
-The transformed data is then fit using `multipleITScontrol::fit_its_model()`. Required arguments are `transformed_data`, which is simply an unmodified object created from `multipleITScontrol::transform_data()` in the step above; a defined impact model, with current options either 'slope', `level, or 
+The transformed data is then fit using `multipleITScontrol::fit_its_model()`. Required arguments are `transformed_data`, which is simply an unmodified object created from `multipleITScontrol::transform_data()` in the step above; a defined impact model, with current options being either '*slope*', \`*level*, or '*levelslope*', and the number of interventions.
 
 ```{r, echo = TRUE, results='hide'}
 fitted_ITS_model <-
@@ -272,12 +278,13 @@ transformed_data_with_predictions
 DT::datatable(transformed_data_with_predictions, options = list(dom = 'tip', scrollX = TRUE), rownames = FALSE)
 ```
 
-Step 6) Plotting the results
+## Step 6) Plotting the results
 
 We can use the predicted values and map the segmented regression lines which compare whether an intervention had a statistically significant difference.
 
 ```{r, echo = TRUE, fig.align="center", fig.width=7, fig.height=7, fig.retina=3}
-its_plot(data_with_predictions = transformed_data_with_predictions, 
+its_plot(model = my_summary_its_model,
+         data_with_predictions = transformed_data_with_predictions, 
          time_var = "time",
          intervention_dates = intervention_dates)
 ```

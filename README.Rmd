@@ -55,4 +55,8 @@ In order for the package functions to work properly, there are several requireme
 
 A deeper dive into the package can be found on the pkgdown created website here: <https://herts-phei.github.io/multipleITScontrol/index.html>
 
+## Examples
+
 Examples of how to use the package for slope interventions can be found in the vignette here: [Multiple ITS control introduction for slope change vignette](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope.html)
+
+Examples of how to use the package for slope interventions can be found in the vignette here: [Multiple ITS control introduction for level change (two-stage example)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_level.html)
