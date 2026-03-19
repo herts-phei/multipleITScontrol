@@ -61,7 +61,7 @@ summary_its <- function(model) {
           sprintf("%s) Control intervention %d slope", more_letters[ptr], i),
           sprintf("%s) Pilot intervention %d slope", more_letters[ptr + 1], i),
           sprintf("%s) Control intervention %d level", more_letters[ptr + 2], i),
-          sprintf("%s) Pilot intervention %d level", more_letters[ptr + 3], i)
+          sprintf("%s) Pilot intervention %d level difference to control", more_letters[ptr + 3], i)
         ),
         c(
           sprintf("slope_%d_intervention", i),
@@ -142,7 +142,6 @@ summary_its <- function(model) {
 
 
   names(attr(terms_obj, "dataClasses")) <- recode(names(attr(terms_obj, "dataClasses")), !!!name_map)
-
 
 
   # Define a recursive function using purrr to replace old names with new ones

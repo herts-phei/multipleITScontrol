@@ -2,7 +2,7 @@
 title: "Multiple ITS control introduction for slope change"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ITScontrol_demonstration_slope}
+  %\VignetteIndexEntry{Multiple ITS control introduction for slope change}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -311,7 +311,7 @@ Thus, the modelled slope change in the second intervention is ***C) Control pre-
 
 These slope changes are pertinent to the slope gradients given in the pre-intervention and first intervention period. Thus, we add the coefficients ***C*** (`r c`) + ***D*** (`r d`) + ***E*** (`r e`) + ***F*** (`r f`) + ***I*** (`r i`) + ***J*** (`r j`) = `r c+d+e+f+i+j` is the average cumulative increase for each x-axis unit during the second intervention for the pilot data.
 
-To ascertin statistical significance with the second intervention slope, we call the function's `multipleITScontrol::slope_difference()` again, but change the intervention parameter.
+To ascertain statistical significance with the second intervention slope, we call the function's `multipleITScontrol::slope_difference()` again, but change the intervention parameter.
 
 ```{r, echo = TRUE, results= 'hide'}
 slope_difference(model = my_summary_its_model, intervention = 2)
