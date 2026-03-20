@@ -1,8 +1,8 @@
 ---
-title: "Multiple ITS control introduction for slope change"
+title: "Multiple ITS control introduction for slope change (two-stage)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Multiple ITS control introduction for slope change}
+  %\VignetteIndexEntry{Multiple ITS control introduction for slope change (two-stage)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -1,8 +1,8 @@
 ---
-title: "Multiple ITS control introduction for level change (two-stage example)"
+title: "Multiple ITS control introduction for level change (two-stage)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Multiple ITS control introduction for level change (two-stage example)}
+  %\VignetteIndexEntry{Multiple ITS control introduction for level change (two-stage)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
