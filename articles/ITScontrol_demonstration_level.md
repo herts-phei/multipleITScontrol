@@ -1,4 +1,4 @@
-# Multiple ITS control introduction for level change (two-stage example)
+# Multiple ITS control introduction for level change (two-stage)
 
 ### Usage
 

@@ -1,4 +1,4 @@
-# Multiple ITS control introduction for slope change
+# Multiple ITS control introduction for slope change (two-stage)
 
 ### Usage
 
