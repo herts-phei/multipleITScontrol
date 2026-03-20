@@ -28,4 +28,4 @@
 #'   \item{score}{The outcome metric of the scenario - weekly total maintenance incidents"}
 #'   ...
 #' }
-"its_data_school"
+"its_data_bike_programme"
