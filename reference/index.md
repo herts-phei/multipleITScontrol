@@ -6,6 +6,8 @@
   : fit_its_model
 - [`generate_predictions()`](https://herts-phei.github.io/multipleITScontrol/reference/generate_predictions.md)
   : Generate Predictions from a Transformed Dataset and a Model
+- [`its_data_bike_programme`](https://herts-phei.github.io/multipleITScontrol/reference/its_data_bike_programme.md)
+  : Dummy Bike Programme Data
 - [`its_data_school`](https://herts-phei.github.io/multipleITScontrol/reference/its_data_school.md)
   : Dummy School Data
 - [`its_plot()`](https://herts-phei.github.io/multipleITScontrol/reference/its_plot.md)
