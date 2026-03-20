@@ -34,5 +34,6 @@ Imports:
     ggplot2,
     scales,
     grid,
-    stats
+    stats,
+    stringr
 URL: https://herts-phei.github.io/multipleITScontrol/
