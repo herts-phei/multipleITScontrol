@@ -105,7 +105,7 @@ transformed_data <-
 Returns the initial data frame with a few transformed variables needed
 for interrupted time series.
 
-    #> # A tibble: 104 × 11
+    #> # A tibble: 104 × 13
     #> # Groups:   category [2]
     #>    time       category  Period   outcome     x time_index level_pre_intervention
     #>    <date>     <chr>     <chr>      <dbl> <dbl>      <int>                  <dbl>
@@ -120,8 +120,10 @@ for interrupted time series.
     #>  9 2022-01-31 treatment Pre-int…    22.8     1          5                      1
     #> 10 2022-01-31 control   Pre-int…    17.8     0          5                      1
     #> # ℹ 94 more rows
-    #> # ℹ 4 more variables: level_1_intervention <dbl>, slope_1_intervention <dbl>,
-    #> #   level_2_intervention <dbl>, slope_2_intervention <dbl>
+    #> # ℹ 6 more variables: level_1_intervention <dbl>,
+    #> #   level_1_intervention_internal <dbl>, slope_1_intervention <dbl>,
+    #> #   level_2_intervention <dbl>, level_2_intervention_internal <dbl>,
+    #> #   slope_2_intervention <dbl>
 
 ## Step 3) Fitting ITS model
 

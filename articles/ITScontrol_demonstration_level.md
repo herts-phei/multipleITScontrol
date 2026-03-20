@@ -103,23 +103,25 @@ transformed_data <-
 Returns the initial data frame with a few transformed variables needed
 for interrupted time series.
 
-    #> # A tibble: 104 × 11
+    #> # A tibble: 104 × 13
     #> # Groups:   category [2]
     #>    time       category  Period   outcome     x time_index level_pre_intervention
     #>    <date>     <chr>     <chr>      <dbl> <dbl>      <int>                  <dbl>
-    #>  1 2023-01-02 treatment Pre-int…    20.2     1          1                      1
-    #>  2 2023-01-02 control   Pre-int…    19.3     0          1                      1
-    #>  3 2023-01-09 treatment Pre-int…    17.2     1          2                      1
-    #>  4 2023-01-09 control   Pre-int…    20.9     0          2                      1
-    #>  5 2023-01-16 treatment Pre-int…    19.3     1          3                      1
-    #>  6 2023-01-16 control   Pre-int…    19.2     0          3                      1
-    #>  7 2023-01-23 treatment Pre-int…    22.1     1          4                      1
-    #>  8 2023-01-23 control   Pre-int…    19.4     0          4                      1
-    #>  9 2023-01-30 treatment Pre-int…    20.8     1          5                      1
-    #> 10 2023-01-30 control   Pre-int…    20.0     0          5                      1
+    #>  1 2023-01-02 treatment Pre-int…    35.2     1          1                      1
+    #>  2 2023-01-02 control   Pre-int…    34.3     0          1                      1
+    #>  3 2023-01-09 treatment Pre-int…    32.2     1          2                      1
+    #>  4 2023-01-09 control   Pre-int…    35.9     0          2                      1
+    #>  5 2023-01-16 treatment Pre-int…    34.3     1          3                      1
+    #>  6 2023-01-16 control   Pre-int…    34.2     0          3                      1
+    #>  7 2023-01-23 treatment Pre-int…    37.1     1          4                      1
+    #>  8 2023-01-23 control   Pre-int…    34.4     0          4                      1
+    #>  9 2023-01-30 treatment Pre-int…    35.8     1          5                      1
+    #> 10 2023-01-30 control   Pre-int…    35.0     0          5                      1
     #> # ℹ 94 more rows
-    #> # ℹ 4 more variables: level_1_intervention <dbl>, slope_1_intervention <dbl>,
-    #> #   level_2_intervention <dbl>, slope_2_intervention <dbl>
+    #> # ℹ 6 more variables: level_1_intervention <dbl>,
+    #> #   level_1_intervention_internal <dbl>, slope_1_intervention <dbl>,
+    #> #   level_2_intervention <dbl>, level_2_intervention_internal <dbl>,
+    #> #   slope_2_intervention <dbl>
 
 ## Step 3) Fitting ITS model
 
@@ -150,20 +152,22 @@ Gives a conventional model output from
     #>   Log-restricted-likelihood: -166.8901
     #> 
     #> Coefficients:
-    #>            (Intercept)                      x             time_index 
-    #>           19.909711711            0.379546485            0.006873467 
-    #>   level_1_intervention   level_2_intervention           x:time_index 
-    #>           -0.256349066           -0.076270689            0.025663471 
-    #> x:level_1_intervention x:level_2_intervention 
-    #>            9.363962786           13.751490858 
+    #>                     (Intercept)                               x 
+    #>                    34.909711701                     0.379546659 
+    #>                      time_index   level_1_intervention_internal 
+    #>                     0.006873476                    -0.256349207 
+    #>   level_2_intervention_internal                    x:time_index 
+    #>                     0.180078195                     0.025663465 
+    #> x:level_1_intervention_internal x:level_2_intervention_internal 
+    #>                    -5.636037493                   -10.612471510 
     #> 
     #> Correlation Structure: ARMA(5,2)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4        Phi5      Theta1 
-    #>  0.11324498  0.31773030 -0.28435099 -0.21268284  0.07883065 -0.16998721 
+    #>  0.11324539  0.31773043 -0.28435099 -0.21268301  0.07883105 -0.16998781 
     #>      Theta2 
-    #> -0.38053076 
+    #> -0.38053114 
     #> Degrees of freedom: 104 total; 96 residual
     #> Residual standard error: 1.203546
 
@@ -189,29 +193,29 @@ my_summary_its_model
     #> 
     #> Coefficients:
     #>                           A) Control y-axis intercept 
-    #>                                          19.909711711 
+    #>                                          34.909711701 
     #>       B) Pilot y-axis intercept difference to control 
-    #>                                           0.379546485 
+    #>                                           0.379546659 
     #>                     C) Control pre-intervention slope 
-    #>                                           0.006873467 
+    #>                                           0.006873476 
     #>                       G) Control intervention 1 level 
-    #>                                          -0.256349066 
+    #>                                          -0.256349207 
     #>                       K) Control intervention 2 level 
-    #>                                          -0.076270689 
+    #>                                           0.180078195 
     #> D) Pilot pre-intervention slope difference to control 
-    #>                                           0.025663471 
+    #>                                           0.025663465 
     #>   H) Pilot intervention 1 level difference to control 
-    #>                                           9.363962786 
+    #>                                          -5.636037493 
     #>   L) Pilot intervention 2 level difference to control 
-    #>                                          13.751490858 
+    #>                                         -10.612471510 
     #> 
     #> Correlation Structure: ARMA(5,2)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4        Phi5      Theta1 
-    #>  0.11324498  0.31773030 -0.28435099 -0.21268284  0.07883065 -0.16998721 
+    #>  0.11324539  0.31773043 -0.28435099 -0.21268301  0.07883105 -0.16998781 
     #>      Theta2 
-    #> -0.38053076 
+    #> -0.38053114 
     #> Degrees of freedom: 104 total; 96 residual
     #> Residual standard error: 1.203546
 
@@ -229,47 +233,47 @@ summary(my_summary_its_model)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4        Phi5      Theta1 
-    #>  0.11324498  0.31773030 -0.28435099 -0.21268284  0.07883065 -0.16998721 
+    #>  0.11324539  0.31773043 -0.28435099 -0.21268301  0.07883105 -0.16998781 
     #>      Theta2 
-    #> -0.38053076 
+    #> -0.38053114 
     #> 
     #> Coefficients:
     #>                                                           Value Std.Error
-    #> A) Control y-axis intercept                           19.909712 0.1996349
-    #> B) Pilot y-axis intercept difference to control        0.379546 0.2823263
-    #> C) Control pre-intervention slope                      0.006873 0.0135599
-    #> G) Control intervention 1 level                       -0.256349 0.3224885
-    #> K) Control intervention 2 level                       -0.076271 0.4519020
-    #> D) Pilot pre-intervention slope difference to control  0.025663 0.0191766
-    #> H) Pilot intervention 1 level difference to control    9.363963 0.4560677
-    #> L) Pilot intervention 2 level difference to control   13.751491 0.6390859
-    #>                                                        t-value p-value
-    #> A) Control y-axis intercept                           99.73063  0.0000
-    #> B) Pilot y-axis intercept difference to control        1.34435  0.1820
-    #> C) Control pre-intervention slope                      0.50690  0.6134
-    #> G) Control intervention 1 level                       -0.79491  0.4286
-    #> K) Control intervention 2 level                       -0.16878  0.8663
-    #> D) Pilot pre-intervention slope difference to control  1.33827  0.1840
-    #> H) Pilot intervention 1 level difference to control   20.53196  0.0000
-    #> L) Pilot intervention 2 level difference to control   21.51744  0.0000
+    #> A) Control y-axis intercept                            34.90971 0.1996347
+    #> B) Pilot y-axis intercept difference to control         0.37955 0.2823261
+    #> C) Control pre-intervention slope                       0.00687 0.0135599
+    #> G) Control intervention 1 level                        -0.25635 0.3224883
+    #> K) Control intervention 2 level                         0.18008 0.3818929
+    #> D) Pilot pre-intervention slope difference to control   0.02566 0.0191766
+    #> H) Pilot intervention 1 level difference to control    -5.63604 0.4560673
+    #> L) Pilot intervention 2 level difference to control   -10.61247 0.5400782
+    #>                                                         t-value p-value
+    #> A) Control y-axis intercept                           174.86796  0.0000
+    #> B) Pilot y-axis intercept difference to control         1.34436  0.1820
+    #> C) Control pre-intervention slope                       0.50690  0.6134
+    #> G) Control intervention 1 level                        -0.79491  0.4286
+    #> K) Control intervention 2 level                         0.47154  0.6383
+    #> D) Pilot pre-intervention slope difference to control   1.33827  0.1840
+    #> H) Pilot intervention 1 level difference to control   -12.35791  0.0000
+    #> L) Pilot intervention 2 level difference to control   -19.64988  0.0000
     #> 
     #>  Correlation: 
     #>                                                       A)Cy-i BPyidtc C)Cp-s
     #> B) Pilot y-axis intercept difference to control       -0.707               
     #> C) Control pre-intervention slope                     -0.498  0.352        
     #> G) Control intervention 1 level                       -0.409  0.289  -0.355
-    #> K) Control intervention 2 level                        0.120 -0.085  -0.899
+    #> K) Control intervention 2 level                        0.488 -0.345  -0.764
     #> D) Pilot pre-intervention slope difference to control  0.352 -0.498  -0.707
     #> H) Pilot intervention 1 level difference to control    0.289 -0.409   0.251
-    #> L) Pilot intervention 2 level difference to control   -0.085  0.120   0.636
+    #> L) Pilot intervention 2 level difference to control   -0.345  0.488   0.540
     #>                                                       G)Ci1l K)Ci2l DPpsdtc
     #> B) Pilot y-axis intercept difference to control                            
     #> C) Control pre-intervention slope                                          
     #> G) Control intervention 1 level                                            
-    #> K) Control intervention 2 level                        0.557               
-    #> D) Pilot pre-intervention slope difference to control  0.251  0.636        
-    #> H) Pilot intervention 1 level difference to control   -0.707 -0.394 -0.355 
-    #> L) Pilot intervention 2 level difference to control   -0.394 -0.707 -0.899 
+    #> K) Control intervention 2 level                       -0.185               
+    #> D) Pilot pre-intervention slope difference to control  0.251  0.540        
+    #> H) Pilot intervention 1 level difference to control   -0.707  0.131 -0.355 
+    #> L) Pilot intervention 2 level difference to control    0.131 -0.707 -0.764 
     #>                                                       HPi1ldtc
     #> B) Pilot y-axis intercept difference to control               
     #> C) Control pre-intervention slope                             
@@ -277,7 +281,7 @@ summary(my_summary_its_model)
     #> K) Control intervention 2 level                               
     #> D) Pilot pre-intervention slope difference to control         
     #> H) Pilot intervention 1 level difference to control           
-    #> L) Pilot intervention 2 level difference to control    0.557  
+    #> L) Pilot intervention 2 level difference to control   -0.185  
     #> 
     #> Standardized residuals:
     #> numeric(0)
@@ -286,6 +290,61 @@ summary(my_summary_its_model)
     #> 
     #> Residual standard error: 1.203546 
     #> Degrees of freedom: 104 total; 96 residual
+
+``` r
+sjPlot::tab_model(
+  my_summary_its_model,
+  dv.labels = "Weekly Total Maintenance Incidents",
+  show.se = TRUE,
+  collapse.se = TRUE,
+  linebreak = FALSE,
+  string.est = "Estimate (std. error)",
+  string.ci = "95% CI",
+  p.style = "numeric_stars"
+)
+```
+
+[TABLE]
+
+The predictor coefficients elucidate a few things:
+
+### **First intervention**:
+
+***G) Control intervention 1 level*** describes the step change that
+occurs at the intervention break point in the control group at the start
+of the first intervention (-0.26).
+
+***H) Pilot intervention 1 level*** describes the *difference* in the
+step change that occurs at the intervention timepoint in the control
+group for the first intervention compared to the pilot (-5.64).
+
+To ascertain the level for the pilot data, we add to the control
+coefficient step of the pilot data, the coefficients ***G) Control
+intervention 1 level*** and ***H) Pilot intervention 1 level difference
+to control***. ***G*** (-0.26) + H (-5.64) = -5.9 is the step change
+during the first intervention for the pilot data.
+
+The coefficient ***H) Pilot intervention 1 level difference to
+control***, in essence acts a t-test of whether there is a statistically
+significant difference between the step of the pilot data and the
+control. Mathemetically it is equivalent to a two-sample t-test.
+
+In the regression model results above, We can see there is a
+statistically significant difference via the p-value for coefficient H.
+
+### **Second intervention:**
+
+***K) Control intervention 2 level*** describes the step change that
+occurs at the intervention break point in the control group at the start
+of the second intervention (0.18).
+
+***L) Pilot intervention 2 level difference to control”*** describes the
+*difference* in the step change that occurs at the intervention
+timepoint in the pilot group for the second intervention compared to the
+control (-10.61).
+
+In the regression model results above, We can see there is a
+statistically significant difference via the p-value for coefficient L.
 
 ## Step 5) Fitting Predictions
 
@@ -313,4 +372,4 @@ its_plot(model = my_summary_its_model,
          intervention_dates = intervention_dates)
 ```
 
-![](ITScontrol_demonstration_level_files/figure-html/unnamed-chunk-12-1.png)
+![](ITScontrol_demonstration_level_files/figure-html/unnamed-chunk-14-1.png)
