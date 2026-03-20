@@ -135,14 +135,14 @@ The calendar plot below summarises the timeline of the interventions:
 
 ```{r calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.align="center", fig.height=10, fig.width=7, fig.retina=3}
 
-tibble_data_calendar <- tibble_data |> 
+bike_calendar <- its_data_bike_programme |> 
     group_by(group_var) |>
     arrange(group_var, Date) |> 
     tidyr::complete(Date = seq(min(Date), max(Date), by = "day")) |> 
     tidyr::fill(Period, .direction = "down")
 
 plot <- phei_calendar(
-  tibble_data_calendar,
+  bike_calendar,
   date_column = "Date",
   "Period",
   colours = c("#3b5163", "#80bb77", "#afd0f0"),
@@ -186,7 +186,7 @@ The data frame should be passed to `multipleITScontrol::tranform_data()` with su
 ```{r, echo = TRUE, results='hide'}
 intervention_dates <- c(as.Date("2023-04-03"), as.Date("2023-06-05"))
 transformed_data <- 
-  multipleITScontrol::transform_data(df = tibble_data,
+  multipleITScontrol::transform_data(df = its_data_bike_programme,
                time_var = "Date",
                group_var = "group_var",
                outcome_var =  "score",
