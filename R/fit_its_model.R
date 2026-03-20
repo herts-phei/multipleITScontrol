@@ -27,12 +27,11 @@ fit_its_model <- function(transformed_data,
                           q = NULL,
                           return_grid_search = FALSE,
                           ...) {
-  level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
+  level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention_internal")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")
 
   termlabels <- switch(impact_model,
-    "pre_intervention" = "x * time_index",
-    "level" = c("x * time_index", paste0("x * ", level_intervention_cols)),
+    "level" = c("x * time_index", "time_index", paste0("x * ", level_intervention_cols)),
     "slope" = c("x * time_index", paste0("x * ", slope_intervention_cols)),
     "levelslope" = c("x * time_index", paste0("x * ", level_intervention_cols), paste0("x * ", slope_intervention_cols))
   )

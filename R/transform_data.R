@@ -53,6 +53,7 @@ transform_data <- function(df,
   if (any(differences < 3)) "One or more intervention periods (including pre-intervention) have less than 3 time points"
 
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention")
+  level_intervention_cols_internal <- paste0("level_", seq_len(num_interventions), "_intervention_internal")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")
 
 
@@ -78,6 +79,7 @@ transform_data <- function(df,
   for (i in seq_along(intervention_dates)) {
     level_col_name <- level_intervention_cols[i]
     slope_col_name <- slope_intervention_cols[i]
+    level_internal_col_name <- level_intervention_cols_internal[i]
 
     to_index <- if (i == max(seq_along(intervention_dates))) length else (internal_data[which(internal_data[["time"]] == intervention_dates[i + 1]), "time_index"] |> unique() |> pull() - 1)
 
@@ -89,6 +91,10 @@ transform_data <- function(df,
       mutate(
         !!level_col_name := case_when(
           time_index %in% init_index:to_index ~ 1,
+          .default = 0
+        ),
+        !!level_internal_col_name := case_when(
+          time_index %in% init_index:n() ~ 1,
           .default = 0
         ),
         !!slope_col_name := case_when(

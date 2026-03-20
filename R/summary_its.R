@@ -28,7 +28,7 @@
 #'   \item \code{x:time_index} becomes "Pilot pre-intervention slope difference to control"
 #' }
 #'
-#' Additional terms for up to 9 interventions are automatically renamed, reflecting intervention-related slopes
+#' Additional terms for up to 3 interventions are automatically renamed, reflecting intervention-related slopes
 #' in both control and pilot groups.
 #'
 #' @export
@@ -66,8 +66,8 @@ summary_its <- function(model) {
         c(
           sprintf("slope_%d_intervention", i),
           sprintf("x:slope_%d_intervention", i),
-          sprintf("level_%d_intervention", i),
-          sprintf("x:level_%d_intervention", i)
+          sprintf("level_%d_intervention_internal", i),
+          sprintf("x:level_%d_intervention_internal", i)
         )
       )
     )
