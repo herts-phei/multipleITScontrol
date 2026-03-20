@@ -30,6 +30,8 @@ fit_its_model <- function(transformed_data,
   level_intervention_cols <- paste0("level_", seq_len(num_interventions), "_intervention_internal")
   slope_intervention_cols <- paste0("slope_", seq_len(num_interventions), "_intervention")
 
+  ## for level, x*time allows the baseline slopes of treatment and control to differ, without it, you assume they're parallel trends, better to keep them in, just as a safety precaution. Regardless, I needed to adjust the internal level cols created, but I need to figure out a way to adjust the pred figures if I don't include them.
+
   termlabels <- switch(impact_model,
     "level" = c("x * time_index", "time_index", paste0("x * ", level_intervention_cols)),
     "slope" = c("x * time_index", paste0("x * ", slope_intervention_cols)),
