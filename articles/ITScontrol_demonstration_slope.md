@@ -155,25 +155,25 @@ Gives a conventional model output from
     #> Generalized least squares fit by REML
     #>   Model: reformulate(termlabels = termlabels, response = "outcome") 
     #>   Data: transformed_data 
-    #>   Log-restricted-likelihood: -6.4191
+    #>   Log-restricted-likelihood: -6.415746
     #> 
     #> Coefficients:
     #>            (Intercept)                      x             time_index 
-    #>          81.8917380133           0.1684692794           0.0036434045 
+    #>          81.8918689038           0.1684906811           0.0036366478 
     #>   slope_1_intervention   slope_2_intervention           x:time_index 
-    #>          -0.0008303282          -0.0053431350          -0.0104194982 
+    #>          -0.0008224051          -0.0053395145          -0.0104209401 
     #> x:slope_1_intervention x:slope_2_intervention 
-    #>           0.3161380530          -0.0732127395 
+    #>           0.3161441555          -0.0732359132 
     #> 
     #> Correlation Structure: ARMA(4,5)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4      Theta1      Theta2 
-    #> -0.05085615 -0.96013832 -0.30644244 -0.34748302  0.13697033  1.37154019 
+    #> -0.04681337 -0.97435355 -0.29773087 -0.35723256  0.11056398  1.23972149 
     #>      Theta3      Theta4      Theta5 
-    #>  0.25877247  0.54049333  0.29197055 
+    #>  0.26020519  0.48242891  0.21410072 
     #> Degrees of freedom: 156 total; 148 residual
-    #> Residual standard error: 0.216238
+    #> Residual standard error: 0.2161623
 
 ## Step 4) Analysing ITS model
 
@@ -193,35 +193,35 @@ my_summary_its_model
     #> Generalized least squares fit by REML
     #>   Model: reformulate(termlabels = termlabels, response = "outcome") 
     #>   Data: transformed_data 
-    #>   Log-restricted-likelihood: -6.4191
+    #>   Log-restricted-likelihood: -6.415746
     #> 
     #> Coefficients:
     #>                           A) Control y-axis intercept 
-    #>                                         81.8917380133 
+    #>                                         81.8918689038 
     #>       B) Pilot y-axis intercept difference to control 
-    #>                                          0.1684692794 
+    #>                                          0.1684906811 
     #>                     C) Control pre-intervention slope 
-    #>                                          0.0036434045 
+    #>                                          0.0036366478 
     #>                       E) Control intervention 1 slope 
-    #>                                         -0.0008303282 
+    #>                                         -0.0008224051 
     #>                       I) Control intervention 2 slope 
-    #>                                         -0.0053431350 
+    #>                                         -0.0053395145 
     #> D) Pilot pre-intervention slope difference to control 
-    #>                                         -0.0104194982 
+    #>                                         -0.0104209401 
     #>                         F) Pilot intervention 1 slope 
-    #>                                          0.3161380530 
+    #>                                          0.3161441555 
     #>                         J) Pilot intervention 2 slope 
-    #>                                         -0.0732127395 
+    #>                                         -0.0732359132 
     #> 
     #> Correlation Structure: ARMA(4,5)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4      Theta1      Theta2 
-    #> -0.05085615 -0.96013832 -0.30644244 -0.34748302  0.13697033  1.37154019 
+    #> -0.04681337 -0.97435355 -0.29773087 -0.35723256  0.11056398  1.23972149 
     #>      Theta3      Theta4      Theta5 
-    #>  0.25877247  0.54049333  0.29197055 
+    #>  0.26020519  0.48242891  0.21410072 
     #> Degrees of freedom: 156 total; 148 residual
-    #> Residual standard error: 0.216238
+    #> Residual standard error: 0.2161623
 
 ``` r
 sjPlot::tab_model(
@@ -304,8 +304,8 @@ slope_difference(model = my_summary_its_model, intervention = 1)
     #> 3 Slope for control             2.81e-  3 0              
     #> 4 Slope difference              3.06e-  1 0.31           
     #> 5 Lower 95% CI                  2.95e-  1 0.29           
-    #> 6 Upper 95% CI                  3.17e-  1 0.32           
-    #> 7 p.value                       1.89e-101 <0.001         
+    #> 6 Upper 95% CI                  3.16e-  1 0.32           
+    #> 7 p.value                       1.06e-101 <0.001         
     #> 8 Slope treatment coefficients NA         E+C+D+F        
     #> 9 Slope control coefficients   NA         E+C
 
@@ -366,10 +366,10 @@ slope_difference(model = my_summary_its_model, intervention = 2)
     #> 1 Intervention                  2   e+ 0 2              
     #> 2 Slope for treatment           2.30e- 1 0.23           
     #> 3 Slope for control            -2.53e- 3 0              
-    #> 4 Slope difference              2.33e- 1 0.23           
+    #> 4 Slope difference              2.32e- 1 0.23           
     #> 5 Lower 95% CI                  2.20e- 1 0.22           
     #> 6 Upper 95% CI                  2.45e- 1 0.25           
-    #> 7 p.value                       8.37e-75 <0.001         
+    #> 7 p.value                       5.09e-75 <0.001         
     #> 8 Slope treatment coefficients NA        E+C+D+F+I+J    
     #> 9 Slope control coefficients   NA        E+C+I
 

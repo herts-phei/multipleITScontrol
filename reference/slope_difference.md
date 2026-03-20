@@ -32,10 +32,3 @@ slope_difference(model, intervention, return = TRUE)
 
 A transformed data frame to be passed to `transformed_df` in
 [fit_its_model](https://herts-phei.github.io/multipleITScontrol/reference/fit_its_model.md).
-
-## Examples
-
-``` r
-slope_difference(fitted_ITS_model, intervention = 1)
-#> Error: object 'fitted_ITS_model' not found
-```

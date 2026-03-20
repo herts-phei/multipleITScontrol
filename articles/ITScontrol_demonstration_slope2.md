@@ -157,7 +157,7 @@ Gives a conventional model output from
     #>            (Intercept)                      x             time_index 
     #>           1.430000e+01           5.117500e+00           7.000000e-01 
     #>   slope_1_intervention   slope_2_intervention           x:time_index 
-    #>          -3.552714e-15           8.881784e-16          -2.766134e-02 
+    #>          -2.220446e-16           0.000000e+00          -2.766134e-02 
     #> x:slope_1_intervention x:slope_2_intervention 
     #>           1.147794e+00           2.358428e+00 
     #> 
@@ -197,9 +197,9 @@ my_summary_its_model
     #>                     C) Control pre-intervention slope 
     #>                                          7.000000e-01 
     #>                       E) Control intervention 1 slope 
-    #>                                         -3.552714e-15 
+    #>                                         -2.220446e-16 
     #>                       I) Control intervention 2 slope 
-    #>                                          8.881784e-16 
+    #>                                          0.000000e+00 
     #> D) Pilot pre-intervention slope difference to control 
     #>                                         -2.766134e-02 
     #>                         F) Pilot intervention 1 slope 

@@ -53,5 +53,5 @@ default coefficient names with:
 - `x:time_index` becomes "Pilot pre-intervention slope difference to
   control"
 
-Additional terms for up to 9 interventions are automatically renamed,
+Additional terms for up to 3 interventions are automatically renamed,
 reflecting intervention-related slopes in both control and pilot groups.
