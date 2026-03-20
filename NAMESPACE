@@ -3,7 +3,6 @@
 export(fit_its_model)
 export(generate_predictions)
 export(its_plot)
-export(level_difference)
 export(slope_difference)
 export(summary_its)
 export(transform_data)

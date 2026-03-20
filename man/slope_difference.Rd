@@ -18,4 +18,6 @@ A transformed data frame to be passed to \code{transformed_df} in \link{fit_its_
 }
 \description{
 Ascertains whether there is a statistically significant difference in a slope or level during an intervention period between the pilot group and the control group. The estimated difference is relative to the control group. I.e. a positive coefficient means the slope of the pilot group is higher than the control group.
+
+The result is functionally equivalent to a two sided t-test.
 }

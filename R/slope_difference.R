@@ -2,6 +2,8 @@
 #'
 #' @description Ascertains whether there is a statistically significant difference in a slope or level during an intervention period between the pilot group and the control group. The estimated difference is relative to the control group. I.e. a positive coefficient means the slope of the pilot group is higher than the control group.
 #'
+#' The result is functionally equivalent to a two sided t-test.
+#'
 #' @param model model output object from \code{multipleITScontrol::fit_its_model}
 #' @param intervention which intervention to test significance in difference. Integer value of 1, 2, or 3.
 #' @param return Logical for returning pretty output in console. TRUE by default
