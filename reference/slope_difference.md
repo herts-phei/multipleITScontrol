@@ -6,6 +6,8 @@ the control group. The estimated difference is relative to the control
 group. I.e. a positive coefficient means the slope of the pilot group is
 higher than the control group.
 
+The result is functionally equivalent to a two sided t-test.
+
 ## Usage
 
 ``` r

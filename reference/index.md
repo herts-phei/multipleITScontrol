@@ -12,8 +12,6 @@
   : Dummy School Data
 - [`its_plot()`](https://herts-phei.github.io/multipleITScontrol/reference/its_plot.md)
   : its_plot
-- [`level_difference()`](https://herts-phei.github.io/multipleITScontrol/reference/level_difference.md)
-  : level_difference
 - [`slope_difference()`](https://herts-phei.github.io/multipleITScontrol/reference/slope_difference.md)
   : slope_difference
 - [`summary_its()`](https://herts-phei.github.io/multipleITScontrol/reference/summary_its.md)
