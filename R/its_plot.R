@@ -2,6 +2,7 @@
 #'
 #' @description Generates a ggplot2 with the values used in the ITS model along with predicted values.
 #'
+#' @param model model output from `multipleITScontrol::summary_its()`
 #' @param data_with_predictions A data frame containing the initial time series data along with predicts created from `generate_predictions()`
 #' @param time_var  A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.
 #' @param intervention_dates A vector of time points (matching `time_var` type) when interventions start. These time points are mutually exclusive and should not overlap. Should match `intervention_dates` argument used in `fit_its_model()`.

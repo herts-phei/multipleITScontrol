@@ -23,6 +23,8 @@ its_plot(
 )
 }
 \arguments{
+\item{model}{model output from `multipleITScontrol::summary_its()`}
+
 \item{data_with_predictions}{A data frame containing the initial time series data along with predicts created from `generate_predictions()`}
 
 \item{time_var}{A variable indicating the time index in the data frame. It must be a sequential time-series of equal intervals in numeric or a date/POSIXct/POSIXlt class.}
