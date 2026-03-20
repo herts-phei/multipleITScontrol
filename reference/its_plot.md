@@ -27,6 +27,10 @@ its_plot(
 
 ## Arguments
 
+- model:
+
+  model output from \`multipleITScontrol::summary_its()\`
+
 - data_with_predictions:
 
   A data frame containing the initial time series data along with

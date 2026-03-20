@@ -403,7 +403,8 @@ difference.
 its_plot(model = my_summary_its_model,
          data_with_predictions = transformed_data_with_predictions,
          time_var = "time",
-         intervention_dates = as.Date(c("2025-09-05", "2026-03-06")))
+         intervention_dates = as.Date(c("2025-09-05", "2026-03-06")), 
+         y_axis = "Reading Comprehension Score")
 ```
 
 ![](ITScontrol_demonstration_slope_files/figure-html/unnamed-chunk-16-1.png)
