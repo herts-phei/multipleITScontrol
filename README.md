@@ -94,10 +94,10 @@ website here:
 
 Examples of how to use the package for slope interventions can be found
 in the vignette here: [Multiple ITS control introduction for slope
-change
+change (two-stage)
 vignette](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope.html)
 
 Examples of how to use the package for slope interventions can be found
 in the vignette here: [Multiple ITS control introduction for level
-change (two-stage
-example)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_level.html)
+change (two-stage)
+vignette)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_level.html)
