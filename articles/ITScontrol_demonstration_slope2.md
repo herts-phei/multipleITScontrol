@@ -1,4 +1,4 @@
-# Multiple ITS control introduction for slope 2 (second example)
+# Multiple ITS control introduction for slope change 2nd example (two-stage)
 
 ### Usage
 
@@ -28,7 +28,7 @@ slope change for both interventions, but no level change.
 - **Measurement:** Self-reported wellbeing scores measured at start and
   end of intervention.
 
-**Intervention 2: Introducing CBT session**
+**Intervention 2: Introducing AI led CBT session**
 
 - **Objective:** Further increase self-reported wellbeing scores.
 - **Start Date:** June 6, 2022 (immediately after the intervention 1
@@ -174,9 +174,9 @@ Gives a conventional model output from
 However, the coefficients given do not make intuitive sense to a lay
 person. We can call the package’s internal
 [`multipleITScontrol::summary_its()`](https://herts-phei.github.io/multipleITScontrol/reference/summary_its.md)
-which modifies the summary output by renaming the coefficients, variable
-names, and other model-related terms to make them easier to interpret in
-the context of interrupted time series (ITS) analysis.
+which modifies the summary output by renaming the coefficients to make
+them easier to interpret in the context of interrupted time series (ITS)
+analysis.
 
 ``` r
 my_summary_its_model <- multipleITScontrol::summary_its(fitted_ITS_model)
@@ -285,6 +285,163 @@ summary(my_summary_its_model)
     #> Residual standard error: 0.2513081 
     #> Degrees of freedom: 104 total; 96 residual
 
+``` r
+sjPlot::tab_model(
+  my_summary_its_model,
+  dv.labels = "Average School Result",
+  show.se = TRUE,
+  collapse.se = TRUE,
+  linebreak = FALSE,
+  string.est = "Estimate (std. error)",
+  string.ci = "95% CI",
+  p.style = "numeric_stars"
+)
+```
+
+[TABLE]
+
+The predictor coefficients elucidate a few things:
+
+### **Pre-intervention period:**
+
+At the start of the pre-intervention period, ***A)*** ***Control y-axis
+intercept*** represents the modelled starting mark of Forest Tiger
+School, 14.3.
+
+***C) Control pre-intervention slope*** describes the pre-intervention
+slope in the control group (0.7).
+
+***D) Pilot pre-intervention slope difference to control*** describes
+the difference in the pre-intervention slope in the control group with
+the pilot group. This coefficient is additive to C) ***Control
+pre-intervention slope***. I.e. 0.7 (C) + -0.03 (D) = 0.67 is the
+pre-intervention slope per x-axis unit in the pilot data.
+
+### **First intervention**:
+
+***E) Control intervention 1 slope*** describes the slope change that
+occurs at the intervention break point in the control group at the start
+of the first intervention, compared to it’s pre-intervention period (0).
+
+***F) Pilot intervention 1 slope*** describes the difference in the
+slope change that occurs at the intervention timepoint in the control
+group for the first intervention compared to the pilot (1.15).
+
+These slope changes are pertinent to the slope gradients given in the
+pre-intervention period. Thus, we add the coefficients ***E)***
+***Control intervention 1 slope** to **C)*** ***Control pre-intervention
+slope***: 0 + 0.7 = 0.7 is the average increase for each x-axis unit
+during the first intervention for the control data.
+
+To ascertain the slope for the pilot data, we add to the
+pre-intervention slope of the pilot data, the coefficients ***E)***
+***Control intervention 1 slope*** and ***F)*** ***Pilot intervention 1
+slope***. ***E*** (0) + ***F*** (1.15) + ***(C)*** 0.7 + ***D*** -0.03
+(D) = 1.82 is the average increase for each x-axis unit during the first
+intervention for the pilot data.
+
+To ascertain statistical significance with the first intervention slope,
+we call the function’s
+[`multipleITScontrol::slope_difference()`](https://herts-phei.github.io/multipleITScontrol/reference/slope_difference.md).
+
+``` r
+slope_difference(model = my_summary_its_model, intervention = 1)
+```
+
+    #> ## INTERVENTION  1 ## 
+    #> 
+    #>  Slope for treatment per x-axis unit: 1.82 
+    #>  Slope for control per x-axis unit: 0.7 
+    #>  Slope difference: 1.12 
+    #>  95% CI: 1.06 to 1.18 
+    #>  p-value: <0.001 
+    #>  Slope control coefficients: E+C 
+    #>  Slope treatment coefficients: E+C+D+F 
+    #> 
+    #> # A tibble: 9 × 3
+    #>   Variable                     Value_Raw Value_Formatted
+    #>   <chr>                            <dbl> <chr>          
+    #> 1 Intervention                  1   e+ 0 1              
+    #> 2 Slope for treatment           1.82e+ 0 1.82           
+    #> 3 Slope for control             7   e- 1 0.7            
+    #> 4 Slope difference              1.12e+ 0 1.12           
+    #> 5 Lower 95% CI                  1.06e+ 0 1.06           
+    #> 6 Upper 95% CI                  1.18e+ 0 1.18           
+    #> 7 p.value                       2.03e-59 <0.001         
+    #> 8 Slope treatment coefficients NA        E+C+D+F        
+    #> 9 Slope control coefficients   NA        E+C
+
+This brings up the key coefficients and values needed to compare the
+slopes of the pilot and control during the first intervention.
+
+We identify that the slope difference between the treatment (Alpine
+Meadow School) and the control (Forest Tiger School) for the first
+intervention (Reading Programme) has a slope difference of 0.31 (95% CI:
+0.29 - 0.32) per x-axis unit, with a p-value below 0.05, indicating
+statistical significance.
+
+### **Second intervention:**
+
+***I) Control intervention 2 slope*** describes the slope change that
+occurs at the intervention break point in the control group at the start
+of the second intervention (0).
+
+Thus, the modelled slope change in the second intervention is ***C)
+Control pre-intervention slope*** (0.7) + **E) Control intervention 1
+slope** (0) + ***I) Control intervention 2 slope*** (0) = 0.7 is the
+average cumulative uptake increase for each x-axis unit during the
+second intervention for the control data.
+
+***J) Pilot intervention 2 slope*** describes the difference in the
+slope change that occurs at the intervention timepoint in the control
+group for the second intervention. (2.36).
+
+These slope changes are pertinent to the slope gradients given in the
+pre-intervention and first intervention period. Thus, we add the
+coefficients ***C*** (0.7) + ***D*** (-0.03) + ***E*** (0) + ***F***
+(1.15) + ***I*** (0) + ***J*** (2.36) = 4.18 is the average cumulative
+increase for each x-axis unit during the second intervention for the
+pilot data.
+
+To ascertain statistical significance with the second intervention
+slope, we call the function’s
+[`multipleITScontrol::slope_difference()`](https://herts-phei.github.io/multipleITScontrol/reference/slope_difference.md)
+again, but change the intervention parameter.
+
+``` r
+slope_difference(model = my_summary_its_model, intervention = 2)
+```
+
+    #> ## INTERVENTION  2 ## 
+    #> 
+    #>  Slope for treatment per x-axis unit: 4.18 
+    #>  Slope for control per x-axis unit: 0.7 
+    #>  Slope difference: 3.48 
+    #>  95% CI: 3.46 to 3.5 
+    #>  p-value: <0.001 
+    #>  Slope control coefficients: E+C+I 
+    #>  Slope treatment coefficients: E+C+D+F+I+J 
+    #> 
+    #> # A tibble: 9 × 3
+    #>   Variable                      Value_Raw Value_Formatted
+    #>   <chr>                             <dbl> <chr>          
+    #> 1 Intervention                  2   e+  0 2              
+    #> 2 Slope for treatment           4.18e+  0 4.18           
+    #> 3 Slope for control             7   e-  1 0.7            
+    #> 4 Slope difference              3.48e+  0 3.48           
+    #> 5 Lower 95% CI                  3.46e+  0 3.46           
+    #> 6 Upper 95% CI                  3.50e+  0 3.5            
+    #> 7 p.value                       4.50e-156 <0.001         
+    #> 8 Slope treatment coefficients NA         E+C+D+F+I+J    
+    #> 9 Slope control coefficients   NA         E+C+I
+
+We identify that the slope difference between the treatment (Alpine
+Meadow School) and the control (Forest Tiger School) for the first
+intervention (Reading Programme) has a slope difference of 0.23 (95% CI:
+0.22 - 0.25) per x-axis unit, with a p-value below 0.05, indicating
+statistical significance. The effect has been attenuated compared to the
+first intervention, and this is evident from the plot in step 6.
+
 ## Step 5) Fitting Predictions
 
 We can fit predictions with the created model which project the
@@ -311,7 +468,7 @@ its_plot(model = my_summary_its_model,
          intervention_dates = intervention_dates)
 ```
 
-![](ITScontrol_demonstration_slope2_files/figure-html/unnamed-chunk-12-1.png)
+![](ITScontrol_demonstration_slope2_files/figure-html/unnamed-chunk-18-1.png)
 
 In this example, the treatment variable is for *Albridge Medical
 Practice*, whilst the control is for *Hollybush Medical Practice*. The

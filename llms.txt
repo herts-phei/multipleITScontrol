@@ -81,13 +81,13 @@ website here:
 
 Examples of how to use the package for slope interventions can be found
 in the vignette here: [Multiple ITS control introduction for slope
-change
+change (two-stage)
 vignette](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope.html)
 
 Examples of how to use the package for slope interventions can be found
 in the vignette here: [Multiple ITS control introduction for level
-change (two-stage
-example)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_level.html)
+change (two-stage)
+vignette)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_level.html)
 
 # Package index
 
@@ -118,5 +118,5 @@ example)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_de
   (two-stage)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_level.md):
 - [Multiple ITS control introduction for slope change
   (two-stage)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope.md):
-- [Multiple ITS control introduction for slope 2 (second
-  example)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope2.md):
+- [Multiple ITS control introduction for slope change 2nd example
+  (two-stage)](https://herts-phei.github.io/multipleITScontrol/articles/ITScontrol_demonstration_slope2.md):

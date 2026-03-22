@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Multiple ITS control introduction for slope 2 (second example) • multipleITScontrol</title>
+<title>Multiple ITS control introduction for slope change 2nd example (two-stage) • multipleITScontrol</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Multiple ITS control introduction for slope 2 (second example)">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Multiple ITS control introduction for slope change 2nd example (two-stage)">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -35,7 +35,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/ITScontrol_demonstration_level.html">Multiple ITS control introduction for level change (two-stage)</a></li>
     <li><a class="dropdown-item" href="../articles/ITScontrol_demonstration_slope.html">Multiple ITS control introduction for slope change (two-stage)</a></li>
-    <li><a class="dropdown-item" href="../articles/ITScontrol_demonstration_slope2.html">Multiple ITS control introduction for slope 2 (second example)</a></li>
+    <li><a class="dropdown-item" href="../articles/ITScontrol_demonstration_slope2.html">Multiple ITS control introduction for slope change 2nd example (two-stage)</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -60,7 +60,7 @@
 <script src="ITScontrol_demonstration_slope2_files/dt-core-1.13.6/js/jquery.dataTables.min.js"></script><link href="ITScontrol_demonstration_slope2_files/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
 <script src="ITScontrol_demonstration_slope2_files/crosstalk-1.2.2/js/crosstalk.min.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Multiple ITS control introduction for slope 2 (second example)</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Multiple ITS control introduction for slope change 2nd example (two-stage)</h1>
             
       
 
@@ -103,7 +103,7 @@ improve self-regulation.</li>
 <strong>Measurement:</strong> Self-reported wellbeing scores
 measured at start and end of intervention.</li>
 </ul>
-<p><strong>Intervention 2: Introducing CBT session</strong></p>
+<p><strong>Intervention 2: Introducing AI led CBT session</strong></p>
 <ul>
 <li>
 <strong>Objective:</strong> Further increase self-reported wellbeing
@@ -260,9 +260,8 @@ number of interventions.</p>
 <p>However, the coefficients given do not make intuitive sense to a lay
 person. We can call the package’s internal
 <code><a href="../reference/summary_its.html">multipleITScontrol::summary_its()</a></code> which modifies the
-summary output by renaming the coefficients, variable names, and other
-model-related terms to make them easier to interpret in the context of
-interrupted time series (ITS) analysis.</p>
+summary output by renaming the coefficients to make them easier to
+interpret in the context of interrupted time series (ITS) analysis.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_summary_its_model</span> <span class="op">&lt;-</span> <span class="fu">multipleITScontrol</span><span class="fu">::</span><span class="fu"><a href="../reference/summary_its.html">summary_its</a></span><span class="op">(</span><span class="va">fitted_ITS_model</span><span class="op">)</span></span>
 <span></span>
@@ -364,6 +363,323 @@ interrupted time series (ITS) analysis.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residual standard error: 0.2513081 </span></span>
 <span><span class="co">#&gt; Degrees of freedom: 104 total; 96 residual</span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">sjPlot</span><span class="fu">::</span><span class="fu"><a href="https://strengejacke.github.io/sjPlot/reference/tab_model.html" class="external-link">tab_model</a></span><span class="op">(</span></span>
+<span>  <span class="va">my_summary_its_model</span>,</span>
+<span>  dv.labels <span class="op">=</span> <span class="st">"Average School Result"</span>,</span>
+<span>  show.se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  collapse.se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  linebreak <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  string.est <span class="op">=</span> <span class="st">"Estimate (std. error)"</span>,</span>
+<span>  string.ci <span class="op">=</span> <span class="st">"95% CI"</span>,</span>
+<span>  p.style <span class="op">=</span> <span class="st">"numeric_stars"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<table style="border-collapse:collapse; border:none;" class="table">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Average School Result
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimate (std. error)
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+95% CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol style="list-style-type: upper-alpha"><li>Control y-axis<br>intercept
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+14.30 <sup>***</sup> (0.18)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+13.94 – 14.66
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol start="2" style="list-style-type: upper-alpha"><li>Pilot y-axis intercept<br>difference to control
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+5.12 <sup>***</sup> (0.26)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+4.61 – 5.63
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol start="3" style="list-style-type: upper-alpha"><li>Control<br>pre-intervention slope
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.70 <sup>***</sup> (0.02)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.66 – 0.74
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol start="5" style="list-style-type: upper-alpha"><li>Control intervention 1<br>slope
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00 <sup></sup> (0.04)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.08 – 0.08
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.000
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol style="list-style-type: upper-roman"><li>Control intervention 2<br>slope
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.00 <sup></sup> (0.03)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.05 – 0.05
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.000
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol start="4" style="list-style-type: upper-alpha"><li>Pilot pre-intervention<br>slope difference to<br>control
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.03 <sup></sup> (0.03)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.09 – 0.03
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.346
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol start="6" style="list-style-type: upper-alpha"><li>Pilot intervention 1<br>slope
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.15 <sup>***</sup> (0.05)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.04 – 1.25
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+<ol start="10" style="list-style-type: upper-alpha"><li>Pilot intervention 2<br>slope
+</li></ol>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.36 <sup>***</sup> (0.04)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.29 – 2.43
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+104
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+1.000
+</td>
+</tr>
+<tr>
+<td colspan="4" style="font-style:italic; border-top:double black; text-align:right;">
+<ul><li>p&lt;0.05   ** p&lt;0.01   *** p&lt;0.001
+</li></ul>
+</td>
+</tr>
+</table>
+<p>The predictor coefficients elucidate a few things:</p>
+<div class="section level3">
+<h3 id="pre-intervention-period">
+<strong>Pre-intervention period:</strong><a class="anchor" aria-label="anchor" href="#pre-intervention-period"></a>
+</h3>
+<p>At the start of the pre-intervention period,
+<strong><em>A)</em></strong> <strong><em>Control y-axis
+intercept</em></strong> represents the modelled starting mark of Forest
+Tiger School, 14.3.</p>
+<p><strong><em>C) Control pre-intervention slope</em></strong> describes
+the pre-intervention slope in the control group (0.7).</p>
+<p><strong><em>D) Pilot pre-intervention slope difference to
+control</em></strong> describes the difference in the pre-intervention
+slope in the control group with the pilot group. This coefficient is
+additive to C) <strong><em>Control pre-intervention slope</em></strong>.
+I.e. 0.7 (C) + -0.03 (D) = 0.67 is the pre-intervention slope per x-axis
+unit in the pilot data.</p>
+</div>
+<div class="section level3">
+<h3 id="first-intervention">
+<strong>First intervention</strong>:<a class="anchor" aria-label="anchor" href="#first-intervention"></a>
+</h3>
+<p><strong><em>E) Control intervention 1 slope</em></strong> describes
+the slope change that occurs at the intervention break point in the
+control group at the start of the first intervention, compared to it’s
+pre-intervention period (0).</p>
+<p><strong><em>F) Pilot intervention 1 slope</em></strong> describes the
+difference in the slope change that occurs at the intervention timepoint
+in the control group for the first intervention compared to the pilot
+(1.15).</p>
+<p>These slope changes are pertinent to the slope gradients given in the
+pre-intervention period. Thus, we add the coefficients
+<strong><em>E)</em></strong> <em><strong>Control intervention 1
+slope</strong> to <strong>C)</strong></em> <strong><em>Control
+pre-intervention slope</em></strong>: 0 + 0.7 = 0.7 is the average
+increase for each x-axis unit during the first intervention for the
+control data.</p>
+<p>To ascertain the slope for the pilot data, we add to the
+pre-intervention slope of the pilot data, the coefficients
+<strong><em>E)</em></strong> <strong><em>Control intervention 1
+slope</em></strong> and <strong><em>F)</em></strong> <strong><em>Pilot
+intervention 1 slope</em></strong>. <strong><em>E</em></strong> (0) +
+<strong><em>F</em></strong> (1.15) + <strong><em>(C)</em></strong> 0.7 +
+<strong><em>D</em></strong> -0.03 (D) = 1.82 is the average increase for
+each x-axis unit during the first intervention for the pilot data.</p>
+<p>To ascertain statistical significance with the first intervention
+slope, we call the function’s
+<code><a href="../reference/slope_difference.html">multipleITScontrol::slope_difference()</a></code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/slope_difference.html">slope_difference</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">my_summary_its_model</span>, intervention <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; ## INTERVENTION  1 ## </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Slope for treatment per x-axis unit: 1.82 </span></span>
+<span><span class="co">#&gt;  Slope for control per x-axis unit: 0.7 </span></span>
+<span><span class="co">#&gt;  Slope difference: 1.12 </span></span>
+<span><span class="co">#&gt;  95% CI: 1.06 to 1.18 </span></span>
+<span><span class="co">#&gt;  p-value: &lt;0.001 </span></span>
+<span><span class="co">#&gt;  Slope control coefficients: E+C </span></span>
+<span><span class="co">#&gt;  Slope treatment coefficients: E+C+D+F </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 3</span></span></span>
+<span><span class="co">#&gt;   Variable                     Value_Raw Value_Formatted</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Intervention                  1   <span style="color: #949494;">e</span>+ 0 1              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Slope for treatment           1.82<span style="color: #949494;">e</span>+ 0 1.82           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Slope for control             7   <span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.7            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Slope difference              1.12<span style="color: #949494;">e</span>+ 0 1.12           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Lower 95% CI                  1.06<span style="color: #949494;">e</span>+ 0 1.06           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Upper 95% CI                  1.18<span style="color: #949494;">e</span>+ 0 1.18           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> p.value                       2.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-59</span> &lt;0.001         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Slope treatment coefficients <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>    E+C+D+F        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> Slope control coefficients   <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>    E+C</span></span></code></pre>
+<p>This brings up the key coefficients and values needed to compare the
+slopes of the pilot and control during the first intervention.</p>
+<p>We identify that the slope difference between the treatment (Alpine
+Meadow School) and the control (Forest Tiger School) for the first
+intervention (Reading Programme) has a slope difference of 0.31 (95% CI:
+0.29 - 0.32) per x-axis unit, with a p-value below 0.05, indicating
+statistical significance.</p>
+<!-- Whilst the value of the slope difference is close to the coefficient ***F*** (Pilot intervention 2) in our regression coefficients table, we must still calculate this with the above calculations which `slope_difference()` provides, as the similarity is only due to the slopes of the control and pilot being zero for the pre-intervention period and the control having close to a zero slope for the first intervention. -->
+</div>
+<div class="section level3">
+<h3 id="second-intervention">
+<strong>Second intervention:</strong><a class="anchor" aria-label="anchor" href="#second-intervention"></a>
+</h3>
+<p><strong><em>I) Control intervention 2 slope</em></strong> describes
+the slope change that occurs at the intervention break point in the
+control group at the start of the second intervention (0).</p>
+<p>Thus, the modelled slope change in the second intervention is
+<strong><em>C) Control pre-intervention slope</em></strong> (0.7) +
+<strong>E) Control intervention 1 slope</strong> (0) + <strong><em>I)
+Control intervention 2 slope</em></strong> (0) = 0.7 is the average
+cumulative uptake increase for each x-axis unit during the second
+intervention for the control data.</p>
+<p><strong><em>J) Pilot intervention 2 slope</em></strong> describes the
+difference in the slope change that occurs at the intervention timepoint
+in the control group for the second intervention. (2.36).</p>
+<p>These slope changes are pertinent to the slope gradients given in the
+pre-intervention and first intervention period. Thus, we add the
+coefficients <strong><em>C</em></strong> (0.7) +
+<strong><em>D</em></strong> (-0.03) + <strong><em>E</em></strong> (0) +
+<strong><em>F</em></strong> (1.15) + <strong><em>I</em></strong> (0) +
+<strong><em>J</em></strong> (2.36) = 4.18 is the average cumulative
+increase for each x-axis unit during the second intervention for the
+pilot data.</p>
+<p>To ascertain statistical significance with the second intervention
+slope, we call the function’s
+<code><a href="../reference/slope_difference.html">multipleITScontrol::slope_difference()</a></code> again, but change
+the intervention parameter.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/slope_difference.html">slope_difference</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">my_summary_its_model</span>, intervention <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; ## INTERVENTION  2 ## </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  Slope for treatment per x-axis unit: 4.18 </span></span>
+<span><span class="co">#&gt;  Slope for control per x-axis unit: 0.7 </span></span>
+<span><span class="co">#&gt;  Slope difference: 3.48 </span></span>
+<span><span class="co">#&gt;  95% CI: 3.46 to 3.5 </span></span>
+<span><span class="co">#&gt;  p-value: &lt;0.001 </span></span>
+<span><span class="co">#&gt;  Slope control coefficients: E+C+I </span></span>
+<span><span class="co">#&gt;  Slope treatment coefficients: E+C+D+F+I+J </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 3</span></span></span>
+<span><span class="co">#&gt;   Variable                      Value_Raw Value_Formatted</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Intervention                  2   <span style="color: #949494;">e</span>+  0 2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Slope for treatment           4.18<span style="color: #949494;">e</span>+  0 4.18           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Slope for control             7   <span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span> 0.7            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Slope difference              3.48<span style="color: #949494;">e</span>+  0 3.48           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Lower 95% CI                  3.46<span style="color: #949494;">e</span>+  0 3.46           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Upper 95% CI                  3.50<span style="color: #949494;">e</span>+  0 3.5            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> p.value                       4.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-156</span> &lt;0.001         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Slope treatment coefficients <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>     E+C+D+F+I+J    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> Slope control coefficients   <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>     E+C+I</span></span></code></pre>
+<p>We identify that the slope difference between the treatment (Alpine
+Meadow School) and the control (Forest Tiger School) for the first
+intervention (Reading Programme) has a slope difference of 0.23 (95% CI:
+0.22 - 0.25) per x-axis unit, with a p-value below 0.05, indicating
+statistical significance. The effect has been attenuated compared to the
+first intervention, and this is evident from the plot in step 6.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="step-5-fitting-predictions">Step 5) Fitting Predictions<a class="anchor" aria-label="anchor" href="#step-5-fitting-predictions"></a>
@@ -372,7 +688,7 @@ interrupted time series (ITS) analysis.</p>
 pre-intervention period into the post-intervention period by using the
 model coefficients using
 <code><a href="../reference/generate_predictions.html">multipleITScontrol::generate_predictions()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">transformed_data_with_predictions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_predictions.html">generate_predictions</a></span><span class="op">(</span><span class="va">transformed_data</span>, <span class="va">fitted_ITS_model</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">transformed_data_with_predictions</span></span></code></pre></div>
@@ -383,12 +699,12 @@ model coefficients using
 <p>We can use the predicted values and map the segmented regression
 lines which compare whether an intervention had a statistically
 significant difference.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/its_plot.html">its_plot</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">my_summary_its_model</span>,</span>
 <span>         data_with_predictions <span class="op">=</span> <span class="va">transformed_data_with_predictions</span>, </span>
 <span>         time_var <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>         intervention_dates <span class="op">=</span> <span class="va">intervention_dates</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ITScontrol_demonstration_slope2_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
+<p><img src="ITScontrol_demonstration_slope2_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="672" style="display: block; margin: auto;"></p>
 <p>In this example, the treatment variable is for <em>Albridge Medical
 Practice</em>, whilst the control is for <em>Hollybush Medical
 Practice</em>. The treatment slope shows there was a significant slope
