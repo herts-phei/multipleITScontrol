@@ -250,8 +250,8 @@ School, 81.89.
 slope in the control group (0).
 
 ***D) Pilot pre-intervention slope difference to control*** describes
-the difference in the pre-intervention slope in the control group with
-the pilot group. This coefficient is additive to C) ***Control
+the difference in the pre-intervention slope in the pilot group with the
+control group. This coefficient is additive to C) ***Control
 pre-intervention slope***. I.e. 0 (C) + -0.01 (D) = -0.01 is the
 pre-intervention slope per x-axis unit in the pilot data.
 
@@ -262,8 +262,8 @@ occurs at the intervention break point in the control group at the start
 of the first intervention, compared to it’s pre-intervention period (0).
 
 ***F) Pilot intervention 1 slope*** describes the difference in the
-slope change that occurs at the intervention timepoint in the control
-group for the first intervention compared to the pilot (0.32).
+slope change that occurs at the intervention timepoint in the pilot
+group for the first intervention compared to the control (0.32).
 
 These slope changes are pertinent to the slope gradients given in the
 pre-intervention period. Thus, we add the coefficients ***E)***
@@ -331,8 +331,8 @@ the average cumulative uptake increase for each x-axis unit during the
 second intervention for the control data.
 
 ***J) Pilot intervention 2 slope*** describes the difference in the
-slope change that occurs at the intervention timepoint in the control
-group for the second intervention. (-0.07).
+slope change that occurs at the intervention timepoint in the pilot
+group for the second intervention compared to the control. (-0.07).
 
 These slope changes are pertinent to the slope gradients given in the
 pre-intervention and first intervention period. Thus, we add the
