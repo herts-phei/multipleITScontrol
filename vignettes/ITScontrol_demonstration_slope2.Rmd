@@ -241,7 +241,7 @@ summary(my_summary_its_model)
 ```{r, echo = TRUE, results='hide'}
 sjPlot::tab_model(
   my_summary_its_model,
-  dv.labels = "Average School Result",
+  dv.labels = "Self-reported Wellbeing Score",
   show.se = TRUE,
   collapse.se = TRUE,
   linebreak = FALSE,
@@ -254,7 +254,7 @@ sjPlot::tab_model(
 ```{r}
 sjPlot::tab_model(
   my_summary_its_model,
-  dv.labels = "Average School Result",
+  dv.labels = "Self-reported Wellbeing Score",
   show.se = TRUE,
   collapse.se = TRUE,
   linebreak = FALSE,
@@ -354,7 +354,8 @@ We can use the predicted values and map the segmented regression lines which com
 its_plot(model = my_summary_its_model,
          data_with_predictions = transformed_data_with_predictions, 
          time_var = "time",
-         intervention_dates = intervention_dates)
+         intervention_dates = intervention_dates, 
+         y_axis = "Self-reported Wellbeing Score")
 ```
 
 In this example, the treatment variable is for *Albridge Medical Practice*, whilst the control is for *Hollybush Medical Practice*. The treatment slope shows there was a significant slope change immediately after the first intervention in April 2022, but not in the second intervention in June 2022.
