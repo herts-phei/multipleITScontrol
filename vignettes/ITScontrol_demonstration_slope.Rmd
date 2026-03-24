@@ -272,13 +272,13 @@ At the start of the pre-intervention period, ***A)*** ***Control y-axis intercep
 
 ***C) Control pre-intervention slope*** describes the pre-intervention slope in the control group (`r c`).
 
-***D) Pilot pre-intervention slope difference to control*** describes the difference in the pre-intervention slope in the control group with the pilot group. This coefficient is additive to C) ***Control pre-intervention slope***. I.e. `r c` (C) + `r d` (D) = `r c+d` is the pre-intervention slope per x-axis unit in the pilot data.
+***D) Pilot pre-intervention slope difference to control*** describes the difference in the pre-intervention slope in the pilot group with the control group. This coefficient is additive to C) ***Control pre-intervention slope***. I.e. `r c` (C) + `r d` (D) = `r c+d` is the pre-intervention slope per x-axis unit in the pilot data.
 
 ## **First intervention**:
 
 ***E) Control intervention 1 slope*** describes the slope change that occurs at the intervention break point in the control group at the start of the first intervention, compared to it's pre-intervention period (`r e`).
 
-***F) Pilot intervention 1 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the control group for the first intervention compared to the pilot (`r f`).
+***F) Pilot intervention 1 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the pilot group for the first intervention compared to the control (`r f`).
 
 These slope changes are pertinent to the slope gradients given in the pre-intervention period. Thus, we add the coefficients ***E)*** ***Control intervention 1 slope** to **C)*** ***Control pre-intervention slope***: `r e` + `r c` = `r e+c` is the average increase for each x-axis unit during the first intervention for the control data.
 
@@ -307,7 +307,7 @@ We identify that the slope difference between the treatment (Alpine Meadow Schoo
 
 Thus, the modelled slope change in the second intervention is ***C) Control pre-intervention slope*** (`r c`) + **E) Control intervention 1 slope** (`r e`) + ***I) Control intervention 2 slope*** (`r i`) = `r c+e+i` is the average cumulative uptake increase for each x-axis unit during the second intervention for the control data.
 
-***J) Pilot intervention 2 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the control group for the second intervention. (`r j`).
+***J) Pilot intervention 2 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the pilot group for the second intervention compared to the control. (`r j`).
 
 These slope changes are pertinent to the slope gradients given in the pre-intervention and first intervention period. Thus, we add the coefficients ***C*** (`r c`) + ***D*** (`r d`) + ***E*** (`r e`) + ***F*** (`r f`) + ***I*** (`r i`) + ***J*** (`r j`) = `r c+d+e+f+i+j` is the average cumulative increase for each x-axis unit during the second intervention for the pilot data.
 
