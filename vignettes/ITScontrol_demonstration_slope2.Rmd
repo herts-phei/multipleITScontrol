@@ -133,33 +133,7 @@ The calendar plot below summarises the timeline of the interventions:
 
 ```{r calendar, echo = FALSE, warning = FALSE, message = FALSE, fig.align="center", fig.height=10, fig.width=7, fig.retina=3}
 
-# Create a date range vector for Fridays only
-date_range <- seq(as.Date("2022-01-01"), as.Date("2022-12-31"), by = "day")
-mondays <- date_range[weekdays(date_range) == "Monday"]
-
-# Create a tibble with the date range
-tibble_data <- tibble(Date = rep(mondays, 2))
-
-# Add group_var with 'treatment' and 'control' groups
-tibble_data <- tibble_data %>%
-  mutate(group_var = rep(c('treatment', 'control'), each = length(mondays)))
-
-# Add Period column using mutate and case_when
-set.seed(48)
-tibble_data <- tibble_data %>%
-  mutate(Period = case_when(
-    Date >= as.Date("2022-01-01") & Date <= as.Date("2022-04-03") ~ "Pre-intervention period",
-    Date >= as.Date("2022-04-04") & Date <= as.Date("2022-06-05") ~ "Intervention 1) Low-Intensity Interventions",
-    Date >= as.Date("2022-06-06") & Date <= as.Date("2022-12-31") ~ "Intervention 2) High-Intensity Interventions"
-  )) %>%
-  mutate(score = case_when(
-    Period == "Pre-intervention period" & group_var == "treatment" ~ 20 + 0.1 * as.numeric(Date - min(Date)), ### 20 being baseline scores start from, 0.1 for initial slope increase
-    Period == "Intervention 1) Low-Intensity Interventions" & group_var == "treatment" ~ 20 + 0.1 * as.numeric(Date - min(Date)) + 0.2 * as.numeric(Date - as.Date("2022-04-04")), ## 0.2 for slope increase but no level change
-    Period == "Intervention 2) High-Intensity Interventions" & group_var == "treatment" ~ 20 + 0.1 * as.numeric(Date - min(Date)) + 0.2 * as.numeric(Date - as.Date("2022-04-04")) + 0.3 * as.numeric(Date - as.Date("2022-06-05")), ### 0.3 for 2nd slop increase but no level change
-    group_var == "control" ~ 15 + 0.1 * as.numeric(Date - min(Date))
-  ))
-
-tibble_data_calendar <- tibble_data |> 
+tibble_data_calendar <- its_data_gp |> 
     group_by(group_var) |>
     arrange(group_var, Date) |> 
     tidyr::complete(Date = seq(min(Date), max(Date), by = "day")) |> 
@@ -187,12 +161,12 @@ plot
 
 # Step 1) Loading data
 
-Sample data can be loaded from the package for this scenario through the bundled dataset `its_data_medical_practice`.
+Sample data can be loaded from the package for this scenario through the bundled dataset `its_data_gp`.
 
 <br></br>
 
 ```{r step_1_load_data}
-DT::datatable(tibble_data, options = list(dom = 'tip'), rownames = FALSE)
+DT::datatable(its_data_gp, options = list(dom = 'tip'), rownames = FALSE)
 ```
 
 <br></br>
@@ -210,7 +184,7 @@ The data frame should be passed to `multipleITScontrol::tranform_data()` with su
 ```{r, echo = TRUE, results='hide'}
 intervention_dates <- c(as.Date("2022-04-04"), as.Date("2022-06-06"))
 transformed_data <- 
-  multipleITScontrol::transform_data(df = tibble_data,
+  multipleITScontrol::transform_data(df = its_data_gp,
                time_var = "Date",
                group_var = "group_var",
                outcome_var =  "score",
@@ -302,17 +276,17 @@ The predictor coefficients elucidate a few things:
 
 ## **Pre-intervention period:**
 
-At the start of the pre-intervention period, ***A)*** ***Control y-axis intercept*** represents the modelled starting mark of Forest Tiger School, `r a`.
+At the start of the pre-intervention period, ***A)*** ***Control y-axis intercept*** represents the modelled starting score of Hollybush Medical Practice, `r a`.
 
 ***C) Control pre-intervention slope*** describes the pre-intervention slope in the control group (`r c`).
 
-***D) Pilot pre-intervention slope difference to control*** describes the difference in the pre-intervention slope in the control group with the pilot group. This coefficient is additive to C) ***Control pre-intervention slope***. I.e. `r c` (C) + `r d` (D) = `r c+d` is the pre-intervention slope per x-axis unit in the pilot data.
+***D) Pilot pre-intervention slope difference to control*** describes the difference in the pre-intervention slope in the pilot group with the control group. This coefficient is additive to C) ***Control pre-intervention slope***. I.e. `r c` (C) + `r d` (D) = `r c+d` is the pre-intervention slope per x-axis unit in the pilot data.
 
 ## **First intervention**:
 
 ***E) Control intervention 1 slope*** describes the slope change that occurs at the intervention break point in the control group at the start of the first intervention, compared to it's pre-intervention period (`r e`).
 
-***F) Pilot intervention 1 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the control group for the first intervention compared to the pilot (`r f`).
+***F) Pilot intervention 1 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the pilot group for the first intervention compared to the control (`r f`).
 
 These slope changes are pertinent to the slope gradients given in the pre-intervention period. Thus, we add the coefficients ***E)*** ***Control intervention 1 slope** to **C)*** ***Control pre-intervention slope***: `r e` + `r c` = `r e+c` is the average increase for each x-axis unit during the first intervention for the control data.
 
@@ -331,7 +305,7 @@ slope_difference(model = my_summary_its_model, intervention = 1)
 
 This brings up the key coefficients and values needed to compare the slopes of the pilot and control during the first intervention.
 
-We identify that the slope difference between the treatment (Alpine Meadow School) and the control (Forest Tiger School) for the first intervention (Reading Programme) has a slope difference of 0.31 (95% CI: 0.29 - 0.32) per x-axis unit, with a p-value below 0.05, indicating statistical significance.
+We identify that the slope difference between the treatment (Albridge Medical Practice) and the control (Hollybush Medical Practice) for the first intervention (Reading Programme) has a slope difference of 0.34 (95% CI: 0.32 - 0.36) per x-axis unit, with a p-value of <0.001, indicating statistical significance.
 
 <!-- Whilst the value of the slope difference is close to the coefficient ***F*** (Pilot intervention 2) in our regression coefficients table, we must still calculate this with the above calculations which `slope_difference()` provides, as the similarity is only due to the slopes of the control and pilot being zero for the pre-intervention period and the control having close to a zero slope for the first intervention. -->
 
@@ -341,7 +315,7 @@ We identify that the slope difference between the treatment (Alpine Meadow Schoo
 
 Thus, the modelled slope change in the second intervention is ***C) Control pre-intervention slope*** (`r c`) + **E) Control intervention 1 slope** (`r e`) + ***I) Control intervention 2 slope*** (`r i`) = `r c+e+i` is the average cumulative uptake increase for each x-axis unit during the second intervention for the control data.
 
-***J) Pilot intervention 2 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the control group for the second intervention. (`r j`).
+***J) Pilot intervention 2 slope*** describes the difference in the slope change that occurs at the intervention timepoint in the pilot group for the second intervention. (`r j`).
 
 These slope changes are pertinent to the slope gradients given in the pre-intervention and first intervention period. Thus, we add the coefficients ***C*** (`r c`) + ***D*** (`r d`) + ***E*** (`r e`) + ***F*** (`r f`) + ***I*** (`r i`) + ***J*** (`r j`) = `r c+d+e+f+i+j` is the average cumulative increase for each x-axis unit during the second intervention for the pilot data.
 
@@ -356,7 +330,7 @@ slope_difference(model = my_summary_its_model, intervention = 2)
 
 ```
 
-We identify that the slope difference between the treatment (Alpine Meadow School) and the control (Forest Tiger School) for the first intervention (Reading Programme) has a slope difference of 0.23 (95% CI: 0.22 - 0.25) per x-axis unit, with a p-value below 0.05, indicating statistical significance. The effect has been attenuated compared to the first intervention, and this is evident from the plot in step 6.
+We identify that the slope difference between the treatment (Albridge Medical Practice) and the control (Hollybush Medical Practice) for the second intervention (Reading Programme) has a slope difference of 0 (95% CI: -0.01 - 0.01) per x-axis unit, with a p-value of 0.636, indicating a non statistically significant result. The effect has been attenuated compared to the first intervention, and this is evident from the plot in step 6.
 
 # Step 5) Fitting Predictions
 
@@ -383,4 +357,4 @@ its_plot(model = my_summary_its_model,
          intervention_dates = intervention_dates)
 ```
 
-In this example, the treatment variable is for *Albridge Medical Practice*, whilst the control is for *Hollybush Medical Practice*. The treatment slope shows there was a significant slope change immediately after the first intervention in April 2022, and in the second intervention in June 2022.
+In this example, the treatment variable is for *Albridge Medical Practice*, whilst the control is for *Hollybush Medical Practice*. The treatment slope shows there was a significant slope change immediately after the first intervention in April 2022, but not in the second intervention in June 2022.
