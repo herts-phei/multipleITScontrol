@@ -374,7 +374,7 @@ slope_difference(model = my_summary_its_model, intervention = 2)
     #> 9 Slope control coefficients   NA        E+C+I
 
 We identify that the slope difference between the treatment (Alpine
-Meadow School) and the control (Forest Tiger School) for the first
+Meadow School) and the control (Forest Tiger School) for the second
 intervention (Reading Programme) has a slope difference of 0.23 (95% CI:
 0.22 - 0.25) per x-axis unit, with a p-value below 0.05, indicating
 statistical significance. The effect has been attenuated compared to the
