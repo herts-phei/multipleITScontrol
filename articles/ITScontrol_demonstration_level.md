@@ -155,19 +155,19 @@ Gives a conventional model output from
     #>                     (Intercept)                               x 
     #>                    34.903728273                     0.382223093 
     #>                      time_index   level_1_intervention_internal 
-    #>                     0.007486977                    -0.260822757 
+    #>                     0.007486977                    -0.260822758 
     #>   level_2_intervention_internal                    x:time_index 
     #>                     0.163641669                     0.025725172 
     #> x:level_1_intervention_internal x:level_2_intervention_internal 
-    #>                    -5.644619265                   -10.591855266 
+    #>                    -5.644619266                   -10.591855266 
     #> 
     #> Correlation Structure: ARMA(5,2)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4        Phi5      Theta1 
-    #>  0.12363661  0.30972293 -0.28809641 -0.21117280  0.07416372 -0.18933533 
+    #>  0.12363661  0.30972293 -0.28809641 -0.21117280  0.07416372 -0.18933534 
     #>      Theta2 
-    #> -0.38208413 
+    #> -0.38208412 
     #> Degrees of freedom: 104 total; 96 residual
     #> Residual standard error: 1.200901
 
@@ -199,13 +199,13 @@ my_summary_its_model
     #>                     C) Control pre-intervention slope 
     #>                                           0.007486977 
     #>                       G) Control intervention 1 level 
-    #>                                          -0.260822757 
+    #>                                          -0.260822758 
     #>                       K) Control intervention 2 level 
     #>                                           0.163641669 
     #> D) Pilot pre-intervention slope difference to control 
     #>                                           0.025725172 
     #>   H) Pilot intervention 1 level difference to control 
-    #>                                          -5.644619265 
+    #>                                          -5.644619266 
     #>   L) Pilot intervention 2 level difference to control 
     #>                                         -10.591855266 
     #> 
@@ -213,9 +213,9 @@ my_summary_its_model
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4        Phi5      Theta1 
-    #>  0.12363661  0.30972293 -0.28809641 -0.21117280  0.07416372 -0.18933533 
+    #>  0.12363661  0.30972293 -0.28809641 -0.21117280  0.07416372 -0.18933534 
     #>      Theta2 
-    #> -0.38208413 
+    #> -0.38208412 
     #> Degrees of freedom: 104 total; 96 residual
     #> Residual standard error: 1.200901
 
@@ -233,9 +233,9 @@ summary(my_summary_its_model)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2        Phi3        Phi4        Phi5      Theta1 
-    #>  0.12363661  0.30972293 -0.28809641 -0.21117280  0.07416372 -0.18933533 
+    #>  0.12363661  0.30972293 -0.28809641 -0.21117280  0.07416372 -0.18933534 
     #>      Theta2 
-    #> -0.38208413 
+    #> -0.38208412 
     #> 
     #> Coefficients:
     #>                                                           Value Std.Error
