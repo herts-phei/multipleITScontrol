@@ -94,7 +94,7 @@ This is a basic example which shows you how to solve a common problem with two s
 
 *Albridge Medical Practice* wants to try a new intervention to improve wellbeing in people diagnosed with depression in their practice.
 
-This example is for scenarios where there is a statistically significant slope change for both interventions, but no level change.
+This example is for scenarios where there is a statistically significant slope change for one intervention, but no level change.
 
 **Intervention 1: Implementing a new Mental Health Support programme**
 
