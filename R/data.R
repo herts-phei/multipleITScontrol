@@ -29,3 +29,19 @@
 #'   ...
 #' }
 "its_data_bike_programme"
+
+#' GP programme Data
+#'
+#' A dummy data set documenting a two stage level intervention programme of the medical GP practice scenario in the vignette.
+#' Report ...
+#'
+#' @format ## `its_data_gp`
+#' A data frame with 104 rows and 4 columns:
+#' \describe{
+#'   \item{Date}{Weekly dates}
+#'   \item{group_var}{Variable to indicate either treatment or control row of interest}
+#'   \item{Period}{Description of intervention phase}
+#'   \item{score}{The outcome metric of the scenario - self-reported wellbeing score"}
+#'   ...
+#' }
+"its_data_gp"
