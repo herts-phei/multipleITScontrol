@@ -66,7 +66,7 @@ The calendar plot below summarises the timeline of the interventions:
 ## Step 1) Loading data
 
 Sample data can be loaded from the package for this scenario through the
-bundled dataset `its_data_medical_practice`.
+bundled dataset `its_data_gp`.
 
   
 
@@ -95,7 +95,7 @@ the required variables and starting intervention time points.
 ``` r
 intervention_dates <- c(as.Date("2022-04-04"), as.Date("2022-06-06"))
 transformed_data <- 
-  multipleITScontrol::transform_data(df = tibble_data,
+  multipleITScontrol::transform_data(df = its_data_gp,
                time_var = "Date",
                group_var = "group_var",
                outcome_var =  "score",
@@ -109,16 +109,16 @@ for interrupted time series.
     #> # Groups:   category [2]
     #>    time       category  Period   outcome     x time_index level_pre_intervention
     #>    <date>     <chr>     <chr>      <dbl> <dbl>      <int>                  <dbl>
-    #>  1 2022-01-03 treatment Pre-int…    20       1          1                      1
-    #>  2 2022-01-03 control   Pre-int…    15       0          1                      1
-    #>  3 2022-01-10 treatment Pre-int…    20.7     1          2                      1
-    #>  4 2022-01-10 control   Pre-int…    15.7     0          2                      1
-    #>  5 2022-01-17 treatment Pre-int…    21.4     1          3                      1
-    #>  6 2022-01-17 control   Pre-int…    16.4     0          3                      1
-    #>  7 2022-01-24 treatment Pre-int…    22.1     1          4                      1
-    #>  8 2022-01-24 control   Pre-int…    17.1     0          4                      1
-    #>  9 2022-01-31 treatment Pre-int…    22.8     1          5                      1
-    #> 10 2022-01-31 control   Pre-int…    17.8     0          5                      1
+    #>  1 2022-01-03 treatment Pre-int…    14.8     1          1                      1
+    #>  2 2022-01-03 control   Pre-int…    14.9     0          1                      1
+    #>  3 2022-01-10 treatment Pre-int…    14.7     1          2                      1
+    #>  4 2022-01-10 control   Pre-int…    14.9     0          2                      1
+    #>  5 2022-01-17 treatment Pre-int…    14.5     1          3                      1
+    #>  6 2022-01-17 control   Pre-int…    15.1     0          3                      1
+    #>  7 2022-01-24 treatment Pre-int…    14.7     1          4                      1
+    #>  8 2022-01-24 control   Pre-int…    15       0          4                      1
+    #>  9 2022-01-31 treatment Pre-int…    14.9     1          5                      1
+    #> 10 2022-01-31 control   Pre-int…    15.1     0          5                      1
     #> # ℹ 94 more rows
     #> # ℹ 6 more variables: level_1_intervention <dbl>,
     #> #   level_1_intervention_internal <dbl>, slope_1_intervention <dbl>,
@@ -151,23 +151,23 @@ Gives a conventional model output from
     #> Generalized least squares fit by REML
     #>   Model: reformulate(termlabels = termlabels, response = "outcome") 
     #>   Data: transformed_data 
-    #>   Log-restricted-likelihood: -11.16832
+    #>   Log-restricted-likelihood: 47.55279
     #> 
     #> Coefficients:
     #>            (Intercept)                      x             time_index 
-    #>           1.430000e+01           5.117500e+00           7.000000e-01 
+    #>           14.978016984           -0.263236823           -0.002879616 
     #>   slope_1_intervention   slope_2_intervention           x:time_index 
-    #>          -3.552714e-15           8.881784e-16          -2.766134e-02 
+    #>            0.012902492           -0.005716956            0.008051684 
     #> x:slope_1_intervention x:slope_2_intervention 
-    #>           1.147794e+00           2.358428e+00 
+    #>            0.332225275           -0.338670698 
     #> 
-    #> Correlation Structure: ARMA(0,1)
+    #> Correlation Structure: ARMA(2,4)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
-    #>    Theta1 
-    #> 0.5718797 
+    #>        Phi1        Phi2      Theta1      Theta2      Theta3      Theta4 
+    #>  0.15442129  0.06585948  0.10983083  0.02821116 -0.70450272  0.31638804 
     #> Degrees of freedom: 104 total; 96 residual
-    #> Residual standard error: 0.2513081
+    #> Residual standard error: 0.1161496
 
 ## Step 4) Analysing ITS model
 
@@ -187,33 +187,33 @@ my_summary_its_model
     #> Generalized least squares fit by REML
     #>   Model: reformulate(termlabels = termlabels, response = "outcome") 
     #>   Data: transformed_data 
-    #>   Log-restricted-likelihood: -11.16832
+    #>   Log-restricted-likelihood: 47.55279
     #> 
     #> Coefficients:
     #>                           A) Control y-axis intercept 
-    #>                                          1.430000e+01 
+    #>                                          14.978016984 
     #>       B) Pilot y-axis intercept difference to control 
-    #>                                          5.117500e+00 
+    #>                                          -0.263236823 
     #>                     C) Control pre-intervention slope 
-    #>                                          7.000000e-01 
+    #>                                          -0.002879616 
     #>                       E) Control intervention 1 slope 
-    #>                                         -3.552714e-15 
+    #>                                           0.012902492 
     #>                       I) Control intervention 2 slope 
-    #>                                          8.881784e-16 
+    #>                                          -0.005716956 
     #> D) Pilot pre-intervention slope difference to control 
-    #>                                         -2.766134e-02 
+    #>                                           0.008051684 
     #>                         F) Pilot intervention 1 slope 
-    #>                                          1.147794e+00 
+    #>                                           0.332225275 
     #>                         J) Pilot intervention 2 slope 
-    #>                                          2.358428e+00 
+    #>                                          -0.338670698 
     #> 
-    #> Correlation Structure: ARMA(0,1)
+    #> Correlation Structure: ARMA(2,4)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
-    #>    Theta1 
-    #> 0.5718797 
+    #>        Phi1        Phi2      Theta1      Theta2      Theta3      Theta4 
+    #>  0.15442129  0.06585948  0.10983083  0.02821116 -0.70450272  0.31638804 
     #> Degrees of freedom: 104 total; 96 residual
-    #> Residual standard error: 0.2513081
+    #> Residual standard error: 0.1161496
 
 ``` r
 summary(my_summary_its_model)
@@ -222,52 +222,52 @@ summary(my_summary_its_model)
     #> Generalized least squares fit by REML
     #>   Model: reformulate(termlabels = termlabels, response = "outcome") 
     #>   Data: transformed_data 
-    #>        AIC      BIC    logLik
-    #>   42.33664 67.98012 -11.16832
+    #>         AIC       BIC   logLik
+    #>   -65.10558 -26.64035 47.55279
     #> 
-    #> Correlation Structure: ARMA(0,1)
+    #> Correlation Structure: ARMA(2,4)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
-    #>    Theta1 
-    #> 0.5718797 
+    #>        Phi1        Phi2      Theta1      Theta2      Theta3      Theta4 
+    #>  0.15442129  0.06585948  0.10983083  0.02821116 -0.70450272  0.31638804 
     #> 
     #> Coefficients:
     #>                                                           Value  Std.Error
-    #> A) Control y-axis intercept                           14.300000 0.18192499
-    #> B) Pilot y-axis intercept difference to control        5.117500 0.25728079
-    #> C) Control pre-intervention slope                      0.700000 0.02064355
-    #> E) Control intervention 1 slope                        0.000000 0.03780751
-    #> I) Control intervention 2 slope                        0.000000 0.02505155
-    #> D) Pilot pre-intervention slope difference to control -0.027661 0.02919439
-    #> F) Pilot intervention 1 slope                          1.147794 0.05346789
-    #> J) Pilot intervention 2 slope                          2.358428 0.03542825
-    #>                                                        t-value p-value
-    #> A) Control y-axis intercept                           78.60382  0.0000
-    #> B) Pilot y-axis intercept difference to control       19.89072  0.0000
-    #> C) Control pre-intervention slope                     33.90890  0.0000
-    #> E) Control intervention 1 slope                        0.00000  1.0000
-    #> I) Control intervention 2 slope                        0.00000  1.0000
-    #> D) Pilot pre-intervention slope difference to control -0.94749  0.3458
-    #> F) Pilot intervention 1 slope                         21.46697  0.0000
-    #> J) Pilot intervention 2 slope                         66.56915  0.0000
+    #> A) Control y-axis intercept                           14.978017 0.07014826
+    #> B) Pilot y-axis intercept difference to control       -0.263237 0.09920463
+    #> C) Control pre-intervention slope                     -0.002880 0.00789916
+    #> E) Control intervention 1 slope                        0.012902 0.01439202
+    #> I) Control intervention 2 slope                       -0.005717 0.00954899
+    #> D) Pilot pre-intervention slope difference to control  0.008052 0.01117111
+    #> F) Pilot intervention 1 slope                          0.332225 0.02035339
+    #> J) Pilot intervention 2 slope                         -0.338671 0.01350431
+    #>                                                         t-value p-value
+    #> A) Control y-axis intercept                           213.51942  0.0000
+    #> B) Pilot y-axis intercept difference to control        -2.65347  0.0093
+    #> C) Control pre-intervention slope                      -0.36455  0.7163
+    #> E) Control intervention 1 slope                         0.89650  0.3722
+    #> I) Control intervention 2 slope                        -0.59870  0.5508
+    #> D) Pilot pre-intervention slope difference to control   0.72076  0.4728
+    #> F) Pilot intervention 1 slope                          16.32285  0.0000
+    #> J) Pilot intervention 2 slope                         -25.07872  0.0000
     #> 
     #>  Correlation: 
     #>                                                       A)Cy-i BPyidtc C)Cp-s
     #> B) Pilot y-axis intercept difference to control       -0.707               
-    #> C) Control pre-intervention slope                     -0.880  0.622        
-    #> E) Control intervention 1 slope                        0.661 -0.467  -0.907
-    #> I) Control intervention 2 slope                       -0.286  0.203   0.573
-    #> D) Pilot pre-intervention slope difference to control  0.622 -0.880  -0.707
-    #> F) Pilot intervention 1 slope                         -0.467  0.661   0.641
-    #> J) Pilot intervention 2 slope                          0.203 -0.286  -0.405
+    #> C) Control pre-intervention slope                     -0.879  0.622        
+    #> E) Control intervention 1 slope                        0.657 -0.465  -0.905
+    #> I) Control intervention 2 slope                       -0.277  0.196   0.563
+    #> D) Pilot pre-intervention slope difference to control  0.622 -0.879  -0.707
+    #> F) Pilot intervention 1 slope                         -0.465  0.657   0.640
+    #> J) Pilot intervention 2 slope                          0.196 -0.277  -0.398
     #>                                                       E)Ci1s I)Ci2s DPpsdtc
     #> B) Pilot y-axis intercept difference to control                            
     #> C) Control pre-intervention slope                                          
     #> E) Control intervention 1 slope                                            
-    #> I) Control intervention 2 slope                       -0.856               
-    #> D) Pilot pre-intervention slope difference to control  0.641 -0.405        
-    #> F) Pilot intervention 1 slope                         -0.707  0.605 -0.907 
-    #> J) Pilot intervention 2 slope                          0.605 -0.707  0.573 
+    #> I) Control intervention 2 slope                       -0.852               
+    #> D) Pilot pre-intervention slope difference to control  0.640 -0.398        
+    #> F) Pilot intervention 1 slope                         -0.707  0.602 -0.905 
+    #> J) Pilot intervention 2 slope                          0.602 -0.707  0.563 
     #>                                                       F)Pi1s
     #> B) Pilot y-axis intercept difference to control             
     #> C) Control pre-intervention slope                           
@@ -275,20 +275,20 @@ summary(my_summary_its_model)
     #> I) Control intervention 2 slope                             
     #> D) Pilot pre-intervention slope difference to control       
     #> F) Pilot intervention 1 slope                               
-    #> J) Pilot intervention 2 slope                         -0.856
+    #> J) Pilot intervention 2 slope                         -0.852
     #> 
     #> Standardized residuals:
     #> numeric(0)
     #> attr(,"label")
     #> [1] "Standardized residuals"
     #> 
-    #> Residual standard error: 0.2513081 
+    #> Residual standard error: 0.1161496 
     #> Degrees of freedom: 104 total; 96 residual
 
 ``` r
 sjPlot::tab_model(
   my_summary_its_model,
-  dv.labels = "Average School Result",
+  dv.labels = "Self-reported Wellbeing Score",
   show.se = TRUE,
   collapse.se = TRUE,
   linebreak = FALSE,
@@ -305,39 +305,40 @@ The predictor coefficients elucidate a few things:
 ### **Pre-intervention period:**
 
 At the start of the pre-intervention period, ***A)*** ***Control y-axis
-intercept*** represents the modelled starting mark of Forest Tiger
-School, 14.3.
+intercept*** represents the modelled starting score of Hollybush Medical
+Practice, 14.98.
 
 ***C) Control pre-intervention slope*** describes the pre-intervention
-slope in the control group (0.7).
+slope in the control group (0).
 
 ***D) Pilot pre-intervention slope difference to control*** describes
-the difference in the pre-intervention slope in the control group with
-the pilot group. This coefficient is additive to C) ***Control
-pre-intervention slope***. I.e. 0.7 (C) + -0.03 (D) = 0.67 is the
+the difference in the pre-intervention slope in the pilot group with the
+control group. This coefficient is additive to C) ***Control
+pre-intervention slope***. I.e. 0 (C) + 0.01 (D) = 0.01 is the
 pre-intervention slope per x-axis unit in the pilot data.
 
 ### **First intervention**:
 
 ***E) Control intervention 1 slope*** describes the slope change that
 occurs at the intervention break point in the control group at the start
-of the first intervention, compared to it’s pre-intervention period (0).
+of the first intervention, compared to it’s pre-intervention period
+(0.01).
 
 ***F) Pilot intervention 1 slope*** describes the difference in the
-slope change that occurs at the intervention timepoint in the control
-group for the first intervention compared to the pilot (1.15).
+slope change that occurs at the intervention timepoint in the pilot
+group for the first intervention compared to the control (0.33).
 
 These slope changes are pertinent to the slope gradients given in the
 pre-intervention period. Thus, we add the coefficients ***E)***
 ***Control intervention 1 slope** to **C)*** ***Control pre-intervention
-slope***: 0 + 0.7 = 0.7 is the average increase for each x-axis unit
+slope***: 0.01 + 0 = 0.01 is the average increase for each x-axis unit
 during the first intervention for the control data.
 
 To ascertain the slope for the pilot data, we add to the
 pre-intervention slope of the pilot data, the coefficients ***E)***
 ***Control intervention 1 slope*** and ***F)*** ***Pilot intervention 1
-slope***. ***E*** (0) + ***F*** (1.15) + ***(C)*** 0.7 + ***D*** -0.03
-(D) = 1.82 is the average increase for each x-axis unit during the first
+slope***. ***E*** (0.01) + ***F*** (0.33) + ***(C)*** 0 + ***D*** 0.01
+(D) = 0.35 is the average increase for each x-axis unit during the first
 intervention for the pilot data.
 
 To ascertain statistical significance with the first intervention slope,
@@ -350,10 +351,10 @@ slope_difference(model = my_summary_its_model, intervention = 1)
 
     #> ## INTERVENTION  1 ## 
     #> 
-    #>  Slope for treatment per x-axis unit: 1.82 
-    #>  Slope for control per x-axis unit: 0.7 
-    #>  Slope difference: 1.12 
-    #>  95% CI: 1.06 to 1.18 
+    #>  Slope for treatment per x-axis unit: 0.35 
+    #>  Slope for control per x-axis unit: 0.01 
+    #>  Slope difference: 0.34 
+    #>  95% CI: 0.32 to 0.36 
     #>  p-value: <0.001 
     #>  Slope control coefficients: E+C 
     #>  Slope treatment coefficients: E+C+D+F 
@@ -362,44 +363,44 @@ slope_difference(model = my_summary_its_model, intervention = 1)
     #>   Variable                     Value_Raw Value_Formatted
     #>   <chr>                            <dbl> <chr>          
     #> 1 Intervention                  1   e+ 0 1              
-    #> 2 Slope for treatment           1.82e+ 0 1.82           
-    #> 3 Slope for control             7   e- 1 0.7            
-    #> 4 Slope difference              1.12e+ 0 1.12           
-    #> 5 Lower 95% CI                  1.06e+ 0 1.06           
-    #> 6 Upper 95% CI                  1.18e+ 0 1.18           
-    #> 7 p.value                       2.03e-59 <0.001         
+    #> 2 Slope for treatment           3.50e- 1 0.35           
+    #> 3 Slope for control             1.00e- 2 0.01           
+    #> 4 Slope difference              3.40e- 1 0.34           
+    #> 5 Lower 95% CI                  3.18e- 1 0.32           
+    #> 6 Upper 95% CI                  3.63e- 1 0.36           
+    #> 7 p.value                       9.80e-51 <0.001         
     #> 8 Slope treatment coefficients NA        E+C+D+F        
     #> 9 Slope control coefficients   NA        E+C
 
 This brings up the key coefficients and values needed to compare the
 slopes of the pilot and control during the first intervention.
 
-We identify that the slope difference between the treatment (Alpine
-Meadow School) and the control (Forest Tiger School) for the first
-intervention (Reading Programme) has a slope difference of 0.31 (95% CI:
-0.29 - 0.32) per x-axis unit, with a p-value below 0.05, indicating
-statistical significance.
+We identify that the slope difference between the treatment (Albridge
+Medical Practice) and the control (Hollybush Medical Practice) for the
+first intervention (Reading Programme) has a slope difference of 0.34
+(95% CI: 0.32 - 0.36) per x-axis unit, with a p-value of \<0.001,
+indicating statistical significance.
 
 ### **Second intervention:**
 
 ***I) Control intervention 2 slope*** describes the slope change that
 occurs at the intervention break point in the control group at the start
-of the second intervention (0).
+of the second intervention (-0.01).
 
 Thus, the modelled slope change in the second intervention is ***C)
-Control pre-intervention slope*** (0.7) + **E) Control intervention 1
-slope** (0) + ***I) Control intervention 2 slope*** (0) = 0.7 is the
-average cumulative uptake increase for each x-axis unit during the
+Control pre-intervention slope*** (0) + **E) Control intervention 1
+slope** (0.01) + ***I) Control intervention 2 slope*** (-0.01) = 0 is
+the average cumulative uptake increase for each x-axis unit during the
 second intervention for the control data.
 
 ***J) Pilot intervention 2 slope*** describes the difference in the
-slope change that occurs at the intervention timepoint in the control
-group for the second intervention. (2.36).
+slope change that occurs at the intervention timepoint in the pilot
+group for the second intervention. (-0.34).
 
 These slope changes are pertinent to the slope gradients given in the
 pre-intervention and first intervention period. Thus, we add the
-coefficients ***C*** (0.7) + ***D*** (-0.03) + ***E*** (0) + ***F***
-(1.15) + ***I*** (0) + ***J*** (2.36) = 4.18 is the average cumulative
+coefficients ***C*** (0) + ***D*** (0.01) + ***E*** (0.01) + ***F***
+(0.33) + ***I*** (-0.01) + ***J*** (-0.34) = 0 is the average cumulative
 increase for each x-axis unit during the second intervention for the
 pilot data.
 
@@ -414,33 +415,34 @@ slope_difference(model = my_summary_its_model, intervention = 2)
 
     #> ## INTERVENTION  2 ## 
     #> 
-    #>  Slope for treatment per x-axis unit: 4.18 
-    #>  Slope for control per x-axis unit: 0.7 
-    #>  Slope difference: 3.48 
-    #>  95% CI: 3.46 to 3.5 
-    #>  p-value: <0.001 
+    #>  Slope for treatment per x-axis unit: 0.01 
+    #>  Slope for control per x-axis unit: 0 
+    #>  Slope difference: 0 
+    #>  95% CI: -0.01 to 0.01 
+    #>  p-value: 0.636 
     #>  Slope control coefficients: E+C+I 
     #>  Slope treatment coefficients: E+C+D+F+I+J 
     #> 
     #> # A tibble: 9 × 3
-    #>   Variable                      Value_Raw Value_Formatted
-    #>   <chr>                             <dbl> <chr>          
-    #> 1 Intervention                  2   e+  0 2              
-    #> 2 Slope for treatment           4.18e+  0 4.18           
-    #> 3 Slope for control             7.00e-  1 0.7            
-    #> 4 Slope difference              3.48e+  0 3.48           
-    #> 5 Lower 95% CI                  3.46e+  0 3.46           
-    #> 6 Upper 95% CI                  3.50e+  0 3.5            
-    #> 7 p.value                       4.50e-156 <0.001         
-    #> 8 Slope treatment coefficients NA         E+C+D+F+I+J    
-    #> 9 Slope control coefficients   NA         E+C+I
+    #>   Variable                     Value_Raw Value_Formatted
+    #>   <chr>                            <dbl> <chr>          
+    #> 1 Intervention                   2       2              
+    #> 2 Slope for treatment            0.00591 0.01           
+    #> 3 Slope for control              0.00431 0              
+    #> 4 Slope difference               0.00161 0              
+    #> 5 Lower 95% CI                  -0.00511 -0.01          
+    #> 6 Upper 95% CI                   0.00832 0.01           
+    #> 7 p.value                        0.636   0.636          
+    #> 8 Slope treatment coefficients  NA       E+C+D+F+I+J    
+    #> 9 Slope control coefficients    NA       E+C+I
 
-We identify that the slope difference between the treatment (Alpine
-Meadow School) and the control (Forest Tiger School) for the first
-intervention (Reading Programme) has a slope difference of 0.23 (95% CI:
-0.22 - 0.25) per x-axis unit, with a p-value below 0.05, indicating
-statistical significance. The effect has been attenuated compared to the
-first intervention, and this is evident from the plot in step 6.
+We identify that the slope difference between the treatment (Albridge
+Medical Practice) and the control (Hollybush Medical Practice) for the
+second intervention (Reading Programme) has a slope difference of 0 (95%
+CI: -0.01 - 0.01) per x-axis unit, with a p-value of 0.636, indicating a
+non statistically significant result. The effect has been attenuated
+compared to the first intervention, and this is evident from the plot in
+step 6.
 
 ## Step 5) Fitting Predictions
 
@@ -465,7 +467,8 @@ difference.
 its_plot(model = my_summary_its_model,
          data_with_predictions = transformed_data_with_predictions, 
          time_var = "time",
-         intervention_dates = intervention_dates)
+         intervention_dates = intervention_dates, 
+         y_axis = "Self-reported Wellbeing Score")
 ```
 
 ![](ITScontrol_demonstration_slope2_files/figure-html/unnamed-chunk-18-1.png)
@@ -473,5 +476,5 @@ its_plot(model = my_summary_its_model,
 In this example, the treatment variable is for *Albridge Medical
 Practice*, whilst the control is for *Hollybush Medical Practice*. The
 treatment slope shows there was a significant slope change immediately
-after the first intervention in April 2022, and in the second
+after the first intervention in April 2022, but not in the second
 intervention in June 2022.
