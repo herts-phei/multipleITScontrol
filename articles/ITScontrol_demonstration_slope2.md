@@ -155,17 +155,17 @@ Gives a conventional model output from
     #> 
     #> Coefficients:
     #>            (Intercept)                      x             time_index 
-    #>           14.978016984           -0.263236823           -0.002879616 
+    #>           14.978016983           -0.263236816           -0.002879616 
     #>   slope_1_intervention   slope_2_intervention           x:time_index 
-    #>            0.012902492           -0.005716956            0.008051684 
+    #>            0.012902492           -0.005716956            0.008051683 
     #> x:slope_1_intervention x:slope_2_intervention 
-    #>            0.332225275           -0.338670698 
+    #>            0.332225276           -0.338670698 
     #> 
     #> Correlation Structure: ARMA(2,4)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2      Theta1      Theta2      Theta3      Theta4 
-    #>  0.15442129  0.06585948  0.10983083  0.02821116 -0.70450272  0.31638804 
+    #>  0.15442105  0.06585967  0.10983082  0.02821117 -0.70450400  0.31638664 
     #> Degrees of freedom: 104 total; 96 residual
     #> Residual standard error: 0.1161496
 
@@ -191,9 +191,9 @@ my_summary_its_model
     #> 
     #> Coefficients:
     #>                           A) Control y-axis intercept 
-    #>                                          14.978016984 
+    #>                                          14.978016983 
     #>       B) Pilot y-axis intercept difference to control 
-    #>                                          -0.263236823 
+    #>                                          -0.263236816 
     #>                     C) Control pre-intervention slope 
     #>                                          -0.002879616 
     #>                       E) Control intervention 1 slope 
@@ -201,9 +201,9 @@ my_summary_its_model
     #>                       I) Control intervention 2 slope 
     #>                                          -0.005716956 
     #> D) Pilot pre-intervention slope difference to control 
-    #>                                           0.008051684 
+    #>                                           0.008051683 
     #>                         F) Pilot intervention 1 slope 
-    #>                                           0.332225275 
+    #>                                           0.332225276 
     #>                         J) Pilot intervention 2 slope 
     #>                                          -0.338670698 
     #> 
@@ -211,7 +211,7 @@ my_summary_its_model
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2      Theta1      Theta2      Theta3      Theta4 
-    #>  0.15442129  0.06585948  0.10983083  0.02821116 -0.70450272  0.31638804 
+    #>  0.15442105  0.06585967  0.10983082  0.02821117 -0.70450400  0.31638664 
     #> Degrees of freedom: 104 total; 96 residual
     #> Residual standard error: 0.1161496
 
@@ -229,7 +229,7 @@ summary(my_summary_its_model)
     #>  Formula: ~time_index | x 
     #>  Parameter estimate(s):
     #>        Phi1        Phi2      Theta1      Theta2      Theta3      Theta4 
-    #>  0.15442129  0.06585948  0.10983083  0.02821116 -0.70450272  0.31638804 
+    #>  0.15442105  0.06585967  0.10983082  0.02821117 -0.70450400  0.31638664 
     #> 
     #> Coefficients:
     #>                                                           Value  Std.Error

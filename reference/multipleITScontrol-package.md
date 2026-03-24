@@ -1,8 +1,9 @@
-# multipleITScontrol: Interrupted Time Series with a Control and Multiple Interventions through a Generalised Least Squares framework
+# multipleITScontrol: Interrupted Time Series with a Control and Multiple Interventions Through a Generalised Least Squares Framework
 
 Functions related to performing interrupted-time series through a
 generalised least squares (GLS) framework on linear outcomes. Allows for
-multiple interventions and a control.
+multiple interventions and a control with ARMA (autoregressive and
+moving-average) correction.
 
 ## See also
 
