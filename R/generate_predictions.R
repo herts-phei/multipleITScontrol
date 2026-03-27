@@ -15,13 +15,6 @@
 #' @details
 #' The function first computes pre-intervention predictions using model coefficients, specifically the intercept, `time_index`, and interaction terms. It ensures that predictions for the pre-intervention period (`level_pre_intervention == 1`) are set to `NA`. Then, it uses the `AICcmodavg::predictSE.gls()` function to calculate predictions and standard errors from the provided GLS model.
 #'
-#' @examples
-#' \dontrun{
-#'   # Assuming `transformed_data` is a prepared data frame and `model` is a GLS model:
-#'   predictions_df <- generate_predictions(transformed_data, model)
-#'   head(predictions_df)
-#' }
-#'
 #' @importFrom dplyr arrange ungroup mutate case_when
 #' @importFrom AICcmodavg predictSE.gls
 #' @importFrom nlme corARMA
@@ -31,8 +24,7 @@
 
 generate_predictions <- function(transformed_data,
                                  model) {
-
-  length <- nrow(transformed_data)/2
+  length <- nrow(transformed_data) / 2
 
   used_coefs <- model$coefficients
 
@@ -60,7 +52,6 @@ generate_predictions <- function(transformed_data,
     )
 
   return(df)
-
 }
 
 # generate_predictions(transformed_data = moo, model) -> moo_generate

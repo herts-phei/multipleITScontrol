@@ -1,7 +1,6 @@
 # Load necessary libraries
 library(tibble)
 library(dplyr)
-devtools::install()
 library(multipleITScontrol)
 
 # Create a date range vector for Fridays only
